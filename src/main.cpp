@@ -38,19 +38,17 @@ void setup() {
 }
 
 void loop() {
-//	LocalBuffers::float2char_buffer1[0] = '\0';
-//	LocalBuffers::float2char_buffer2[0] = '\0';
-//	LocalBuffers::string_cpy_buffer[0] = '\0';
+
 	size_t size;
 	while (EthernetClient client = server.available()) {
 		buzz(BUZZPIN, 8000, 200, 1);
 		while ((size = client.available()) > 0) {
 			response.setClient(&client);
-//			if(size > MAX_SIZE_ALLOWED_REQUEST){
-//
-//				response.writeError_MAX_SIZE_REQUEST();
-//				break;
-//			}
+			if(size > MAX_SIZE_ALLOWED_REQUEST){
+
+				response.writeError_MAX_SIZE_REQUEST();
+				break;
+			}
 			uint8_t *msg = (uint8_t*) malloc(size);
 			size = client.read(msg, size);
 			client.write(msg, size);
@@ -58,6 +56,9 @@ void loop() {
 		}
 		client.stop();
 	}
+	LocalBuffers::float2char_buffer1[0] = '\0';
+	LocalBuffers::float2char_buffer2[0] = '\0';
+	LocalBuffers::string_cpy_buffer[0] = '\0';
 	delay(2);
 }
 

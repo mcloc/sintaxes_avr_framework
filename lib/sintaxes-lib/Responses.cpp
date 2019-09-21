@@ -1,6 +1,7 @@
 #include <sintaxes-lib.h>
 #include "module_string.h"
 #include "errors_code.h"
+#include<stdio.h>
 
 Responses::Responses(Commands *_commands, LocalBuffers *_local_buffer){
 	commands = _commands;
@@ -21,7 +22,10 @@ void Responses::setClient(EthernetClient *_client){
 
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule200DataHeaders();
-	sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  (PGM_P)&(REQUEST_MAX_LENGHT_ERROR_STR));
+//	char  msgError[70];
+	//TODO: remove all sprintf_P change to snprintf_P wich doesnt allow buffer overflow
+//	sprintf_P(msgError, (PGM_P)&(REQUEST_MAX_LENGHT_ERROR_STR));
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  REQUEST_MAX_LENGHT_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 
 }

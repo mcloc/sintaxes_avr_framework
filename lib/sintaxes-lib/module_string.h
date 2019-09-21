@@ -26,7 +26,7 @@
     const char json_module_name[] PROGMEM = "\"module_name\":\"climatization_board#1\"";
     const char json_module_status[] PROGMEM = "\"status\":\"OK\"";
     const char json_module_uptime[] PROGMEM = "\"uptime\":132";
-    const char json_module_error[] PROGMEM  = "{\"error_code\":%d,\"error_msg\":\"%s\"}";
+    const char json_module_error[] PROGMEM  = "{\"error_code\":%d,\"error_msg\":\"%S\"}";
     const char json_module_data_key[] PROGMEM  = "\"data\":";
     const char json_module_sensors_key[] PROGMEM  = "\"sensors\":";
     const char json_module_actuators_key[] PROGMEM  = "\"actuators\":";

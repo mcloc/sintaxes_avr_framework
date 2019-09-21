@@ -31,7 +31,7 @@ char *  Commands::getSensor1(){
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer1);
     readed_value = (*dht1).readTemperature();
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
-    sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor1), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
+    snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_sensor1), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
     return LocalBuffers::string_cpy_buffer;
 }
 
@@ -40,6 +40,6 @@ char *  Commands::getSensor2(){
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer1);
     readed_value = (*dht2).readTemperature();
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
-    sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor2), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
+    snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_sensor2), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
     return LocalBuffers::string_cpy_buffer;
 }
