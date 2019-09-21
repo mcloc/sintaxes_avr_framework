@@ -34,7 +34,7 @@
     const char json_module_sensor2[] PROGMEM  = "{\"uuid\":\"DHT21#2\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"heat_index\":\"xxxxx\"}]}";
     const char json_module_actuator1[] PROGMEM  = "{\"uuid\":\"solenoid#1\",\"value\":{\"active\":103,\"activated_time\":111}}";
 
-    const char REQUEST_MAX_LENGHT_ERROR_STR PROGMEM = "\"max request lenght achieved.\"";
-    const char MAL_FORMATED_MSGPCK_ERROR_STR PROGMEM = "\"mal formed msgpack or 4byteCommandProtocol\"";
+    const char REQUEST_MAX_LENGHT_ERROR_STR[] PROGMEM = "\"max request lenght achieved.\"";
+    const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "\"mal formed msgpack or 4byteCommandProtocol\"";
 
 #endif

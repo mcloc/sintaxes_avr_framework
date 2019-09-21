@@ -23,8 +23,10 @@ void Responses::setClient(EthernetClient *_client){
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule200DataHeaders();
 //	char  msgError[70];
-	//TODO: remove all sprintf_P change to snprintf_P wich doesnt allow buffer overflow
-//	sprintf_P(msgError, (PGM_P)&(REQUEST_MAX_LENGHT_ERROR_STR));
+//	//TODO: remove all sprintf_P change to snprintf_P wich doesnt allow buffer overflow
+//	strcpy_P(msgError, REQUEST_MAX_LENGHT_ERROR_STR);
+
+
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  REQUEST_MAX_LENGHT_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 
