@@ -1,3 +1,4 @@
+#include "LocalBuffers.h"
 #include "Commands.h"
 #include "module_strings_extern.h"
 #include "EchoServer.h"
@@ -27,18 +28,18 @@ void Commands::setDHT2(DHT *_dht2,uint8_t dht_pin, uint8_t type){
 
 char *  Commands::getSensor1(){
     float readed_value = (*dht1).readHumidity();
-    dtostrf(readed_value, 5, 2, float2char_buffer1);
+    dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer1);
     readed_value = (*dht1).readTemperature();
-    dtostrf(readed_value, 5, 2, float2char_buffer2);
-    sprintf_P(string_cpy_buffer, (PGM_P)&(json_module_sensor1), float2char_buffer1, float2char_buffer2);
-    return Commands::string_cpy_buffer;
+    dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer2);
+    sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor1), LocalBuffers::float2char_buffer1, LocalBuffers::float2char_buffer2);
+    return LocalBuffers::string_cpy_buffer;
 }
 
 char *  Commands::getSensor2(){
     float readed_value = (*dht2).readHumidity();
-    dtostrf(readed_value, 5, 2, Commands::float2char_buffer1);
+    dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer1);
     readed_value = (*dht2).readTemperature();
-    dtostrf(readed_value, 5, 2, Commands::float2char_buffer2);
-    sprintf_P(Commands::string_cpy_buffer, (PGM_P)&(json_module_sensor2), Commands::float2char_buffer1, Commands::float2char_buffer2);
-    return Commands::string_cpy_buffer;
+    dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer2);
+    sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor2), LocalBuffers::float2char_buffer1, LocalBuffers::float2char_buffer2);
+    return LocalBuffers::string_cpy_buffer;
 }

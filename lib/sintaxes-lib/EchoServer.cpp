@@ -11,7 +11,7 @@ EchoServer::EchoServer(Commands *_commands,Responses *_response){
      commands = _commands;
      response = _response;
      (*response).setCommands(commands);
-     (*response).setEchoServer(this);
+//     (*response).setEchoServer(this);
 }
 
 

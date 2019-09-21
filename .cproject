@@ -26,12 +26,12 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
@@ -56,12 +56,12 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
@@ -86,12 +86,12 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
@@ -142,12 +142,12 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
@@ -172,12 +172,12 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
@@ -202,12 +202,12 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>

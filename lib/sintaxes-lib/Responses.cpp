@@ -1,93 +1,96 @@
 #include "sintaxes-lib.h"
-#include "Responses.h"
-#include "EchoServer.h"
-#include "Commands.h"
 #include "module_string.h"
 
-Responses::Responses(Commands *_commands, BufferFiller *_bfill){
+Responses::Responses(Commands *_commands){
 	commands = _commands;
-	bfill = _bfill;
-}
-
-void Responses::setEchoServer(EchoServer *_echoServer){
-	echoServer = _echoServer;
 }
 
 void Responses::setCommands(Commands *_commands){
 	commands = _commands;
 }
 
+void Responses::setClient(EthernetClient *_client){
+	client = _client;
+}
+
+void Responses::error_MAX_SIZE_REQUEST(){
+	writeModule200DataHeaders();
+	sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor1), LocalBuffers::float2char_buffer1, LocalBuffers::float2char_buffer2);
+
+}
+
 void Responses::writeModule200DataHeaders(){
-	bfill->emit_p(header_response_200);
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(header_content_type_json);
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(header_server);
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(header_connection); // the connection will be closed after completion of the response
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(json_module_new_line);
+	client->println(FSH(header_response_200));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_content_type_json));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_server));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_connection)); // the connection will be closed after completion of the response
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(json_module_new_line));
 	
 }
 
 void Responses::writeModuleDataResponse(){
-	bfill->emit_p(header_response_200);
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(header_content_type_json);
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(header_server);
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(header_connection); // the connection will be closed after completion of the response
-	bfill->emit_p(json_module_new_line);
-	bfill->emit_p(json_module_new_line);
-	
+	client->print(FSH(header_response_200));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_content_type_json));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_server));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_connection)); // the connection will be closed after completion of the response
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(json_module_new_line));
+
 	//begin the construction of Json
-	bfill->emit_p(json_module_braces_open);
+	client->print(FSH(json_module_braces_open));
 	//Message Header
-	bfill->emit_p(json_module_name);
-	bfill->emit_p(json_module_comma_separator);
-	bfill->emit_p(json_module_uptime);
-	bfill->emit_p(json_module_comma_separator);
+	client->print(FSH(json_module_name));
+	client->print(FSH(json_module_comma_separator));
+	client->print(FSH(json_module_uptime));
+	client->print(FSH(json_module_comma_separator));
 	//Data Object
-	bfill->emit_p(json_module_data_key);
-	bfill->emit_p(json_module_braces_open);
+	client->print(FSH(json_module_data_key));
+	client->print(FSH(json_module_braces_open));
 
 	//TODO: loop trough sensors Array in the PROGMEM
 	//Data key Sensors
-	bfill->emit_p(json_module_sensors_key);
-	bfill->emit_p(json_module_brackets_open);
+	client->print(FSH(json_module_sensors_key));
+	client->print(FSH(json_module_brackets_open));
+
+
+	//FIXME: how to get rid of local buffer
 	char *str;
 	// DTH21#1 ouput
-	
-	//FIXME: how to get local buffer
 	str = commands->getSensor1();
-	bfill->emit_raw(str, strlen(str));
-	bfill->emit_p(json_module_comma_separator);
+	client->print(str);
+	client->print(FSH(json_module_comma_separator));
 	// DTH21#2 ouput
 	str = commands->getSensor2();
-	bfill->emit_raw(str, strlen(str));
+	client->print(str);
 
 	// close Sensors array
-	bfill->emit_p(json_module_brackets_close);
-	bfill->emit_p(json_module_comma_separator);
+	client->print(FSH(json_module_brackets_close));
+	client->print(FSH(json_module_comma_separator));
 
 	//Data key Actuator
-	bfill->emit_p(json_module_actuators_key);
-	bfill->emit_p(json_module_brackets_open);
-	bfill->emit_p(json_module_actuator1);
-	bfill->emit_p(json_module_brackets_close);
+	client->print(FSH(json_module_actuators_key));
+	client->print(FSH(json_module_brackets_open));
+	client->print(FSH(json_module_actuator1));
+	client->print(FSH(json_module_brackets_close));
 
 	//Close data Object
-	bfill->emit_p(json_module_braces_close);
-	bfill->emit_p(json_module_comma_separator);
-	bfill->emit_p(json_module_status);
-	bfill->emit_p(json_module_comma_separator);
+	client->print(FSH(json_module_braces_close));
+	client->print(FSH(json_module_comma_separator));
+	client->print(FSH(json_module_status));
+	client->print(FSH(json_module_comma_separator));
 
 	//Errors data
-	bfill->emit_p(json_module_error);
+	client->print(FSH(json_module_error));
 
 
 	//end the construction of Json
-	bfill->emit_p(json_module_braces_close);
-	bfill->emit_p(json_module_new_line);
+	client->print(FSH(json_module_braces_close));
+	client->print(FSH(json_module_new_line));
 }

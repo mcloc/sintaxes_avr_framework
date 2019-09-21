@@ -1,8 +1,8 @@
-#ifndef __RESPONSES_H_
-#define __RESPONSES_H_
+#ifndef __SINTAX_RESPONSES_H_
+#define __SINTAX_RESPONSES_H_
 #include "Commands.h"
-#include "EchoServer.h"
-#include <EtherCard.h>
+#include <UIPEthernet.h>
+//#include "EchoServer.h"
 
 //#include "module_string.h"
 
@@ -10,16 +10,19 @@ class Responses;
 
 class Responses{
     public:
-        Responses(Commands *_commands, BufferFiller *_bfill);
-        void setEchoServer(EchoServer *_echoServer);
+        Responses(Commands *_commands);
         void setCommands(Commands *_commands);
+        void setClient(EthernetClient *client);
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
+        void error_MAX_SIZE_REQUEST();
+        int	error_MAX_SIZE_REQUEST_SIZE();
+
+
     
     private:
-        EchoServer *echoServer;
         Commands *commands;
-        BufferFiller *bfill;
+        EthernetClient *client;
         
         
 };
