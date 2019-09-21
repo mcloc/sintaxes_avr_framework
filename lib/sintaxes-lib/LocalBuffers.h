@@ -5,6 +5,8 @@ class LocalBuffers;
 
 class LocalBuffers{
     public:
+		LocalBuffers();
+
         /**
          * This is used by dtostrf() to convert float numbers into string
          * TODO: check if the string in PROGMEM accept %f so we dont need to use

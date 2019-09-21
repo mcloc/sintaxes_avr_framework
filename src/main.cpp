@@ -6,17 +6,21 @@
  * is under his own headers. Change this project-defines.h as you want.
  */
 #include "main.h"
+#include <sintaxes-lib.h>
+#include <LocalBuffers.h>
 
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);
 uint8_t mac[6] = { MACADDRESS };
 
-//LocalBuffers localBuffers;
+static LocalBuffers localBuffers;
 static Commands commands;
 static Responses response(&commands);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 //static char server_post_buffer[MAX_SIZE_ALLOWED_REQUEST];
+
+
 
 void setup() {
 	pinMode(BUZZPIN, OUTPUT);
@@ -34,11 +38,14 @@ void setup() {
 }
 
 void loop() {
+//	LocalBuffers::float2char_buffer1[0] = '\0';
+//	LocalBuffers::float2char_buffer2[0] = '\0';
+//	LocalBuffers::string_cpy_buffer[0] = '\0';
 	size_t size;
 	while (EthernetClient client = server.available()) {
 		buzz(BUZZPIN, 8000, 200, 1);
 		while ((size = client.available()) > 0) {
-//			response.setClient(&client);
+			response.setClient(&client);
 //			if(size > MAX_SIZE_ALLOWED_REQUEST){
 //
 //				response.writeError_MAX_SIZE_REQUEST();
