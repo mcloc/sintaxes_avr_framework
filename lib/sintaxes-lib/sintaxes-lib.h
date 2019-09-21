@@ -4,9 +4,6 @@
 #include <Arduino.h>
 typedef const __FlashStringHelper* FSH;
 #include <UIPEthernet.h>
-//#include "utility/logging.h"
-//#include "module_strings_extern.h"
-//#include <EchoServer.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <Commands.h>

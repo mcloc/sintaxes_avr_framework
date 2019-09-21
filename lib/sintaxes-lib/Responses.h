@@ -11,6 +11,7 @@ class Responses;
 class Responses{
     public:
         Responses(Commands *_commands, LocalBuffers *_local_buffers);
+        Responses(Commands *_commands);
         void setCommands(Commands *_commands);
         void setClient(EthernetClient *client);
         void writeModuleDataResponse();

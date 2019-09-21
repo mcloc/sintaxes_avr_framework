@@ -1,14 +1,13 @@
-#include "LocalBuffers.h"
-#include "Commands.h"
-#include "module_strings_extern.h"
-#include "EchoServer.h"
-#include "Responses.h"
+#include <sintaxes-lib.h>
+#include "module_string.h"
 #include <DHT.h>
 
-Commands::Commands(LocalBuffers *_local_buffers){
-	localBuffers = _local_buffers;
+//Commands::Commands(LocalBuffers *_local_buffers){
+//	localBuffers = _local_buffers;
+//
+//}
 
-}
+Commands::Commands(){};
 
 void Commands::setDHT1(DHT *_dht1, uint8_t dht_pin, uint8_t type){
     dht1 = _dht1;
@@ -32,8 +31,8 @@ char *  Commands::getSensor1(){
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer1);
     readed_value = (*dht1).readTemperature();
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
-    sprintf_P(localBuffers->string_cpy_buffer, (PGM_P)&(json_module_sensor1), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
-    return localBuffers->string_cpy_buffer;
+    sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor1), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
+    return LocalBuffers::string_cpy_buffer;
 }
 
 char *  Commands::getSensor2(){
@@ -41,6 +40,6 @@ char *  Commands::getSensor2(){
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer1);
     readed_value = (*dht2).readTemperature();
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
-    sprintf_P(localBuffers->string_cpy_buffer, (PGM_P)&(json_module_sensor2), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
-    return localBuffers->string_cpy_buffer;
+    sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor2), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
+    return LocalBuffers::string_cpy_buffer;
 }

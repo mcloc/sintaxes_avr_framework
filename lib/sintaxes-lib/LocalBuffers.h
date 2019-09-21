@@ -1,16 +1,10 @@
 #ifndef __SINTAX_LOCAL_BUFFERS_H_
 #define __SINTAX_LOCAL_BUFFERS_H_
-//#include "Commands.h"
-//#include <UIPEthernet.h>
-//#include "EchoServer.h"
-
-//#include "module_string.h"
 
 class LocalBuffers;
 
 class LocalBuffers{
     public:
-//		LocalBuffer::LocalBuffer();
         /**
          * This is used by dtostrf() to convert float numbers into string
          * TODO: check if the string in PROGMEM accept %f so we dont need to use

@@ -11,10 +11,9 @@
 EthernetServer server = EthernetServer(LISTENPORT);
 uint8_t mac[6] = { MACADDRESS };
 
-static LocalBuffers localBuffers;
-static Commands commands(&localBuffers);
-static Responses response(&commands, &localBuffers);
-//static EchoServer TCPServer(&commands, &response);
+//LocalBuffers localBuffers;
+static Commands commands;
+static Responses response(&commands);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 //static char server_post_buffer[MAX_SIZE_ALLOWED_REQUEST];
@@ -24,7 +23,6 @@ void setup() {
 	buzz(BUZZPIN, 800, 500);
 	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
 	commands.setDHT2(&dht2, DHT1PIN, DHTTYPE);
-//	response.setEchoServer(&TCPServer);
 
 // DHCP, will buzz for ever trying
 	while (Ethernet.begin(mac) == 0) {
@@ -40,12 +38,12 @@ void loop() {
 	while (EthernetClient client = server.available()) {
 		buzz(BUZZPIN, 8000, 200, 1);
 		while ((size = client.available()) > 0) {
-			response.setClient(&client);
-			if(size > MAX_SIZE_ALLOWED_REQUEST){
-
-				response.writeError_MAX_SIZE_REQUEST();
-				break;
-			}
+//			response.setClient(&client);
+//			if(size > MAX_SIZE_ALLOWED_REQUEST){
+//
+//				response.writeError_MAX_SIZE_REQUEST();
+//				break;
+//			}
 			uint8_t *msg = (uint8_t*) malloc(size);
 			size = client.read(msg, size);
 			client.write(msg, size);

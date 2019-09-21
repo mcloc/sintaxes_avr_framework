@@ -36,6 +36,7 @@ public:
     static uint32_t command_argument8;
 
     Commands(LocalBuffers *localBuffers);
+    Commands();
     char *  getSensor1();
     char *  getSensor2();
     void initSensors();
