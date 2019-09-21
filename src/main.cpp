@@ -11,8 +11,9 @@
 EthernetServer server = EthernetServer(LISTENPORT);
 uint8_t mac[6] = { MACADDRESS };
 
-static Commands commands;
-static Responses response(&commands);
+static LocalBuffers localBuffers;
+static Commands commands(&localBuffers);
+static Responses response(&commands, &localBuffers);
 //static EchoServer TCPServer(&commands, &response);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
@@ -42,7 +43,8 @@ void loop() {
 			response.setClient(&client);
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
 
-				client.write(response.error_MAX_SIZE_REQUEST(), response.error_MAX_SIZE_REQUEST_SIZE());
+				response.writeError_MAX_SIZE_REQUEST();
+				break;
 			}
 			uint8_t *msg = (uint8_t*) malloc(size);
 			size = client.read(msg, size);

@@ -2,6 +2,7 @@
 #define __MODULE_COMMANDS_H_
 
 #include <DHT.h>
+#include <LocalBuffers.h>
 
 
 class Commands;
@@ -34,14 +35,16 @@ public:
     static uint32_t command_argument7;
     static uint32_t command_argument8;
 
-    Commands();
+    Commands(LocalBuffers *localBuffers);
     char *  getSensor1();
     char *  getSensor2();
     void initSensors();
     void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
     void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
+    LocalBuffers *localBuffers;
     DHT *dht1;
     DHT *dht2;
+
 
 private:
 

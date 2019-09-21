@@ -10,6 +10,7 @@ class LocalBuffers;
 
 class LocalBuffers{
     public:
+//		LocalBuffer::LocalBuffer();
         /**
          * This is used by dtostrf() to convert float numbers into string
          * TODO: check if the string in PROGMEM accept %f so we dont need to use
@@ -32,7 +33,7 @@ class LocalBuffers{
          * increase as the String is longer than this value or split into several other PROGMEM variables
          * this should keep low then 180 bytes
          */
-        static char string_cpy_buffer[120];
+        static char string_cpy_buffer[180];
 
 
 };

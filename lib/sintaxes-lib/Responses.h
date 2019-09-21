@@ -10,17 +10,18 @@ class Responses;
 
 class Responses{
     public:
-        Responses(Commands *_commands);
+        Responses(Commands *_commands, LocalBuffers *_local_buffers);
         void setCommands(Commands *_commands);
         void setClient(EthernetClient *client);
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
-        void error_MAX_SIZE_REQUEST();
+        void writeError_MAX_SIZE_REQUEST();
         int	error_MAX_SIZE_REQUEST_SIZE();
 
 
     
     private:
+        LocalBuffers *localBuffers;
         Commands *commands;
         EthernetClient *client;
         

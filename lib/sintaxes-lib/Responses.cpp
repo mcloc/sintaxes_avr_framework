@@ -1,8 +1,10 @@
-#include "sintaxes-lib.h"
+#include <sintaxes-lib.h>
 #include "module_string.h"
+#include "errors_code.h"
 
-Responses::Responses(Commands *_commands){
+Responses::Responses(Commands *_commands, LocalBuffers *_local_buffer){
 	commands = _commands;
+	localBuffers = _local_buffer;
 }
 
 void Responses::setCommands(Commands *_commands){
@@ -13,9 +15,10 @@ void Responses::setClient(EthernetClient *_client){
 	client = _client;
 }
 
-void Responses::error_MAX_SIZE_REQUEST(){
+void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule200DataHeaders();
-	sprintf_P(LocalBuffers::string_cpy_buffer, (PGM_P)&(json_module_sensor1), LocalBuffers::float2char_buffer1, LocalBuffers::float2char_buffer2);
+	sprintf_P(localBuffers->string_cpy_buffer, (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  (PGM_P)&(REQUEST_MAX_LENGHT_ERROR_STR));
+	client->print(localBuffers->string_cpy_buffer);
 
 }
 
