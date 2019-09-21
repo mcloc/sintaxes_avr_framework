@@ -1,0 +1,40 @@
+{
+    "name": "Sintaxes Lib", 
+    "version": "0.0.1", 
+    "keywords": [
+        "data", 
+        "processing"
+    ], 
+    "description": "This is a library sintaxes Stufas Modules", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "platforms": [
+        "atmelavr"
+    ], 
+    "authors": [
+        {
+            "email": "mcl.devel@gmail.com", 
+            "url": null, 
+            "maintainer": true, 
+            "name": "Sintaxes"
+        }
+    ], 
+    "repository": {
+        "type": "git", 
+        "url": ""
+    }, 
+    "homepage": null, 
+    "export": {
+        "include": null, 
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ]
+    }, 
+    "id": 9995
+}

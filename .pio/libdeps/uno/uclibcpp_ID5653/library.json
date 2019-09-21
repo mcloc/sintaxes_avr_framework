@@ -1,0 +1,23 @@
+{
+  "name": "uclibcpp",
+  "version": "0.1.4",
+  "description": "uClibc++ is a C++ standard library targeted towards the embedded systems/software market",
+  "keywords": "c++, stl, uclibc++",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anion155/uclibcpp-arduino.git"
+  },
+  "export": {
+    "include": [
+      "include/",
+      "src/"
+    ]
+  },
+  "examples": [
+    "examples/"
+  ],
+  "frameworks": [
+    "Arduino"
+  ],
+  "downloadUrl": "https://github.com/anion155/uclibcpp-arduino/releases/download/v0.1.4/uclibcpp-0.1.4.tar.gz"
+}

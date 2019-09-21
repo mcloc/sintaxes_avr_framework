@@ -1,0 +1,192 @@
+/*	Copyright (C) 2005 Garrett A. Kajmowicz
+
+	This file is part of the uClibc++ Library.
+	This library is free software; you can redistribute it and/or
+	modify it under the terms of the GNU Lesser General Public
+	License as published by the Free Software Foundation; either
+	version 2.1 of the License, or (at your option) any later version.
+
+	This library is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+	Lesser General Public License for more details.
+
+	You should have received a copy of the GNU Lesser General Public
+	License along with this library; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+#pragma once
+
+#include <basic_definitions>
+
+#pragma GCC visibility push(default)
+
+namespace std{
+	struct [[deprecated("since c++11")]] _UCXXEXPORT __true_type { };
+	struct [[deprecated("since c++11")]] _UCXXEXPORT __false_type { };
+
+	// TODO: Implement is_integer
+	template <class I> class [[deprecated("since c++11")]] _UCXXEXPORT __is_integer {
+	public:
+		typedef __false_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <unsigned int>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <signed int>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <short unsigned int>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <short signed int>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <char>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <signed char>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <unsigned char>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <long unsigned int>{
+	public:
+		typedef __true_type value;
+	};
+
+	template <> class _UCXXEXPORT __is_integer <long signed int>{
+	public:
+		typedef __true_type value;
+	};
+
+	/** @class std::integral_constant type_traits
+	 * @brief std::integral_constant wraps a static constant of specified type.
+	 *   It is the base class for the C++ type traits.
+	 * 
+	 * @tparam T - stored value type
+	 * @tparam val - stored value
+	 * 
+	 * @since c++11
+	 */
+	template <class T, T val> struct integral_constant {
+    static constexpr T value = val;
+    using value_type = T;
+    using type = integral_constant;
+    constexpr operator value_type() const noexcept { return value; }
+
+	#ifdef __cpp_lib_integral_constant_callable
+		// @since c++14
+    constexpr value_type operator()() const noexcept { return value; }
+	#endif
+  };
+  struct true_type : integral_constant<bool, true> { };
+  struct false_type : integral_constant<bool, false> { };
+
+	/** @class std::enable_if type_traits
+	 * @brief If condition is true, std::enable_if has a public member typedef type, equal to T;
+	 *   otherwise, there is no member typedef.
+	 * 
+	 * @tparam condition
+	 * @tparam T - stored type
+	 * 
+	 * @since c++11
+	 */
+	template <bool condition, class T = void> struct enable_if { };
+	template <class T> struct enable_if<true, T> { using type = T; };
+
+#if __is_cpp_std_14
+	// @since c++14
+	template <bool condition, class T = void>
+	using enable_if_t = typename enable_if<condition, T>::type;
+#endif
+
+	/** @class std::is_same type_traits
+	 * @brief Check whether T and U name the same type (including const/volatile qualifications).
+	 * 
+	 * @tparam T
+	 * @tparam U
+	 * 
+	 * @since c++11
+	 */
+	template <class T, class U> struct is_same : false_type { };
+	template <class T> struct is_same<T, T> : true_type { };
+
+#if __is_cpp_std_17
+	// @since c++17
+	template <class T, class U>
+	inline constexpr bool is_same_v = is_same<T, U>::value;
+#endif
+
+	/** @class std::is_base_of type_traits
+	 * @brief Check whether Derived is derived from Base or if both are the same non-union class
+	 *   (in both cases ignoring cv-qualification).
+	 * 
+	 * @tparam Base
+	 * @tparam Derived
+	 * 
+	 * @since c++11
+	 */
+	template <class Base, class Derived> struct is_base_of
+		: integral_constant<bool, __is_base_of(Base, Derived)>
+		{ };
+	
+#if __is_cpp_std_17
+	// @since c++17
+	template <class Base, class Derived>
+	inline constexpr bool is_base_of_v = is_base_of<Base, Derived>::value;
+#endif
+
+	/** @class std::remove_reference type_traits
+	 * @brief Check whether type T is a reference type.
+	 * 
+	 * @tparam T
+	 * 
+	 * @since c++11
+	 */
+	template <class T> struct remove_reference { using type = T; };
+	template <class T> struct remove_reference<T&> { using type = T; };
+	template <class T> struct remove_reference<T&&> { using type = T; };
+	
+#if __is_cpp_std_14
+	// @since c++14
+	template <class T>
+	using remove_reference_t = typename remove_reference<T>::type;
+#endif
+
+	/** @class std::is_lvalue_reference type_traits
+	 * @brief Checks whether T is a lvalue reference type.
+	 * 
+	 * @tparam T
+	 * 
+	 * @since c++11
+	 */
+	template <class T>
+	struct is_lvalue_reference : std::false_type { };
+	template <class T>
+	struct is_lvalue_reference<T&> : std::true_type { };
+
+#if __is_cpp_std_17
+	// @since c++17
+	template <class T>
+	inline constexpr bool is_lvalue_reference_v = is_lvalue_reference<T>::value;
+#endif
+}
+
+#pragma GCC visibility pop
