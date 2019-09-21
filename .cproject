@@ -15,7 +15,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="etherCard" buildProperties="" description="" id="0.910961921" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+				<configuration artifactName="sintaxes_avr_framework" buildProperties="" description="" id="0.910961921" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
 					<folderInfo id="0.910961921." name="/" resourcePath="">
 						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.952979152" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
 							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.eclipse.cdt.build.core.prefbase.toolchain.952979152.52310970" name=""/>
@@ -23,20 +23,17 @@
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1409095472" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1624502120" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.239157887" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/messagepack-master/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Message Pack for Arduino_ID1712"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/EtherCard_ID425/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -56,20 +53,17 @@
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.54121539" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1096940598" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/messagepack-master/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Message Pack for Arduino_ID1712"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/EtherCard_ID425/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -89,20 +83,17 @@
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1310559623" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.41298875" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/messagepack-master/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Message Pack for Arduino_ID1712"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/EtherCard_ID425/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -148,20 +139,17 @@
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1855678035" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.30528994" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.794801023" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/messagepack-master/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Message Pack for Arduino_ID1712"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/EtherCard_ID425/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -181,20 +169,17 @@
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1146422798" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.650084869" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/messagepack-master/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Message Pack for Arduino_ID1712"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/EtherCard_ID425/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -214,20 +199,17 @@
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1637357529" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1246337321" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/lib/messagepack-master/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Message Pack for Arduino_ID1712"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/EtherCard_ID425/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID91/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/etherCard/.pio/libdeps/uno/uclibcpp_ID5653/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -253,7 +235,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="etherCard.null.189551033" name="etherCard"/>
+		<project id="sintaxes_avr_framework.null.189551033" name="sintaxes_avr_framework"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
