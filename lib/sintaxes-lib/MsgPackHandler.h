@@ -7,12 +7,16 @@
 #define MAX_MSGPACK_COMMANDS 3
 #define MAX_MSGPACK_ARGS 4
 
+
+
+
 class MsgPackHandler;
 
 class MsgPackHandler {
 public:
-	MsgPackHandler();
+	MsgPackHandler(Responses *_response);
 	bool processByte(char * _byte);
+	bool MsgPackHandler::whatForNext();
 
 private:
 	char * byte_received;
@@ -28,11 +32,16 @@ private:
 //	auto command_args3;
 //	auto command_args4;
 
+	bool started = false;
 
 	unsigned long ext_next_type;
 	unsigned long ext_byte_type;
 	unsigned long ext_byte;
 	unsigned long ext_byte_stack[MAX_MSGPACK_COMMANDS + MAX_MSGPACK_ARGS];
+
+
+	Responses *response;
+
 };
 
 

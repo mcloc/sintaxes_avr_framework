@@ -1,0 +1,141 @@
+===============================================================================
+10.21.2
+Added version.h
+
+===============================================================================
+10.21.1
+Removal of GCC warnings from variant.h.
+
+===============================================================================
+10.21.0
+Completion of operator set for etl::optional
+Removal of more GCC warnings when using -Wextra.
+
+===============================================================================
+10.20.0
+Rewrite of debounce code to factor out commonality.
+Made interrupt locks in C timer framework to match that of C++ version.
+Improved etl::endianness. Added static functions.
+
+===============================================================================
+10.19.2
+Fixed strict aliasing warnings for endianess.
+
+===============================================================================
+10.19.1
+Fixed strict aliasing warnings for aligned storage.
+
+===============================================================================
+10.19.0
+Added 'create' and 'destroy' functions to pools.
+Modified class heirarchy.
+etl::generic_pool is derived from on etl::ipool.
+etl::pool is derived from etl::generic_pool.
+
+===============================================================================
+10.18.1
+Reduced disable/enable time during function calls.
+
+===============================================================================
+10.18.0
+Improvements to message and callback timer frameworks.
+Reduced disable/enable time during function calls.
+Added the option to use either atomic semaphores or interrupt enables to control access.
+
+===============================================================================
+10.17.0
+Added emplace functions to etl::variant.
+
+===============================================================================
+10.16.1
+Improved performance of emplace for value_type parameters.
+
+===============================================================================
+10.16.0
+Added emplace member functions to flat_map, flat_multimap, flat_set and flat_multiset
+
+===============================================================================
+10.15.0
+Added protected destructors to FSM & message_timer and code to message router packet destructor to choose correct method of destruction.
+
+===============================================================================
+10.14.0
+Added variant_pool generator.
+
+===============================================================================
+10.13.0
+There was no version 10.13.0
+
+===============================================================================
+10.12.0
+Re-written to avoid 'undefined behavior' by allowing containers to be polymorphic or not base on a compile time macro.
+
+===============================================================================
+10.11.2
+GCC compatibility changes.
+===============================================================================
+10.11.1
+GCC compatibility changes.
+===============================================================================
+10.11.0
+Added ETL_CONSTEXPR macro and applied to various functions.
+Allows C++11 and above compilers to set functions as constexpr.
+
+===============================================================================
+10.10.0
+Added array_wrapper
+
+===============================================================================
+10.9.0
+
+Array view
+  Added array_view.
+
+===============================================================================
+10.8.1
+
+Pool
+  Changed alignof to etl::alignment_of
+
+===============================================================================
+10.8.0
+
+Added etl::variant_pool as a replacement for etl::factory.
+Deprecated etl::factory
+
+etl::forward_list
+  Renamed include guard to avoid clash with list.
+
+Removed factory from unit tests.
+
+multimap & multiset
+  Changed static const to enum.
+
+hash & strings
+  Removed default function template parameter value.
+
+FSM
+  Moved get_fsm_context() from public to protected in etl::state
+
+Binary
+  Added sign_extend functions with shift parameter.
+  Added new binary.cpp for non-template functions.
+  Added bit<> template constant
+  Added bit enumerations
+
+Debug count
+  Added clear()
+
+Type lookup
+  Simplified codebase
+
+Message router
+  Added 'successor' member to allow implementation 'Chain Of Responsibility' pattern.
+
+IO Ports
+  Changes value() to read().
+  Rewrite of classes to improve efficiency by removing iterator indirection step.
+  Fixed inconsistencies in the dynamic IO port API.
+
+Type traits
+  Added 'conditional_integral_constant' to complement 'conditional'

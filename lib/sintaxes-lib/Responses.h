@@ -16,8 +16,11 @@ class Responses{
         void setClient(EthernetClient *client);
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
+        void writeModule500DataHeaders();
         void writeError_MAX_SIZE_REQUEST();
+        void writeSTXError();
         int	error_MAX_SIZE_REQUEST_SIZE();
+
 
 
     

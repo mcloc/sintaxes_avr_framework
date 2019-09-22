@@ -21,13 +21,32 @@ void Responses::setClient(EthernetClient *_client){
 }
 
 void Responses::writeError_MAX_SIZE_REQUEST(){
-	writeModule200DataHeaders();
+	writeModule500DataHeaders();
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  REQUEST_MAX_LENGHT_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 
 }
 
+void Responses::writeSTXError(){
+	writeModule500DataHeaders();
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MISSING_STX_ERROR,  REQUEST_MISSING_STX_ERROR_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeModule200DataHeaders(){
+	client->println(FSH(header_response_200));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_content_type_json));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_server));
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(header_connection)); // the connection will be closed after completion of the response
+	client->print(FSH(json_module_new_line));
+	client->print(FSH(json_module_new_line));
+
+}
+
+void Responses::writeModule500DataHeaders(){
 	client->println(FSH(header_response_200));
 	client->print(FSH(json_module_new_line));
 	client->print(FSH(header_content_type_json));

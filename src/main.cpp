@@ -16,6 +16,7 @@ uint8_t mac[6] = { MACADDRESS };
 static LocalBuffers localBuffers;
 static Commands commands;
 static Responses response(&commands);
+//MsgPackHandler msgpck(&response);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 //static char server_post_buffer[MAX_SIZE_ALLOWED_REQUEST];
@@ -51,6 +52,7 @@ void loop() {
 			uint8_t *msg = (uint8_t*) malloc(size);
 			size = client.read(msg, size);
 
+//			msgpck.processByte(msg);
 
 
 			client.write(msg, size);

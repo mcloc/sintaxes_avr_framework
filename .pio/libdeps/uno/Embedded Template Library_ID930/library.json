@@ -1,0 +1,56 @@
+{
+    "name": "Embedded Template Library", 
+    "version": "10.21.2", 
+    "keywords": [
+        "other"
+    ], 
+    "description": "A C++ template library tailored for embedded systems.", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "platforms": [
+        "atmelavr", 
+        "atmelsam", 
+        "espressif32", 
+        "espressif8266", 
+        "intel_arc32", 
+        "microchippic32", 
+        "nordicnrf51", 
+        "nordicnrf52", 
+        "ststm32", 
+        "teensy", 
+        "timsp430"
+    ], 
+    "authors": [
+        {
+            "email": "john.wellbelove@etlcpp.com", 
+            "url": null, 
+            "maintainer": true, 
+            "name": "John Wellbelove"
+        }
+    ], 
+    "repository": {
+        "type": "git", 
+        "url": "https://github.com/ETLCPP/etl"
+    }, 
+    "homepage": "https://www.etlcpp.com/", 
+    "build": {
+        "srcFilter": [
+            "-<*>", 
+            "+<src/>", 
+            "-<src/.vscode>"
+        ]
+    }, 
+    "export": {
+        "include": null, 
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ]
+    }, 
+    "id": 930
+}

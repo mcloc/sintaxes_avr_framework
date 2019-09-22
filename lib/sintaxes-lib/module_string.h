@@ -36,5 +36,6 @@
 
     const char REQUEST_MAX_LENGHT_ERROR_STR[] PROGMEM = "\"max request lenght achieved.\"";
     const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "\"mal formed msgpack or 4byteCommandProtocol\"";
+    const char REQUEST_MISSING_STX_ERROR_STR[] PROGMEM = "\"mal formed request, must begin with STX command char and end with ETX command char\"";
 
 #endif
