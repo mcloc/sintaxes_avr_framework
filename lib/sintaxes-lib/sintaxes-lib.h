@@ -3,10 +3,12 @@
 
 #include <Arduino.h>
 typedef const __FlashStringHelper* FSH;
+
 #include <UIPEthernet.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <Commands.h>
+#include <MsgPackHandler.h>
 #include <DHT.h>
 
 

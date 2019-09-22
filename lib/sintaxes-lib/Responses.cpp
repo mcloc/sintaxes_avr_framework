@@ -22,11 +22,6 @@ void Responses::setClient(EthernetClient *_client){
 
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule200DataHeaders();
-//	char  msgError[70];
-//	//TODO: remove all sprintf_P change to snprintf_P wich doesnt allow buffer overflow
-//	strcpy_P(msgError, REQUEST_MAX_LENGHT_ERROR_STR);
-
-
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  REQUEST_MAX_LENGHT_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 
@@ -46,15 +41,7 @@ void Responses::writeModule200DataHeaders(){
 }
 
 void Responses::writeModuleDataResponse(){
-	client->print(FSH(header_response_200));
-	client->print(FSH(json_module_new_line));
-	client->print(FSH(header_content_type_json));
-	client->print(FSH(json_module_new_line));
-	client->print(FSH(header_server));
-	client->print(FSH(json_module_new_line));
-	client->print(FSH(header_connection)); // the connection will be closed after completion of the response
-	client->print(FSH(json_module_new_line));
-	client->print(FSH(json_module_new_line));
+	writeModule200DataHeaders();
 
 	//begin the construction of Json
 	client->print(FSH(json_module_braces_open));
@@ -73,15 +60,16 @@ void Responses::writeModuleDataResponse(){
 	client->print(FSH(json_module_brackets_open));
 
 
-	//FIXME: how to get rid of local buffer
+	//FIXME: how to get rid of local buffer, this is due sensor need to get called sepratly
+	// since everything uses the samebuffer LocalBuffers::string_cpy_buffer,
 	char *str;
 	// DTH21#1 ouput
 	str = commands->getSensor1();
-	client->print(str);
+	client->print(str); //json object of the Sensor 1
 	client->print(FSH(json_module_comma_separator));
 	// DTH21#2 ouput
 	str = commands->getSensor2();
-	client->print(str);
+	client->print(str); //json object of the Sensor 2
 
 	// close Sensors array
 	client->print(FSH(json_module_brackets_close));

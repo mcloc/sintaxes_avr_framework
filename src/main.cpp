@@ -45,12 +45,14 @@ void loop() {
 		while ((size = client.available()) > 0) {
 			response.setClient(&client);
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
-
 				response.writeError_MAX_SIZE_REQUEST();
 				break;
 			}
 			uint8_t *msg = (uint8_t*) malloc(size);
 			size = client.read(msg, size);
+
+
+
 			client.write(msg, size);
 			free(msg);
 		}
