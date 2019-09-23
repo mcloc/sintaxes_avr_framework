@@ -21,7 +21,8 @@ public:
 	bool processByte(char * _byte);
 	bool processStream();
 	void process32bitBufferByte(uint8_t _byte);
-	bool MsgPackHandler::whatForNext();
+	uint8_t whatForNext();
+	uint8_t next();
 
 private:
 //	char * bytes_received;
@@ -29,6 +30,7 @@ private:
 	int buffer_position;
 	int buffer_bytes_remaining;
 	char buffer_processsing_byte;
+	uint8_t last_byte;
 	Stream * stream;
 	unsigned long _32bitword;
 	uint8_t _32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong

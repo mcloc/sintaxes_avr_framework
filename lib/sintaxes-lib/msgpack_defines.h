@@ -40,8 +40,10 @@
 #define MSGPACK_MAP16		0xde
 #define MSGPACK_MAP32		0xdf
 
-
-
+#define MSGPACK_MAP_INITIAL	0x80
+#define MSGPACK_MAP_FINAL	0x8f
+#define MSGPACK_ARRAY_INITIAL	0x90
+#define MSGPACK_ARRAY_FINAL	0x9f
 
 
 

@@ -77,40 +77,72 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
-		uint8_t _word = LocalBuffers::client_request_buffer[MsgPackHandler::buffer_position];
-		response->writeByte(_word);
+		uint8_t _word = MsgPackHandler::next();
+//		response->writeByte(_word);
 
-//		if (_32bitword_processing) {
-//			if (_32bitword_remaining == 0) {
-//				reset_32bit_processing();
-//				response->write32bitByte(_32bitword);
-//			}
-//			buffer_bytes_remaining--;
-//			buffer_position++;
-//			continue;
-//		}
+		//IT's an ARRAY
+		if(_word > MSGPACK_ARRAY_INITIAL && _word <= MSGPACK_ARRAY_FINAL){
+			uint8_t array_size = _word - MSGPACK_ARRAY_INITIAL;
+			while(array_size  > 0) {
+				array_size--;
+				uint8_t _word = MsgPackHandler::next();
+				response->writeByte(_word);
+				if(_word > MSGPACK_MAP_INITIAL && _word <= MSGPACK_MAP_FINAL){
+					uint8_t map_size = _word - MSGPACK_MAP_INITIAL;
+					while (map_size > 0){
+						uint8_t _word = MsgPackHandler::next();
+						map_size--;
+						switch (_word) {
+						case MSGPACK_UINT32:
+							while(_32bitword_remaining > 0){
+								uint8_t _word = MsgPackHandler::next();
+								MsgPackHandler::process32bitBufferByte(_word);
+							}
+							response->write32bitByte(_32bitword);
+							reset_32bit_processing();
+							break;
+						case MSGPACK_TRUE:
+							response->writeByte(true);
+							break;
+						case MSGPACK_FALSE:
+							response->writeByte(false);
+							break;
+						}
+					}
+				}
+
+			}
+			continue;
+		}
 
 		switch (_word) {
 		case MSGPACK_UINT32:
-
 			while(_32bitword_remaining > 0){
-				buffer_bytes_remaining--;
-				buffer_position++;
-				_word = LocalBuffers::client_request_buffer[MsgPackHandler::buffer_position];
+				uint8_t _word = MsgPackHandler::next();
 				MsgPackHandler::process32bitBufferByte(_word);
 			}
 			response->write32bitByte(_32bitword);
 			reset_32bit_processing();
 			break;
+		case MSGPACK_TRUE:
+			response->writeByte(true);
+			break;
+		case MSGPACK_FALSE:
+			response->writeByte(false);
+			break;
 		}
-
-		buffer_bytes_remaining--;
-		buffer_position++;
 	}
 	return true;
 }
 
-bool MsgPackHandler::whatForNext() {
+uint8_t MsgPackHandler::whatForNext() {
+	LocalBuffers::client_request_buffer[MsgPackHandler::buffer_position+1];
+}
 
+uint8_t MsgPackHandler::next(){
+	buffer_bytes_remaining--;
+	buffer_position++;
+	last_byte = LocalBuffers::client_request_buffer[MsgPackHandler::buffer_position];
+	return last_byte;
 }
 
