@@ -33,6 +33,14 @@ void Responses::writeSTXError(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeByte(uint8_t byte){
+	client->println(byte, HEX);
+}
+
+void Responses::write32bitByte(unsigned long _byte){
+	client->println(_byte, HEX);
+}
+
 void Responses::writeModule200DataHeaders(){
 	client->println(FSH(header_response_200));
 	client->print(FSH(json_module_new_line));

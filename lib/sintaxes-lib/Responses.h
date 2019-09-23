@@ -19,6 +19,8 @@ class Responses{
         void writeModule500DataHeaders();
         void writeError_MAX_SIZE_REQUEST();
         void writeSTXError();
+        void writeByte(uint8_t byte);
+        void write32bitByte(unsigned long byte);
         int	error_MAX_SIZE_REQUEST_SIZE();
 
 

@@ -1,6 +1,8 @@
 #ifndef __SINTAX_LOCAL_BUFFERS_H_
 #define __SINTAX_LOCAL_BUFFERS_H_
 
+#include <sintaxes-framework-defines.h>
+
 class LocalBuffers;
 
 class LocalBuffers{
@@ -29,7 +31,11 @@ class LocalBuffers{
          * increase as the String is longer than this value or split into several other PROGMEM variables
          * this should keep low then 180 bytes
          */
-        static char string_cpy_buffer[180];
+        static char string_cpy_buffer[MAX_SIZE_ALLOWED_PROGMEM_STRING];
+
+
+        static char client_request_buffer[MAX_SIZE_ALLOWED_REQUEST];
+
 
 
 };

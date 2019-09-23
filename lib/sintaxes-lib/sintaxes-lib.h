@@ -5,12 +5,10 @@
 typedef const __FlashStringHelper* FSH;
 #include <sintaxes-framework-defines.h>
 #include <StandardCplusplus.h>
-#include <boost_1_51_0.h>
 #include <UIPEthernet.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <Commands.h>
-#include <msgpack.hpp>
 #include <MsgPackHandler.h>
 #include <DHT.h>
 

@@ -1,7 +1,6 @@
 //FIXME: only user defines should be here or moved to defines.h
 #define STX 0x02
 #define ETX 0x03
-#define MAX_SIZE_ALLOWED_REQUEST 180 // 180 bytes allowed in post get incomming requests
 #define GREEN_LED 6
 #define DHT1PIN 7
 #define DHT2PIN 8
