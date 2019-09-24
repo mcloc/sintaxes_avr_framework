@@ -9,7 +9,8 @@
  * 
  */
 
-
+	const char DEBUG_INT[] PROGMEM = "{\"DEBUG INT\":%lu}";
+	const char DEBUG_CHAR[] PROGMEM = "{\"DEBUG CHAR\":%S}";
     static const char header_response_200[] PROGMEM = "HTTP/1.1 200 OK";
     const char header_response_500[] PROGMEM = "HTTP/1.1 500 Internal Server Error";
     const char header_content_type_json[] PROGMEM = "Content-Type: application/json;charset=utf-8";
@@ -34,9 +35,10 @@
     const char json_module_sensor2[] PROGMEM  = "{\"uuid\":\"DHT21#2\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"heat_index\":\"xxxxx\"}]}";
     const char json_module_actuator1[] PROGMEM  = "{\"uuid\":\"solenoid#1\",\"value\":{\"active\":103,\"activated_time\":111}}";
 
-    const char REQUEST_MAX_LENGHT_ERROR_STR[] PROGMEM = "\"max request lenght achieved.\"";
-    const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "\"mal formed msgpack or 4byteCommandProtocol\"";
-    const char REQUEST_MISSING_STX_ERROR_STR[] PROGMEM = "\"mal formed request, must begin with STX command char and end with ETX command char\"";
-    const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "\"error trying to assembly 32bit word\"";
+    const char REQUEST_MAX_LENGHT_ERROR_STR[] PROGMEM = "max request lenght achieved.";
+    const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "mal formed msgpack or 4byteCommandProtocol";
+    const char REQUEST_MISSING_STX_ERROR_STR[] PROGMEM = "mal formed request, must begin with STX command char and end with ETX command char";
+    const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "error trying to assembly 32bit word";
+    const char ERROR_MSGPACK_PROCESSING_STR[] PROGMEM = "error processing messagePack %d";
 
 #endif

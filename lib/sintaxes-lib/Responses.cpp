@@ -22,6 +22,21 @@ void Responses::writeProcess32bitwordERROR(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeMsgPackError(uint8_t _byte){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::writeDEBUG_INT(unsigned long byte){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_INT), byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::writeDEBUG_CHAR(__FlashStringHelper  *byte){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_CHAR), byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule500DataHeaders();
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MAX_LENGHT,  REQUEST_MAX_LENGHT_ERROR_STR);
@@ -34,6 +49,11 @@ void Responses::writeSTXError(){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MISSING_STX,  REQUEST_MISSING_STX_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
+
+void Responses::writeRaw(char *byte){
+	client->println(byte);
+}
+
 
 void Responses::writeByte(uint8_t byte){
 	client->println(byte, HEX);

@@ -51,7 +51,7 @@ void loop() {
 //			uint8_t *msg = (uint8_t*) malloc(size);9
 //			size = client.readBytes(LocalBuffers::client_request_buffer, size);
 
-			msgpck.init((Stream *) &client, size);
+			msgpck.init((Stream *) &client, size, &commands);
 			msgpck.processStream();
 
 

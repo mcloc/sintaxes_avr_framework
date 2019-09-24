@@ -3,30 +3,9 @@
 MsgPackHandler::MsgPackHandler(Responses *_responses) {
 	MsgPackHandler::response = _responses;
 }
-;
 
-//bool MsgPackHandler::processByte(char * _bytes){
-//
-////	for(byte in bytes {
-////			word _byte;
-////	}
-//	word _byte;
-//
-//	MsgPackHandler::bytes_received = _bytes;
-//
-//	if(!MsgPackHandler::started) {
-//		if(_byte != 0x02){
-//			MsgPackHandler::response->writeSTXError();
-//			return false;
-//		}
-//
-//		MsgPackHandler::started = true;
-//	}
-//
-//	return true;
-//}
 
-void MsgPackHandler::get32bitByte(uint8_t _byte) {
+void MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 	//		UINT8 var1 = 0x01; //0000 0001
 	//		UINT8 var2 = 0x03; //0000 0011
 	//		UINT8 var3 = 0x07; //0000 0111
@@ -35,12 +14,15 @@ void MsgPackHandler::get32bitByte(uint8_t _byte) {
 
 	if(_byte != MSGPACK_UINT32) {
 		error_code = ERROR_32BIT_PROCESSING;
+		response->writeProcess32bitwordERROR();
 		return;
 	}
+	reset_32bit_processing();
 	_32bitword_processing = true;
 	status = MSGPACK_STATE_WORKING_32BIT;
 	while(_32bitword_remaining > 0){
-		uint8_t _word = MsgPackHandler::next();
+		uint8_t _byte = MsgPackHandler::next();
+//		response->writeByte(_byte);
 		switch (_32bitword_remaining) {
 			case 4:
 				_32bitword_array[0] = _byte;
@@ -74,7 +56,8 @@ void MsgPackHandler::reset_32bit_processing() {
 	_32bitword_array[2] = '\0';
 }
 
-bool MsgPackHandler::init(Stream *_stream, int size) {
+bool MsgPackHandler::init(Stream *_stream, int size, Commands *_commands) {
+	commands = _commands;
 	status = MSGPACK_STATE_BEGIN;
 	reset_32bit_processing();
 	buffer_position = 0;
@@ -87,35 +70,55 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 	return true;
 }
 
+unsigned long MsgPackHandler::get32bitByte(){
+	return _32bitword;
+}
+
 bool MsgPackHandler::process32bitword(){
-	switch(_32bitword){
+	switch(get32bitByte()){
 	case MODULE_COMMMAND_FLAG:
 		uint8_t _word = MsgPackHandler::next();
-
+		MsgPackHandler::assemble32bitByte(_word);
+		commands->command_executing = get32bitByte();
 		status = MSGPACK_STATE_COMMAND_SETED;
 		return true;
 		break;
 	}
+
+	//TODO: if 32bitword is not mapped return false;
+	return true;
 }
 
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
 		uint8_t _word = MsgPackHandler::next();
-//		response->writeByte(_word);
+		response->writeByte(_word);
 
 		//THIS IS AN ARRAY
 		if(int array_size = MsgPackHandler::isArray(_word) > 0){
-			MsgPackHandler::processArray(_word, array_size);
+//			MsgPackHandler::processArray(_word, array_size);
+			continue;
+		}
+		//THIS IS AN MAP
+		if(int map_size = MsgPackHandler::isMap(_word) > 0){
+//			MsgPackHandler::processArray(_word, array_size);
 			continue;
 		}
 
 
-
 		switch (_word) {
+//		case isArray(_word):
+//				response->client->println(F("must implement array type."));
+//				break;
+//		case isMap(_word):
+//				response->client->println(F("must implement map type."));
+//				break;
 		case MSGPACK_UINT32:
-			MsgPackHandler::get32bitByte(_word);
+			MsgPackHandler::assemble32bitByte(_word);
+			response->writeDEBUG_INT(_32bitword);
 			if(!MsgPackHandler::process32bitword()) {
-				response->writeProcess32bitwordERROR();
+				//response->writeProcess32bitwordERROR(); //response error on the process32bitword()
+//				response->writeDEBUG_CHAR((const __FlashStringHelper*) F("erro no process 32bit"));
 				return false;
 			}
 			response->write32bitByte(_32bitword);
@@ -127,6 +130,11 @@ bool MsgPackHandler::processStream() {
 		case MSGPACK_FALSE:
 			response->writeByte(false);
 			break;
+
+		default:
+			error_code = ERROR_MSGPACK_PROCESSING;
+			response->writeMsgPackError(_word);
+			return false;
 		}
 	}
 	return true;
@@ -150,6 +158,7 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte){
 
 bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
 
+	return true; //DEBUG
 	uint8_t next_word = MsgPackHandler::whatForNext();
 
 	while (array_size > 0) {
@@ -167,7 +176,7 @@ bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
 				case MSGPACK_UINT32:
 					while (_32bitword_remaining > 0) {
 						uint8_t _word = MsgPackHandler::next();
-						MsgPackHandler::get32bitByte(_word);
+						MsgPackHandler::assemble32bitByte(_word);
 					}
 					response->write32bitByte(_32bitword);
 					reset_32bit_processing();

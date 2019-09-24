@@ -16,14 +16,15 @@ class MsgPackHandler {
 public:
 	MsgPackHandler(Responses *_response);
 	void reset_32bit_processing();
-	bool init(Stream * _stream, int size);
+	bool init(Stream * _stream, int size, Commands *commands);
 	bool processByte(char * _byte);
 	bool processArray(uint8_t _byte, int array_size);
 	bool process32bitword();
+	unsigned long get32bitByte();
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);
 	bool processStream();
-	void get32bitByte(uint8_t _byte);
+	void assemble32bitByte(uint8_t _byte);
 	uint8_t whatForNext();
 	uint8_t next();
 
@@ -64,7 +65,7 @@ private:
 
 
 	Responses *response;
-
+	Commands *commands;
 };
 
 

@@ -1,10 +1,21 @@
 #include <sintaxes-lib.h>
-#include <DHT.h>
 
-//Commands::Commands(LocalBuffers *_local_buffers){
-//	localBuffers = _local_buffers;
-//
-//}
+/**
+ * command to execute / in execution
+ */
+static uint32_t Commands::command_executing;
+
+/**
+ * uint32_t 8 bytes arguments for commands to be called
+ */
+static uint32_t Commands::command_argument1;
+static uint32_t Commands::command_argument2;
+static uint32_t Commands::command_argument3;
+static uint32_t Commands::command_argument4;
+static uint32_t Commands::command_argument5;
+static uint32_t Commands::command_argument6;
+static uint32_t Commands::command_argument7;
+static uint32_t Commands::command_argument8;
 
 Commands::Commands(){};
 
