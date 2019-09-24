@@ -9,7 +9,7 @@
  * This Layer is almost a implementation of RPC but built with a flow of execution designed to
  * be execution at real time processing message, with exceptions thrown @ real time trough TCP
  * client stream as JSON formated and rollback support with previous state guarded on SD Card.
- * We can response Json because all strings are stored @ flash memory with PROGMEM, so it's
+ * We can response JSON because all strings are stored @ flash memory with PROGMEM, so it's
  * quite simple to make a JSON response. But parse JSON requires too much memory
  * and this framework is based on the minimal memory pattern (designed for 2KB RAM), with no malloc()
  * no string pointers (except the FlashStringPointers* which is a powerful tool that allows
@@ -47,7 +47,7 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands) {
 
 
 /**
- * reset module communication adn get the request buffer. The size of the buffer is defined in
+ * reset module communication and get the request buffer. The size of the buffer is defined in
  * sintaxes-framework-defines.h and safe guard is taken care on main.cpp main() function
  * avoiding overflow. BEAWARE all settings is defined for minimal RAM usage to fit into 2KB,
  * if using bigger RAM you can increase the size of the request buffer
@@ -76,7 +76,8 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  * REMIND: 	ALL EXECUTION ON THE STREAM IS @ RTIME, FROM HERE TO THERE
  * 			YOU MUST REMIND THAT RETURNS CAN BE ALWAYS FALSE
  * 			AND IF FALSE  YOUT MUST RETURN FALSE SO THE MAIN.C main() FUNC CAN KNOW
- * 			WHAT TODO. THE EXCEPTIONS MESSAGES ARE THRONW REAL TIME ON THE STREAMS
+ * 			WHAT TODO. THE EXCEPTIONS MESSAGES ARE THRONW REAL TIME ON THE TCP STREAMS
+ * 			AS JSON FORMATED
  */
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
@@ -85,7 +86,7 @@ bool MsgPackHandler::processStream() {
 
 
 		/**
-		 * If it's an array or a map the LAYER 2 COMMANDS FRAMEWORK (RPC)
+		 * If it's an array or a map the LAYER 7 4B COMMANDS FRAMEWORK (RPC)
 		 * is already been processed, remember that this machine is suppouse
 		 * to interpret commands as defined per use et si.
 		 */
@@ -121,6 +122,11 @@ bool MsgPackHandler::processStream() {
 		}
 
 	}
+
+	//END OF EXEUTION OF COMMANDS ON THE FLY WITH RESPECTIVES RESPONSES DONE
+	//NOTHING MORE TO DO JUST RETURN true TO MAIN FUNCTION SAVE THE MACHINE STATE ON SD Card
+	//AND ALL 4BCP FOOTPRINT OF THIS REQUEST FOR  LOG PROPOUSES
+
 	//return after execution of each command with status and guard the new machine state on SD Card
 	//we will use SD Card as log. So must implement methods for getting this log if requested
 	return true;
@@ -130,23 +136,33 @@ bool MsgPackHandler::processStream() {
 /**
  * ON COMMAND FRAMEWORK PROTOCOL WILL ALWAYS BE LOOKING FOR 32BIT UNSINED LONG
  * THE INTERPRETATION OF THE 'RPC' IS ALL BASED ON 4BYTES CONSTANTS;
- * THE 4BYTES CONSTANTS COMMAND PROTOCOL IS DEFINED IN ANOTHER FILE;
- * if it is'nt array or map or the 4bytes command protocol it must be
- * some argument value for the COMMAND call.
+ * THE 4BYTES CONSTANTS COMMAND PROTOCOL IS DEFINED IN OTHERS FILES SUCH commands_map.h
+ * AND devices.h WHICH SHOULD BE WRITTEN SPECIFIC per APPLIANCE et si, FOLLOWING THE
+ * 4BCP GUIDELINES.
+ *
+ *
+ * if it is'nt array or map (which was checked before this method beeing called),
+ * then it should be the 4Bytes command protocol, like a COMMAND_FLAG a COMMAND per si,
+ * known mapped ARGUMENTS or even some argument values for the COMMAND call.
  *
  * This switch is intent to:
- * 	1 - unpack 4bytes Commends Protocol
- * 	2 - look for arguments values for 4bytes Commands Protocol
- * 	3 - report error on 4bytes commands Protocol with rollback action
- * 		for the previous state guarded on SD card
+ * 	1 - unpack 4Bytes Commends Protocol (4BCP)
+ * 	2 - look for arguments values for 4BPC
+ * 	3 - report error on 4Bytes Commands Protocol with rollback action
+ * 		to previous state guarded on SD card by returning false so method processStream() can return false as well
+ * 		and let to main() function do what's necessary on processing fail
  */
 bool MsgPackHandler::processByte(uint8_t _byte) {
 
+	//remind that the proposal scope of this switch() is the 3 guidelines mentioned above in the method
 	switch (_byte) {
-		//LAYER 7 - 4Bytes COMMANDS FRAMEWORK PROCESSING - (RPC)
+		//LAYER 7 - 4Bytes COMMANDS FRAMEWORK PROCESSING - (RPC) [messagePack 0xce packet]
 		case MSGPACK_UINT32:
-			assemble32bitByte(_byte);
-			response->writeDEBUG_INT(_32bitword);
+			if(!assemble32bitByte(_byte))
+				return false;
+
+			//this method process4BytesCmdProtocol() is the one in charge for assemble the Command Class
+			//in order to process our 4BCP requests
 			if(!process4BytesCmdProtocol()) {
 				//TODO: response->writeProcess32bitwordERROR(); //response error on the process32bitword()
 				error_code = ERROR_MSGPACK_PROCESSING;
@@ -155,7 +171,8 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 				response->writeMsgPackError(_32bitword);
 				return false;
 			}
-			response->write32bitByte(_32bitword); //DEBUG
+			//always remember to reset _32bitword which is a 1 buffer of uint32 which care the 4BCP word
+			//it's always reused on further processing
 			reset_32bit_processing();
 			return true;
 
@@ -192,8 +209,6 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
  *
  */
 bool MsgPackHandler::process4BytesCmdProtocol(){
-//	response->writeRaw(F("--------- INSIDE process4BytesCmdProtocol() ------------"));
-//	response->write32bitByte(_32bitword);
 	switch(_32bitword){
 		case MODULE_COMMMAND_FLAG: {
 			//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
@@ -216,22 +231,17 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 			return true;
 		}
 		default: {
-//			response->writeRaw(F("XXXXX   I N    D E F A U L T  XXXXXX"));
 			//TODO: case in the commands or devices or arguments
 			if(unsigned long resource = isMapped()){
-//				response->writeRaw(F("isMapped true"));
-				if(processMappedResource(resource)) {
-//					response->writeRaw(F("processMappedResource true"));
+				if(processMappedResource(resource))
 					return true;
-				}// else {
-//					response->writeRaw(F("processMappedResource false"));
-				//}
+			} else {
+				error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
+
 			}
-//			response->writeRaw(F("isMapped false"));
 		}
 	}
 
-//	response->writeRaw(F("--------- END process4BytesCmdProtocol() ------------"));
 	//TODO: if 32bitword is not mapped return false; send responses [ remember, throw is always @front  each false must than be taken CARE]
 	return false;
 }
@@ -248,6 +258,9 @@ bool MsgPackHandler::processMappedResource(unsigned long resource){
  */
 unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
 	//TODO: implement a table of execution flow with ENUN on the flash PROGMEM
+	//on error
+	error_code = ERROR_MSGPACK_4BC_WORD_EXPECTED;
+	response->writeMsgPackError(_32bitword);
 	return resource; //DEBUG MUST BE THE NEXT WORD 4BCP kind of is awaiting
 }
 
@@ -314,18 +327,17 @@ uint8_t MsgPackHandler::next(){
  *		UINT8 var4 = 0x0F; //0000 1111
  *		UINT32 bigvar = (var1 << 24) + (var2 << 16) + (var3 << 8) + var4;
  */
-void MsgPackHandler::assemble32bitByte(uint8_t _byte) {
-	//IF NOT MSGPACK_UINT32 (unsigned long) MessaPack 0xce which 4Bytes CmdProtocol relies
+bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
+	//IF NOT MSGPACK_UINT32 (unsigned long) MessaPack 0xce which is 4Bytes CmdProtocol relies
 	if(_byte != MSGPACK_UINT32) {
 		error_code = ERROR_32BIT_PROCESSING;
 		response->writeProcess32bitwordERROR();
-		return;
+		return false;
 	}
 
-
+	//ensure that _32bitword and it's associated fields are reseted;
 	reset_32bit_processing();
-	_32bitword_processing = true;
-	prev_status = status;
+	prev_status = status; //save the actual status and set it to MSGPACK_STATE_WORKING_32BIT
 	status = MSGPACK_STATE_WORKING_32BIT;
 	while(_32bitword_remaining > 0){
 		uint8_t _byte = next();
@@ -343,23 +355,33 @@ void MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 			_32bitword_remaining--;
 			break;
 		case 1:
+			//The arithmetic should be performed with the 4 bytes at one. Does'nt work storing in the array already shifted
 			_32bitword = (_32bitword_array[0] << 24) +
 				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
 			_32bitword_remaining--;
-			status = prev_status;
-			_32bitword_processing = false;
+			status = prev_status; //return machine status to the previous status
 			break;
 		}
 	}
+
+	return true;
 }
 
-void MsgPackHandler::reset_32bit_processing() {
+bool MsgPackHandler::reset_32bit_processing() {
+	//This should never happen, only if your programming made some mistake on the PROGRAM STRUCTURE FLOW
+	if(status == MSGPACK_STATE_WORKING_32BIT){
+		error_code = ERROR_32BIT_RESETING;
+		response->writeReseting32bitwordERROR();
+		return false;
+	}
+
 	_32bitword_remaining = 4; // 4 bytes for 32bit unsigned long
-	_32bitword_processing = false;
 	_32bitword = '\0';
 	_32bitword_array[0] = '\0';
 	_32bitword_array[1] = '\0';
 	_32bitword_array[2] = '\0';
+
+	return true;
 }
 
 

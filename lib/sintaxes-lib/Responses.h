@@ -15,6 +15,7 @@ class Responses{
         void writeModule500DataHeaders();
         void writeError_MAX_SIZE_REQUEST();
         void writeProcess32bitwordERROR();
+        void writeReseting32bitwordERROR();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeSTXError();

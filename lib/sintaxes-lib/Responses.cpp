@@ -21,6 +21,11 @@ void Responses::writeProcess32bitwordERROR(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeReseting32bitwordERROR(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_32BIT_RESETING,  ERROR_32BIT_RESETING_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeMsgPackError(unsigned long _byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
 	client->print(LocalBuffers::string_cpy_buffer);

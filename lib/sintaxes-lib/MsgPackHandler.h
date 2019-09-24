@@ -15,21 +15,9 @@ class MsgPackHandler {
 public:
 	MsgPackHandler();
 	MsgPackHandler(Responses *_response, Commands *commands);
-	void reset_32bit_processing();
 	bool init(Stream * _stream, int size);
-	bool processByte(uint8_t _byte);
-	bool processArray(uint8_t _byte, int array_size);
-	bool process4BytesCmdProtocol();
-	bool processMappedResource(unsigned long resource);
-	unsigned long _4BCPCheckForNext(unsigned long resource);
-	unsigned long get32bitByte();
-	unsigned int isArray(uint8_t _byte);
-	unsigned int isMap(uint8_t _byte);
-	unsigned long isMapped();
 	bool processStream();
-	void assemble32bitByte(uint8_t _byte);
-	uint8_t whatNext();
-	uint8_t next();
+
 
 
 
@@ -38,28 +26,52 @@ private:
 	Responses *response;
 	Commands *commands;
 
-
 	uint8_t status;
 	uint8_t prev_status;
 	uint8_t process_state;
 
 	unsigned int error_code;
 
+	//TCP request buffer
 	int buffer_lenght;
 	int buffer_position;
 	int buffer_bytes_remaining;
 	char buffer_processsing_byte;
+
 	uint8_t last_byte;
-	unsigned long _32bitword;
+
+	//32bit word of the 4Bytes Command Protocol
+	unsigned long _32bitword; // this buffer is utilized directly from inside methods, beaware to don't overwrite it
 	uint8_t _32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong
-	bool _32bitword_processing = false;
 	unsigned long _32bitword_array[4]; //4th index is the NULL terminator
 
+	//4Bytes Command Protocol buffers
 	unsigned long ext_command;
 	unsigned long ext_command_args1;
 	unsigned long ext_command_args2;
 	unsigned long ext_command_args3;
 	unsigned long ext_command_args4;
+
+
+	uint8_t whatNext();
+	uint8_t next();
+	bool processByte(uint8_t _byte);
+	bool processArray(uint8_t _byte, int array_size);
+	bool assemble32bitByte(uint8_t _byte);
+	bool reset_32bit_processing();
+	unsigned long _4BCPCheckForNext(unsigned long resource);
+	bool process4BytesCmdProtocol();
+	bool processMappedResource(unsigned long resource);
+
+	unsigned int isArray(uint8_t _byte);
+	unsigned int isMap(uint8_t _byte);
+	unsigned long isMapped();
+
+	/**
+	 * we wont use pointer to another pointer just for standards [&](){ cout << F(x)} ...
+	 */
+	//unsigned long get32bitByte();
+
 
 //	auto command_args1;
 //	auto command_args2;
