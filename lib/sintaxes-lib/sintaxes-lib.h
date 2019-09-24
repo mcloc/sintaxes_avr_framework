@@ -1,9 +1,18 @@
 #ifndef __SINTAXES_H_
 #define __SINTAXES_H_
 
+#include <errors_code.h>
+#include <commands_map.h>
+#include <devices.h>
+#include <sintaxes-framework-defines.h>
+#include <msgpack_defines.h>
+
+
 #include <Arduino.h>
 typedef const __FlashStringHelper* FSH;
-#include <sintaxes-framework-defines.h>
+
+#include <module_string.h>
+
 #include <StandardCplusplus.h>
 #include <UIPEthernet.h>
 #include <LocalBuffers.h>

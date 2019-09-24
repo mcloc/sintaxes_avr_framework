@@ -68,7 +68,7 @@
  * 
  */
 
-extern const uint32_t command_set_actuator_required_args[2] PROGMEM = {
+const uint32_t command_set_actuator_required_args[2] PROGMEM = {
     MODULE_COMMMAND_SET_ARGS1,
     MODULE_COMMMAND_SET_ARGS2
 };

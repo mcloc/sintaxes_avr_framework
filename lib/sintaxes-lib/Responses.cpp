@@ -1,7 +1,4 @@
 #include <sintaxes-lib.h>
-#include "module_string.h"
-#include "errors_code.h"
-#include<stdio.h>
 
 Responses::Responses(Commands *_commands, LocalBuffers *_local_buffer){
 	commands = _commands;
@@ -20,16 +17,21 @@ void Responses::setClient(EthernetClient *_client){
 	client = _client;
 }
 
+void Responses::writeProcess32bitwordERROR(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_32BIT_PROCESSING,  ERROR_32BIT_PROCESSING_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule500DataHeaders();
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MAX_LENGHT_ERROR,  REQUEST_MAX_LENGHT_ERROR_STR);
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MAX_LENGHT,  REQUEST_MAX_LENGHT_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 
 }
 
 void Responses::writeSTXError(){
 	writeModule500DataHeaders();
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), REQUEST_MISSING_STX_ERROR,  REQUEST_MISSING_STX_ERROR_STR);
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MISSING_STX,  REQUEST_MISSING_STX_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 

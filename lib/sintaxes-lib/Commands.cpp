@@ -1,5 +1,4 @@
 #include <sintaxes-lib.h>
-#include "module_string.h"
 #include <DHT.h>
 
 //Commands::Commands(LocalBuffers *_local_buffers){

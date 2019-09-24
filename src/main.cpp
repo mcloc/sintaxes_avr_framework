@@ -6,8 +6,8 @@
  * is under his own headers. Change this project-defines.h as you want.
  */
 #include "main.h"
-#include <sintaxes-lib.h>
-#include <LocalBuffers.h>
+//#include <sintaxes-lib.h>
+//#include <LocalBuffers.h>
 
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);
