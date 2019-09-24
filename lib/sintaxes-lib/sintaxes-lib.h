@@ -10,16 +10,17 @@
 
 #include <Arduino.h>
 typedef const __FlashStringHelper* FSH;
-
 #include <module_string.h>
 
 #include <StandardCplusplus.h>
 #include <UIPEthernet.h>
+#include <DHT.h>
+
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <Commands.h>
 #include <MsgPackHandler.h>
-#include <DHT.h>
+
 
 
 void buzz(uint8_t BUZPIN, int freq, int _delay, uint8_t times = 1);

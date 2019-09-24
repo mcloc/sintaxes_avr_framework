@@ -42,7 +42,7 @@
 //COMMANDS by convention from 0xFFFF0001 to 0xFFFF0FFF
 #define MODULE_COMMMAND_FLAG         0xFFFF0001 // control byte to advice a command is comming
 #define MODULE_COMMMAND_ARGS_FLAG    0xFFFF0002 // control byte to advice a argument array is comming
-#define MODULE_COMMMAND_EXECUTE_FLAG 0x13 // control byte to advice command to execute
+#define MODULE_COMMMAND_EXECUTE_FLAG 0xFFFFFF13 // control byte to advice command to execute
 #define MODULE_COMMMAND_GET_STATE    0xFFFF0010
 #define MODULE_COMMMAND_GET_DATA     0xFFFF0011
 #define MODULE_COMMMAND_SET_ACTUATOR 0xFFFF0012

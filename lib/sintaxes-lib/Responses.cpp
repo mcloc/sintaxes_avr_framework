@@ -1,16 +1,8 @@
+#define __MODULE_COMMANDS_H_
 #include <sintaxes-lib.h>
 
-Responses::Responses(Commands *_commands, LocalBuffers *_local_buffer){
-	commands = _commands;
+Responses::Responses(LocalBuffers *_local_buffer){
 	localBuffers = _local_buffer;
-}
-
-Responses::Responses(Commands *_commands){
-	commands = _commands;
-}
-
-void Responses::setCommands(Commands *_commands){
-	commands = _commands;
 }
 
 void Responses::setClient(EthernetClient *_client){
@@ -111,14 +103,14 @@ void Responses::writeModuleDataResponse(){
 
 	//FIXME: how to get rid of local buffer, this is due sensor need to get called sepratly
 	// since everything uses the samebuffer LocalBuffers::string_cpy_buffer,
-	char *str;
-	// DTH21#1 ouput
-	str = commands->getSensor1();
-	client->print(str); //json object of the Sensor 1
-	client->print(FSH(json_module_comma_separator));
-	// DTH21#2 ouput
-	str = commands->getSensor2();
-	client->print(str); //json object of the Sensor 2
+//	char *str;
+//	// DTH21#1 ouput
+//	str = commands->getSensor1();
+//	client->print(str); //json object of the Sensor 1
+//	client->print(FSH(json_module_comma_separator));
+//	// DTH21#2 ouput
+//	str = commands->getSensor2();
+//	client->print(str); //json object of the Sensor 2
 
 	// close Sensors array
 	client->print(FSH(json_module_brackets_close));

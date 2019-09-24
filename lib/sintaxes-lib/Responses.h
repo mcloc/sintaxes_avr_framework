@@ -1,19 +1,13 @@
 #ifndef __SINTAX_RESPONSES_H_
 #define __SINTAX_RESPONSES_H_
-#include <Commands.h>
 #include <UIPEthernet.h>
 #include <Arduino.h>
-//#include "EchoServer.h"
-
-//#include "module_string.h"
 
 class Responses;
 
 class Responses{
     public:
-        Responses(Commands *_commands, LocalBuffers *_local_buffers);
-        Responses(Commands *_commands);
-        void setCommands(Commands *_commands);
+        Responses(LocalBuffers *_local_buffers);
         void setClient(EthernetClient *client);
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
@@ -36,7 +30,6 @@ class Responses{
     
     private:
         LocalBuffers *localBuffers;
-        Commands *commands;
         EthernetClient *client;
         
         

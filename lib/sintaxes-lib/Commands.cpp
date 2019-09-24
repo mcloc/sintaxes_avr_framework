@@ -1,5 +1,9 @@
+//#include <Arduino.h>
+//#include <Commands.h>
+//#include <LocalBuffers.h>
+//#include <Responses.h>
+//#include <StandardCplusplus.h>
 #include <sintaxes-lib.h>
-
 /**
  * command to execute / in execution
  */
@@ -17,7 +21,19 @@ static uint32_t Commands::command_argument6;
 static uint32_t Commands::command_argument7;
 static uint32_t Commands::command_argument8;
 
-Commands::Commands(){};
+Commands::Commands(LocalBuffers *_localBuffers, Responses *_response){
+	localBuffers = _localBuffers;
+//	res
+}
+
+bool Commands::get_data(){
+	char *sensor1_data, *sensor2_data;
+	// DTH21#1 ouput
+	sensor1_data = getSensor1();
+	// DTH21#2 ouput
+	sensor2_data = getSensor2();
+
+}
 
 void Commands::setDHT1(DHT *_dht1, uint8_t dht_pin, uint8_t type){
     dht1 = _dht1;
@@ -52,4 +68,10 @@ char *  Commands::getSensor2(){
     dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
     snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_sensor2), localBuffers->float2char_buffer1, localBuffers->float2char_buffer2);
     return LocalBuffers::string_cpy_buffer;
+}
+
+bool Commands::execute(){
+	//TODO 	GET THE ASSEMBLED COMMAND ON COMMANDS.buffers AND CAL THE COMMAND FUNCTION
+	//		on the function execution send json with assignature of 4bytes command executing and
+	//		all it's args
 }

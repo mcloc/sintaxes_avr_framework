@@ -3,6 +3,7 @@
 
 #include <DHT.h>
 #include <LocalBuffers.h>
+#include <Responses.h>
 
 
 class Commands;
@@ -35,23 +36,26 @@ public:
     static uint32_t command_argument7;
     static uint32_t command_argument8;
 
-    Commands(LocalBuffers *localBuffers);
     Commands();
-    char *  getSensor1();
-    char *  getSensor2();
+    Commands(LocalBuffers *localBuffers, Responses *response);
+    bool get_data();
     void initSensors();
-    void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
-    void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
     LocalBuffers *localBuffers;
+    Responses *reponse;
     DHT *dht1;
     DHT *dht2;
+    void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
+    void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
+    bool execute();
 
 
 private:
-
+    char *  getSensor1();
+    char *  getSensor2();
     DHT getDHT1();
     DHT getDHT2();
     
+
 };
 
 

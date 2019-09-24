@@ -14,9 +14,9 @@ EthernetServer server = EthernetServer(LISTENPORT);
 uint8_t mac[6] = { MACADDRESS };
 
 static LocalBuffers localBuffers;
-static Commands commands;
-static Responses response(&commands);
-MsgPackHandler msgpck(&response);
+static Responses response(&localBuffers);
+static Commands commands(&localBuffers, &response);
+MsgPackHandler msgpck(&response, &commands);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
@@ -28,7 +28,7 @@ void setup() {
 	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
 	commands.setDHT2(&dht2, DHT1PIN, DHTTYPE);
 
-// DHCP, will buzz for ever trying
+	// DHCP, will buzz for ever trying
 	while (Ethernet.begin(mac) == 0) {
 		buzz(BUZZPIN, 8000, 400, 2);
 		delay(500);
@@ -38,7 +38,6 @@ void setup() {
 }
 
 void loop() {
-
 	size_t size;
 	while (EthernetClient client = server.available()) {
 		buzz(BUZZPIN, 8000, 200, 1);
@@ -48,10 +47,8 @@ void loop() {
 				response.writeError_MAX_SIZE_REQUEST();
 				break;
 			}
-//			uint8_t *msg = (uint8_t*) malloc(size);9
-//			size = client.readBytes(LocalBuffers::client_request_buffer, size);
 
-			msgpck.init((Stream *) &client, size, &commands);
+			msgpck.init((Stream *) &client, size);
 			msgpck.processStream();
 
 
@@ -59,11 +56,15 @@ void loop() {
 		}
 		client.stop();
 	}
+
 	LocalBuffers::float2char_buffer1[0] = '\0';
 	LocalBuffers::float2char_buffer2[0] = '\0';
 	LocalBuffers::string_cpy_buffer[0] = '\0';
 	delay(2);
 }
+
+
+
 
 //char * snfloat(char * buffer, uint8_t len, uint8_t decimals, float value) {
 //

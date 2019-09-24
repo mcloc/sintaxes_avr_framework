@@ -39,6 +39,6 @@
     const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "mal formed msgpack or 4byteCommandProtocol";
     const char REQUEST_MISSING_STX_ERROR_STR[] PROGMEM = "mal formed request, must begin with STX command char and end with ETX command char";
     const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "error trying to assembly 32bit word";
-    const char ERROR_MSGPACK_PROCESSING_STR[] PROGMEM = "error processing messagePack %d";
+    const char ERROR_MSGPACK_PROCESSING_STR[] PROGMEM = "error processing messagePack on 4Bytes Commands Protocol. RETURNIN THAT OLD STATE";
 
 #endif
