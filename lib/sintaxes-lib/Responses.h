@@ -2,6 +2,7 @@
 #define __SINTAX_RESPONSES_H_
 #include <UIPEthernet.h>
 #include <Arduino.h>
+#include <LocalBuffers.h>
 
 class Responses;
 
@@ -15,6 +16,7 @@ class Responses{
         void writeError_MAX_SIZE_REQUEST();
         void writeProcess32bitwordERROR();
         void writeMsgPackError(uint8_t _byte);
+        void writeMsgPackUnknowError();
         void writeSTXError();
         void writeByte(uint8_t byte);
         void write32bitByte(unsigned long byte);

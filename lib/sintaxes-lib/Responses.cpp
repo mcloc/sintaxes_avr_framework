@@ -1,5 +1,12 @@
 #define __MODULE_COMMANDS_H_
-#include <sintaxes-lib.h>
+#include <UIPEthernet.h>
+#include <Arduino.h>
+typedef const __FlashStringHelper* FSH;
+#include <Responses.h>
+#include <LocalBuffers.h>
+#include <module_string.h>
+#include <errors_code.h>
+
 
 Responses::Responses(LocalBuffers *_local_buffer){
 	localBuffers = _local_buffer;
@@ -16,6 +23,11 @@ void Responses::writeProcess32bitwordERROR(){
 
 void Responses::writeMsgPackError(uint8_t _byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::writeMsgPackUnknowError(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_UNKNOW,  ERROR_MSGPACK_UNKNOW_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 

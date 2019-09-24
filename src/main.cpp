@@ -49,7 +49,12 @@ void loop() {
 			}
 
 			msgpck.init((Stream *) &client, size);
-			msgpck.processStream();
+			if(msgpck.processStream()){
+				//TODO:save the new state on SD Card and log executions, and a break;
+				//break;
+			} else {
+				//TODO:roolback machine state from SD Card
+			}
 
 
 //			client.write(LocalBuffers::client_request_buffer, size);

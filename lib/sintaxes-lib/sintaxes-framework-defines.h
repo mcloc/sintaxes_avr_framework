@@ -14,6 +14,13 @@
 // 180 bytes for working with flash strings like snprintf() LocalBuffers::string_cpy_buffer
 #define MAX_SIZE_ALLOWED_PROGMEM_STRING 180
 
+//msgPack max per request. This limit this must at compliance with ext_command_args1 fields
+//This aapliance we limitting 3 commands per request and 4 args per command
+//Remember a COMMAND with its ARGS is each one per time as it cames on MsgPack 4Bytes CmdProtocol
+//and Commands fields will be overwritten for each COMMAND execution
+//If you increase this you must change the Commands class to support more or less arguments
+#define MAX_MSGPACK_COMMANDS 3
+#define MAX_MSGPACK_ARGS 4
 
 
 #endif /* LIB_SINTAXES_LIB_SINTAXES_FRAMEWORK_DEFINES_H_ */

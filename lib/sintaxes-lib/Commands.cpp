@@ -1,9 +1,10 @@
-//#include <Arduino.h>
-//#include <Commands.h>
-//#include <LocalBuffers.h>
-//#include <Responses.h>
-//#include <StandardCplusplus.h>
-#include <sintaxes-lib.h>
+#include <Arduino.h>
+#include <Commands.h>
+#include <LocalBuffers.h>
+#include <Responses.h>
+#include <StandardCplusplus.h>
+#include <module_string.h>
+//#include <sintaxes-lib.h>
 /**
  * command to execute / in execution
  */
