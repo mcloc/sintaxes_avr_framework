@@ -16,6 +16,7 @@ class Responses{
         void writeError_MAX_SIZE_REQUEST();
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
+        void write4BCPWordNotMappedERROR();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeSTXError();

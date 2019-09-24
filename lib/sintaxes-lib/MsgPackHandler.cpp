@@ -96,8 +96,8 @@ bool MsgPackHandler::processStream() {
 			continue;
 		}
 		//THIS IS AN MAP- [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
-		if(int map_size = isMap(_byte) > 0){
-//			processMap(_word, map_size);
+		if(int map_elements_size = isMap(_byte) > 0){
+			processMap(_byte, map_elements_size);
 			continue;
 		}
 
@@ -163,14 +163,10 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 
 			//this method process4BytesCmdProtocol() is the one in charge for assemble the Command Class
 			//in order to process our 4BCP requests
-			if(!process4BytesCmdProtocol()) {
-				//TODO: response->writeProcess32bitwordERROR(); //response error on the process32bitword()
-				error_code = ERROR_MSGPACK_PROCESSING;
-				response->write32bitByte(_32bitword);
-				response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
-				response->writeMsgPackError(_32bitword);
+			if(!process4BytesCmdProtocol())
 				return false;
-			}
+
+
 			//always remember to reset _32bitword which is a 1 buffer of uint32 which care the 4BCP word
 			//it's always reused on further processing
 			reset_32bit_processing();
@@ -235,10 +231,21 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 			if(unsigned long resource = isMapped()){
 				if(processMappedResource(resource))
 					return true;
-			} else {
-				error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
-
 			}
+
+			//Everything possible in _32bitword must be Mapped  :: A T T E N T I O N :: what about 32bit arguments values
+			//this default is not true check Machine status
+			if(status = MSGPACK_STATE_COMMAND_SETTING_ARGS){
+				//it's a 32bit argument value
+				//TODO: set the value for the current argument
+				return true;
+			}
+
+
+			//If it's not a argument value it's an inconsistence on 4BCP
+			error_code = ERROR_MSGPACK_UNKNOW;
+			response->writeMsgPackUnknowError();
+			return false;
 		}
 	}
 
@@ -259,11 +266,14 @@ bool MsgPackHandler::processMappedResource(unsigned long resource){
 unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
 	//TODO: implement a table of execution flow with ENUN on the flash PROGMEM
 	//on error
-	error_code = ERROR_MSGPACK_4BC_WORD_EXPECTED;
+	error_code = ERROR_MSGPACK_4BCP_WORD_EXPECTED;
 	response->writeMsgPackError(_32bitword);
 	return resource; //DEBUG MUST BE THE NEXT WORD 4BCP kind of is awaiting
 }
 
+bool MsgPackHandler::processMap(uint8_t _word, int map_elements_size) {
+	return true; //DEBUG
+}
 
 bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
 	return true; //DEBUG
@@ -409,6 +419,14 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte){
 }
 
 unsigned long MsgPackHandler::isMapped(){
+
+//#infdef _32bitword
+//	error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
+//	response->write32bitByte(_32bitword);
+//	response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
+//	response->writeMsgPackError(_32bitword);
+//	return 0;
+//#endif
 	//TODO: check if it's in the ENUN in Flash PROGMEM
 	return _32bitword; //DEBUG t needs to return the type of 4BCP
 }

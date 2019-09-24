@@ -57,6 +57,7 @@ private:
 	uint8_t next();
 	bool processByte(uint8_t _byte);
 	bool processArray(uint8_t _byte, int array_size);
+	bool processMap(uint8_t _byte, int map_elements_size);
 	bool assemble32bitByte(uint8_t _byte);
 	bool reset_32bit_processing();
 	unsigned long _4BCPCheckForNext(unsigned long resource);

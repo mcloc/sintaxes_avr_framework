@@ -26,6 +26,12 @@ void Responses::writeReseting32bitwordERROR(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::write4BCPWordNotMappedERROR(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_WORD_NOT_MAPPED,  ERROR_MSGPACK_4BCP_WORD_NOT_MAPPED_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
 void Responses::writeMsgPackError(unsigned long _byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
 	client->print(LocalBuffers::string_cpy_buffer);

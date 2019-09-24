@@ -42,7 +42,7 @@
     const char ERROR_32BIT_RESETING_STR[] PROGMEM = "trying to reset _32bitword with Machine Status set as MSGPACK_STATE_WORKING_32BIT. Check your Program Flow, maybe you misunderstood STATUS Chain";
     const char ERROR_MSGPACK_PROCESSING_STR[] PROGMEM = "error processing messagePack on 4Bytes Commands Protocol. RETURNIN THAT OLD STATE!";
     const char ERROR_MSGPACK_UNKNOW_STR[] PROGMEM = "msgpack unknow error";
-    const char ERROR_MSGPACK_4BC_WORD_NOT_MAPPED_STR[] PROGMEM = "4BPC word is not mapped in this appliances. Try request 4BCP mapping";
-    const char ERROR_MSGPACK_4BC_WORD_EXPECTED_STR[] PROGMEM = "4BPC word is mapped but not the expected one at this momment. Try request 4BCP protocol reference.";
-    const char ERROR_MSGPACK_4BC_WORD_MISSING_STR[] PROGMEM = "4BPC word is missing after all request processed. Try request 4BCP protocol reference.";
+    const char ERROR_MSGPACK_4BCP_WORD_NOT_MAPPED_STR[] PROGMEM = "4BPC word is not mapped in this appliances. Try request 4BCP mapping";
+    const char ERROR_MSGPACK_4BCP_WORD_EXPECTED_STR[] PROGMEM = "4BPC word is mapped but not the expected one at this momment. Try request 4BCP protocol reference.";
+    const char ERROR_MSGPACK_4BCP_WORD_MISSING_STR[] PROGMEM = "4BPC word is missing after all request processed. Try request 4BCP protocol reference.";
 #endif
