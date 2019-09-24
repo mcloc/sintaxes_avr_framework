@@ -3,7 +3,7 @@
  * @ the END of our appliance needs. In this case we are using a new Layer 7 (Application Layer)
  * on TOP of MessagePack protocol layer.
  *
- * We call it "4Bytes COMMAND PROTOCOL". It's composed of only 32bit unsigned long (0xffff0000 to0xfffffff)
+ * We call it "4Bytes COMMAND PROTOCOL" (4BCP). It's composed of only 32bit unsigned long (0xffff0000 to0xfffffff)
  * Note that first 2 bytes still reserved for improving the communications of 4Bytes CmdProtocol.
  *
  * This Layer is almost a implementation of RPC but built with a flow of execution designed to
@@ -152,35 +152,35 @@ bool MsgPackHandler::processStream() {
 bool MsgPackHandler::processByte(uint8_t _byte) {
 
 	switch (_byte) {
+		//LAYER 7 - 4Bytes COMMANDS FRAMEWORK PROCESSING - (RPC)
 		case MSGPACK_UINT32:
-		//LAYER 2 - COMMANDS FRAMEWORK PROCESSING - (RPC)
-		assemble32bitByte(_byte);
-		response->writeDEBUG_INT(_32bitword);
-		if(!process32bitword()) {
-			//TODO: response->writeProcess32bitwordERROR(); //response error on the process32bitword()
-			return false;
-		}
-		response->write32bitByte(_32bitword); //DEBUG
-		reset_32bit_processing();
-		return true;
+			assemble32bitByte(_byte);
+			response->writeDEBUG_INT(_32bitword);
+			if(!process4BytesCmdProtocol()) {
+				//TODO: response->writeProcess32bitwordERROR(); //response error on the process32bitword()
+				return false;
+			}
+			response->write32bitByte(_32bitword); //DEBUG
+			reset_32bit_processing();
+			return true;
 
 		case MSGPACK_TRUE:
-		//TODO set ARG VALUE
-		response->writeByte(true);//DEBUG
-		return true;
+			//TODO set ARG VALUE
+			response->writeByte(true);//DEBUG
+			return true;
 
 		case MSGPACK_FALSE:
-		//TODO set ARG VALUE
-		response->writeByte(false);//DEBUG
-		return true;
+			//TODO set ARG VALUE
+			response->writeByte(false);//DEBUG
+			return true;
 
 		default:
-		error_code = ERROR_MSGPACK_PROCESSING;
-		response->writeMsgPackError(_byte);
-		//TODO: rollback from SD Card previous state and then send another message with rolledback
-		//		current state machine (maybe rollback should be on the previous function
-		//		or the previous previous, check it)
-		return false;
+			error_code = ERROR_MSGPACK_PROCESSING;
+			response->writeMsgPackError(_byte);
+			//TODO: rollback from SD Card previous state and then send another message with rolledback
+			//		current state machine (maybe rollback should be on the previous function
+			//		or the previous previous, check it)
+			return false;
 	}
 	error_code = ERROR_MSGPACK_UNKNOW;
 	response->writeMsgPackUnknowError();
@@ -190,13 +190,19 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 /**
  * 4Bytes Command Protocol
  * here we assemble the COMMANDS and wait for code EXECUTE! 0xffffff13
+ *
+ * Remember that this method should only be called exactly after assemble32bitByte(_byte) so
+ * the field _32bitword should be ready
+ *
  */
-bool MsgPackHandler::process32bitword(){
+bool MsgPackHandler::process4BytesCmdProtocol(){
 	switch(_32bitword){
 
 	case MODULE_COMMMAND_FLAG:
-		uint8_t _word = next();
-		assemble32bitByte(_word);
+		//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
+		uint8_t _byte = next();
+		assemble32bitByte(_byte);
+		//This is a new _32bit_word the command to be executed
 		commands->command_executing = _32bitword;
 		status = MSGPACK_STATE_COMMAND_SET;
 		return true;
@@ -212,48 +218,69 @@ bool MsgPackHandler::process32bitword(){
 		status = MSGPACK_STATE_COMMAND_EXECUTED;
 		return true;
 
+	default:
+		unsigned long waiting_for = _4BCPCheckForNext();
+		if(unsigned long resource = isMapped()){
+			if(processMappedResource(resource))
+				return true;
+		}
+		//TODO: case in the commands or devices or arguments
+		return false;
+
 	}
 	//TODO: if 32bitword is not mapped return false; send responses [ remember, throw is always @front  each false must than be taken CARE]
-	return true;
+	return false;
 }
 
 
+bool MsgPackHandler::processMappedResource(unsigned long resource){
+	//TODO: implement a table of with ENUN on DEFINED RESOURCES to flash PROGMEM
+	return true;
+}
+
+/**
+ * Check in 4bytes Command Protocol what's the next 4BCP resource his waiting for
+ */
+unsigned long MsgPackHandler::_4BCPCheckForNext(){
+	//TODO: implement a table of execution flow with ENUN on the flash PROGMEM
+	return 0xFFFFFFFF;
+}
 
 
 bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
 	return true; //DEBUG
-	uint8_t next_word = whatNext();
-
-	while (array_size > 0) {
-		array_size--;
-		uint8_t _word = next();
-		response->writeByte(_word);
-
-		//THIS IS A MAP
-		if (_word > MSGPACK_MAP_INITIAL && _word <= MSGPACK_MAP_FINAL) {
-			uint8_t map_size = _word - MSGPACK_MAP_INITIAL;
-			while (map_size > 0) {
-				uint8_t _word = next();
-				map_size--;
-				switch (_word) {
-				case MSGPACK_UINT32:
-					while (_32bitword_remaining > 0) {
-						uint8_t _word = next();
-						assemble32bitByte(_word);
-					}
-					response->write32bitByte(_32bitword); // DEBUG
-					reset_32bit_processing();
-					break;
-				case MSGPACK_TRUE:
-					response->writeByte(true);
-					break;
-				case MSGPACK_FALSE:
-					response->writeByte(false);
-					break;
-				}
-			}
-		}
-	}
+//	uint8_t next_word = whatNext();
+//
+//	while (array_size > 0) {
+//		array_size--;
+//		uint8_t _word = next();
+//		response->writeByte(_word);
+//
+//		//THIS IS A MAP
+//		if (_word > MSGPACK_MAP_INITIAL && _word <= MSGPACK_MAP_FINAL) {
+//			uint8_t map_size = _word - MSGPACK_MAP_INITIAL;
+//			while (map_size > 0) {
+//				uint8_t _word = next();
+//				map_size--;
+//				switch (_word) {
+//				case MSGPACK_UINT32:
+//					while (_32bitword_remaining > 0) {
+//						uint8_t _word = next();
+//						assemble32bitByte(_word);
+//					}
+//					response->write32bitByte(_32bitword); // DEBUG
+//					reset_32bit_processing();
+//					break;
+//				case MSGPACK_TRUE:
+//					response->writeByte(true);
+//					break;
+//				case MSGPACK_FALSE:
+//					response->writeByte(false);
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 	return true; //return false if/but all errors had been took care and reponses has already trasmitted
 }
@@ -283,40 +310,41 @@ uint8_t MsgPackHandler::next(){
  *		UINT32 bigvar = (var1 << 24) + (var2 << 16) + (var3 << 8) + var4;
  */
 void MsgPackHandler::assemble32bitByte(uint8_t _byte) {
-
-
+	//IF NOT MSGPACK_UINT32 (unsigned long) MessaPack 0xce which 4Bytes CmdProtocol relies
 	if(_byte != MSGPACK_UINT32) {
 		error_code = ERROR_32BIT_PROCESSING;
 		response->writeProcess32bitwordERROR();
 		return;
 	}
+
+
 	reset_32bit_processing();
 	_32bitword_processing = true;
+	prev_status = status;
 	status = MSGPACK_STATE_WORKING_32BIT;
 	while(_32bitword_remaining > 0){
-		uint8_t _byte = MsgPackHandler::next();
+		uint8_t _byte = next();
 		switch (_32bitword_remaining) {
-			case 4:
-				_32bitword_array[0] = _byte;
-				_32bitword_remaining--;
-				break;
-			case 3:
-				_32bitword_array[1] = _byte;
-				_32bitword_remaining--;
-				break;
-			case 2:
-				_32bitword_array[2] = _byte;
-				_32bitword_remaining--;
-				break;
-			case 1:
-				_32bitword = (_32bitword_array[0] << 24) +
-					(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
-				_32bitword_remaining--;
-				status = prev_status;
-				break;
-			}
+		case 4:
+			_32bitword_array[0] = _byte;
+			_32bitword_remaining--;
+			break;
+		case 3:
+			_32bitword_array[1] = _byte;
+			_32bitword_remaining--;
+			break;
+		case 2:
+			_32bitword_array[2] = _byte;
+			_32bitword_remaining--;
+			break;
+		case 1:
+			_32bitword = (_32bitword_array[0] << 24) +
+				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
+			_32bitword_remaining--;
+			status = prev_status;
+			break;
+		}
 	}
-
 }
 
 void MsgPackHandler::reset_32bit_processing() {
@@ -352,7 +380,10 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte){
 	return 0;
 }
 
-
+unsigned long MsgPackHandler::isMapped(){
+	//TODO: check if it's in the ENUN in Flash PROGMEM
+	return 0xFFFFFFFF;
+}
 
 
 

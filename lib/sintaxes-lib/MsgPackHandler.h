@@ -19,10 +19,13 @@ public:
 	bool init(Stream * _stream, int size);
 	bool processByte(uint8_t _byte);
 	bool processArray(uint8_t _byte, int array_size);
-	bool process32bitword();
+	bool process4BytesCmdProtocol();
+	bool processMappedResource(unsigned long resource);
+	unsigned long _4BCPCheckForNext();
 	unsigned long get32bitByte();
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);
+	unsigned long isMapped();
 	bool processStream();
 	void assemble32bitByte(uint8_t _byte);
 	uint8_t whatNext();
