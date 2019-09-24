@@ -21,7 +21,7 @@ public:
 	bool processArray(uint8_t _byte, int array_size);
 	bool process4BytesCmdProtocol();
 	bool processMappedResource(unsigned long resource);
-	unsigned long _4BCPCheckForNext();
+	unsigned long _4BCPCheckForNext(unsigned long resource);
 	unsigned long get32bitByte();
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);

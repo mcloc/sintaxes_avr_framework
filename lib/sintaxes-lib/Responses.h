@@ -15,14 +15,15 @@ class Responses{
         void writeModule500DataHeaders();
         void writeError_MAX_SIZE_REQUEST();
         void writeProcess32bitwordERROR();
-        void writeMsgPackError(uint8_t _byte);
+        void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeSTXError();
         void writeByte(uint8_t byte);
-        void write32bitByte(unsigned long byte);
+        void write32bitByte(unsigned long word);
         void writeRaw(char *byte);
+        void writeRaw(const __FlashStringHelper *);
 
-        void writeDEBUG_INT(unsigned long byte);
+        void writeDEBUG_INT(unsigned long word);
         void writeDEBUG_CHAR(__FlashStringHelper *byte);
 //        void writeDEBUG_CHAR(unsigned long byte);
         int	error_MAX_SIZE_REQUEST_SIZE();

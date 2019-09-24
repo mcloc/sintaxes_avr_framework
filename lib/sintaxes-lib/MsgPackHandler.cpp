@@ -28,21 +28,12 @@
  */
 
 #include <Arduino.h>
-
 #include <MsgPackHandler.h>
 #include <msgpack_defines.h>
 #include <module_string.h>
 #include <errors_code.h>
 #include <commands_map.h>
 #include <devices.h>
-
-//typedef const __FlashStringHelper* FSH;
-
-
-
-
-
-
 
 
 /**
@@ -158,6 +149,10 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 			response->writeDEBUG_INT(_32bitword);
 			if(!process4BytesCmdProtocol()) {
 				//TODO: response->writeProcess32bitwordERROR(); //response error on the process32bitword()
+				error_code = ERROR_MSGPACK_PROCESSING;
+				response->write32bitByte(_32bitword);
+				response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
+				response->writeMsgPackError(_32bitword);
 				return false;
 			}
 			response->write32bitByte(_32bitword); //DEBUG
@@ -176,6 +171,7 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 
 		default:
 			error_code = ERROR_MSGPACK_PROCESSING;
+			response->writeByte(_byte);
 			response->writeMsgPackError(_byte);
 			//TODO: rollback from SD Card previous state and then send another message with rolledback
 			//		current state machine (maybe rollback should be on the previous function
@@ -196,44 +192,53 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
  *
  */
 bool MsgPackHandler::process4BytesCmdProtocol(){
+//	response->writeRaw(F("--------- INSIDE process4BytesCmdProtocol() ------------"));
+//	response->write32bitByte(_32bitword);
 	switch(_32bitword){
-
-	case MODULE_COMMMAND_FLAG:
-		//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
-		uint8_t _byte = next();
-		assemble32bitByte(_byte);
-		//This is a new _32bit_word the command to be executed
-		commands->command_executing = _32bitword;
-		status = MSGPACK_STATE_COMMAND_SET;
-		return true;
-
-	case MODULE_COMMMAND_GET_DATA:
-		commands->command_executing = _32bitword;
-		commands->get_data();
-		status = MSGPACK_STATE_COMMAND_EXECUTED;
-		return true;
-
-	case MODULE_COMMMAND_EXECUTE_FLAG:
-		commands->execute();
-		status = MSGPACK_STATE_COMMAND_EXECUTED;
-		return true;
-
-	default:
-		unsigned long waiting_for = _4BCPCheckForNext();
-		if(unsigned long resource = isMapped()){
-			if(processMappedResource(resource))
-				return true;
+		case MODULE_COMMMAND_FLAG: {
+			//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
+			uint8_t _byte = next();
+			assemble32bitByte(_byte);
+			//This is a new _32bit_word the command to be executed
+			commands->command_executing = _32bitword;
+			status = MSGPACK_STATE_COMMAND_SET;
+			return true;
 		}
-		//TODO: case in the commands or devices or arguments
-		return false;
-
+		case MODULE_COMMMAND_GET_DATA: {
+			commands->command_executing = _32bitword;
+			commands->get_data();
+			status = MSGPACK_STATE_COMMAND_EXECUTED;
+			return true;
+		}
+		case MODULE_COMMMAND_EXECUTE_FLAG: {
+			commands->execute();
+			status = MSGPACK_STATE_COMMAND_EXECUTED;
+			return true;
+		}
+		default: {
+//			response->writeRaw(F("XXXXX   I N    D E F A U L T  XXXXXX"));
+			//TODO: case in the commands or devices or arguments
+			if(unsigned long resource = isMapped()){
+//				response->writeRaw(F("isMapped true"));
+				if(processMappedResource(resource)) {
+//					response->writeRaw(F("processMappedResource true"));
+					return true;
+				}// else {
+//					response->writeRaw(F("processMappedResource false"));
+				//}
+			}
+//			response->writeRaw(F("isMapped false"));
+		}
 	}
+
+//	response->writeRaw(F("--------- END process4BytesCmdProtocol() ------------"));
 	//TODO: if 32bitword is not mapped return false; send responses [ remember, throw is always @front  each false must than be taken CARE]
 	return false;
 }
 
 
 bool MsgPackHandler::processMappedResource(unsigned long resource){
+	unsigned long waiting_for = _4BCPCheckForNext(resource);
 	//TODO: implement a table of with ENUN on DEFINED RESOURCES to flash PROGMEM
 	return true;
 }
@@ -241,9 +246,9 @@ bool MsgPackHandler::processMappedResource(unsigned long resource){
 /**
  * Check in 4bytes Command Protocol what's the next 4BCP resource his waiting for
  */
-unsigned long MsgPackHandler::_4BCPCheckForNext(){
+unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
 	//TODO: implement a table of execution flow with ENUN on the flash PROGMEM
-	return 0xFFFFFFFF;
+	return resource; //DEBUG MUST BE THE NEXT WORD 4BCP kind of is awaiting
 }
 
 
@@ -342,6 +347,7 @@ void MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
 			_32bitword_remaining--;
 			status = prev_status;
+			_32bitword_processing = false;
 			break;
 		}
 	}
@@ -382,7 +388,7 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte){
 
 unsigned long MsgPackHandler::isMapped(){
 	//TODO: check if it's in the ENUN in Flash PROGMEM
-	return 0xFFFFFFFF;
+	return _32bitword; //DEBUG t needs to return the type of 4BCP
 }
 
 

@@ -21,7 +21,7 @@ void Responses::writeProcess32bitwordERROR(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
-void Responses::writeMsgPackError(uint8_t _byte){
+void Responses::writeMsgPackError(unsigned long _byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
@@ -33,7 +33,7 @@ void Responses::writeMsgPackUnknowError(){
 
 void Responses::writeDEBUG_INT(unsigned long byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_INT), byte);
-	client->print(LocalBuffers::string_cpy_buffer);
+	client->println(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeDEBUG_CHAR(__FlashStringHelper  *byte){
@@ -58,6 +58,9 @@ void Responses::writeRaw(char *byte){
 	client->println(byte);
 }
 
+void Responses::writeRaw(const __FlashStringHelper * string){
+	client->println(string);
+}
 
 void Responses::writeByte(uint8_t byte){
 	client->println(byte, HEX);
