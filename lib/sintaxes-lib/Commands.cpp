@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <Commands.h>
-#include <Responses.h>
+#include <Commands.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <StandardCplusplus.h>

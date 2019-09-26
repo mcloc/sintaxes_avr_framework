@@ -41,13 +41,25 @@
 //
 //}
 
+//static class members must be declared also in cpp.
+static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[9] PROGMEM = {
+		MSGPACK_STATE_IDLE,
+		MSGPACK_STATE_BEGIN,
+		MSGPACK_STATE_COMMAND_SET,
+		MSGPACK_STATE_COMMAND_SETTING_ARGS,
+		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
+		MSGPACK_STATE_COMMAND_EXECUTING,
+		MSGPACK_STATE_COMMAND_EXECUTED,
+		MSGPACK_STATE_COMMAND_FINISHED
+	};
+
 /**
- * we will need Reponse Object to write on TCP client JSON objects and Commands to execute them on the fly.
+ * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
 MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands) {
 	response = _responses;
 	commands = _commands;
-	status = MSGPACK_STATE_IDLE;
+	setStatus(MSGPACK_STATE_IDLE);
 }
 
 
@@ -59,7 +71,7 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands) {
  * in sintaxes-framework-defines.h
  */
 bool MsgPackHandler::init(Stream *_stream, int size) {
-	status = MSGPACK_STATE_BEGIN;
+	setStatus(MSGPACK_STATE_BEGIN);
 
 	reset_32bit_processing();
 	buffer_position = 0;
@@ -89,7 +101,8 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
-		check4BCPProcesFlow();
+		if(!check4BCPProcesFlow())
+			return false;
 
 		uint8_t _byte = MsgPackHandler::next();
 //		response->writeByte(_byte);
@@ -138,7 +151,7 @@ bool MsgPackHandler::processStream() {
 	//return after execution of each command with status and guard the new machine state on SD Card
 	//we will use SD Card as log. So must implement methods for getting this log if requested
 	if(status == MSGPACK_STATE_COMMAND_FINISHED) {
-		status = MSGPACK_STATE_IDLE;
+		setStatus(MSGPACK_STATE_IDLE);
 		return true;
 	}
 	else{
@@ -236,36 +249,36 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 				return false;
 			//This is a new _32bit_word the command to be executed
 			commands->command_executing = _32bitword;
-			status = MSGPACK_STATE_COMMAND_SET;
+			setStatus(MSGPACK_STATE_COMMAND_SET);
 			return true;
 		}
 
 		case MODULE_COMMMAND_GET_DATA: {
 			commands->command_executing = _32bitword;
 			commands->get_data();
-			status = MSGPACK_STATE_COMMAND_EXECUTED;
+			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
 			return true;
 		}
 
 		case MODULE_COMMMAND_EXECUTE_FLAG: {
 			commands->execute();
-			status = MSGPACK_STATE_COMMAND_EXECUTED;
+			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
 			return true;
 		}
 
 		case MODULE_COMMMAND_SET_ARGS1:{
-			status = MSGPACK_STATE_COMMAND_SETTING_ARGS;
+			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
 //			if(commands->setArgumentField(MODULE_COMMMAND_SET_ARGS1)){
-				status = MSGPACK_STATE_COMMAND_WATING_ARG_VALUE;
+				setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
 //				return true;
 //			}
 			return true; //DEBUG
 		}
 
 		case MODULE_COMMMAND_SET_ARGS2:{
-			status = MSGPACK_STATE_COMMAND_SETTING_ARGS;
+			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
 //			if(commands->setArgumentField(MODULE_COMMMAND_SET_ARGS2)){
-				status = MSGPACK_STATE_COMMAND_WATING_ARG_VALUE;
+				setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
 //				return true;
 //			}
 			return true; //DEBUG
@@ -451,24 +464,37 @@ bool MsgPackHandler::reset_32bit_processing() {
  */
 
 bool MsgPackHandler::check4BCPProcesFlow(){
+	response->writeByte(status);
 	uint8_t last_process, actual_process, i;
+	uint8_t position = 0;
 	i = sizeof(MSGPACK4BCPProcessFlow);
 	while (i > 0) {
-		actual_process = pgm_read_word(&MSGPACK4BCPProcessFlow[i]);
-		response->writeByte(actual_process);
+		actual_process = pgm_read_word(&MSGPACK4BCPProcessFlow[position]);
+
+//		response->writeByte(actual_process);
+//		response->writeByte(prev_status);
 		if(status == actual_process) {
-			if(last_process != prev_status){
+			if(last_process != prev_status && last_process != NULL){
+				//DEBUG
+//				response->writeByte(actual_process);
+//				response->writeByte(status);
+//				response->writeByte(prev_status);
+//				response->writeByte(last_process);
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
 				response->writeMsgPackProcessingFlowError();
 				return false;
 			}
-			next_status = pgm_read_word(&MSGPACK4BCPProcessFlow[i++]);
+			next_status = pgm_read_word(&MSGPACK4BCPProcessFlow[position++]);
 			break;
 		}
 
 		last_process = actual_process;
 		i--;
+		position++;
 	}
+
+
+//	response->writeByte(next_status); //DEBUG
 
 	return true;
 }
@@ -502,7 +528,10 @@ unsigned long MsgPackHandler::isMapped(){
 	return _32bitword; //DEBUG t needs to return the type of 4BCP
 }
 
-
+void MsgPackHandler::setStatus(uint8_t _status){
+	prev_status = status;
+	status = _status;
+}
 
 /**
  * we wont use pointer to another pointer just for standards [&](){ cout << F(x)} ...

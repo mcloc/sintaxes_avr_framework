@@ -53,16 +53,7 @@ private:
 	unsigned long ext_command_args4;
 
 	//FIXME: PROGMEM is ignored due
-	 static const uint8_t MSGPACK4BCPProcessFlow[9] PROGMEM = {
-		MSGPACK_STATE_IDLE,
-		MSGPACK_STATE_BEGIN,
-		MSGPACK_STATE_COMMAND_SET,
-		MSGPACK_STATE_COMMAND_SETTING_ARGS,
-		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
-		MSGPACK_STATE_COMMAND_EXECUTING,
-		MSGPACK_STATE_COMMAND_EXECUTED,
-		MSGPACK_STATE_COMMAND_FINISHED
-	};
+	 static const uint8_t MSGPACK4BCPProcessFlow[];
 
 //
 //	uint8_t length = sizeof(some_array) / sizeof(some_array[0]);
@@ -85,6 +76,7 @@ private:
 	bool process4BytesCmdProtocol();
 	bool processMappedResource(unsigned long resource);
 
+	void setStatus(uint8_t _status);
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();

@@ -1,29 +1,29 @@
 /**
  * This file should have the definitions of commands and it's arguments
- * A news protocol is beeing developed for message communication between
- * devices with le 2KB RAM.
+ * A news protocol is being developed for message communication between
+ * devices with less 2KB RAM.
  * 
- * Itś built in top of MessagePack, but no strings allowed. That's why
+ * It'ś built in top of MessagePack, but no strings allowed. That's why
  * we need definition of this constants on both sides, server appliance side
  * and embedded side. The embedded side receives the new 6Bytes-msgpack message
  * which is able to receive maps and array of maps all based on this constants.
  * 
- * Bouth side must share the same constants.
+ * Both side must share the same constants.
  * 
- * All constants get packed as uint32_t wich is 8bytes, so for a convinience
+ * All constants get packed as uint32_t which is 8bytes, so for a convenience
  * functions arguments can use 6 bytes of a 8 bytes words, since until 0xff is
  * reserved for messagePack itself. 
  * 
- * All commands are executated as per received data on the fly, so we need:
+ * All commands are executed as per received data on the fly, so we need:
  *      1 - validate COMMAND it self;
  *      2 - validate and buffer ALL ARGS for each COMMAND it self, we can tune this by 
- *          increasing or descrising the number of args BUFFER
- *      3 - one command is executed per time and response is beeing generated on the fly as well
+ *          increasing or decreasing the number of args BUFFER
+ *      3 - one command is executed per time and response is being generated on the fly as well
  *          TODO: a response interruption to write the proper error response
- *      4 - All state of the ALL Module should be always update same time more then onece on one
- *          loop() execution in a STATE BUFFER with msgpacked serializaition
- *      5 - Befor any execution save the STATE BUFFER as previous state so we can rollback if there's 
- *          a comman execution error
+ *      4 - All state of the ALL Module should be always update same time more then once on one
+ *          loop() execution in a STATE BUFFER with msgpacked serialization
+ *      5 - Before any execution save the STATE BUFFER as previous state so we can rollback if there's
+ *          a command execution error
  *      6 - All COMMAND communication response must include the OLD STATE and the new STATE msgpack 
  * 
  * Besides messagePack this constants as uint32_t we should define them as hex

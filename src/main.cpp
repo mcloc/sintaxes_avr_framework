@@ -27,7 +27,7 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 void setup() {
 	pinMode(BUZZPIN, OUTPUT);
-	sintaxes_lib.BUZZPIN = BUZZPIN;
+	sintaxes_lib._BUZZPIN = BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
 
 	//Set all commands devices objects that will be need to execute commands
