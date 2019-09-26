@@ -44,6 +44,11 @@ void Responses::writeMsgPackUnknowError(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeErrorMsgPackHasNotFinishedStatus(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_NOT_IN_FINISHED_STATE,  ERROR_MSGPACK_NOT_IN_FINISHED_STATE_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeDEBUG_INT(unsigned long byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_INT), byte);
 	client->println(LocalBuffers::string_cpy_buffer);
@@ -58,7 +63,12 @@ void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule500DataHeaders();
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MAX_LENGHT,  REQUEST_MAX_LENGHT_ERROR_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
+}
 
+void Responses::writeError_MAL_FORMED_REQUEST(){
+	writeModule500DataHeaders();
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MAL_FORMED_REQUEST,  ERROR_MAL_FORMED_REQUEST_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeSTXError(){

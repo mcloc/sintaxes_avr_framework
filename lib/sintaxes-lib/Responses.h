@@ -18,10 +18,12 @@ class Responses{
         void initJsonResponse();
         void closeJsonResponse();
 
+        void writeError_MAL_FORMED_REQUEST();
         void writeError_MAX_SIZE_REQUEST();
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
         void write4BCPWordNotMappedERROR();
+        void writeErrorMsgPackHasNotFinishedStatus();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeSTXError();

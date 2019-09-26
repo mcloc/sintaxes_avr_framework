@@ -14,12 +14,12 @@
 
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);
-uint8_t mac[6] = { MACADDRESS };
+const uint8_t mac[6] = { MACADDRESS };
 
 static LocalBuffers localBuffers;
 static Responses response(&localBuffers);
 static Commands commands(&localBuffers, &response);
-MsgPackHandler msgpck(&response, &commands);
+static MsgPackHandler msgpck(&response, &commands);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
@@ -28,6 +28,9 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 void setup() {
 	pinMode(BUZZPIN, OUTPUT);
 	buzz(BUZZPIN, 800, 500);
+
+	//Set all commands devices objects that will be need to execute commands
+	//like Reading DHT, and other Arduino Objects
 	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
 	commands.setDHT2(&dht2, DHT1PIN, DHTTYPE);
 
@@ -51,10 +54,10 @@ void loop() {
 				break;
 			}
 
-//			if(size == 0){
-//				response.writeError_MAL_FORMED_REQUEST();
-//				break;
-//			}
+			if(size == 0){
+				response.writeError_MAL_FORMED_REQUEST();
+				break;
+			}
 
 			//TODO: deal with headers and URL arguments, it must be raw msgpack 4BCP
 

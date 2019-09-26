@@ -18,7 +18,7 @@
  * is MSGPACK with 4Bytes COMMAND PROTOCOL on top of it, acting like a RPC
  *
  * commands_map.h, devices.h, is the main essentials headers which #defines all mapping for this
- * appliance at per si. So on the other hand, one whose going to consume and operate this appliance
+ * appliance at per se. So on the other hand, one whose going to consume and operate this appliance
  * must have the same commands and devices mapped, defined, so the 4bytes CmdProtocol can work properly.
  *
  * Don't worry on any request breaking your sketch this implementation have taken care of unmapped
@@ -35,6 +35,11 @@
 #include <commands_map.h>
 #include <devices.h>
 
+
+//TODO: sintax-framework namespace
+//namespace sintax-iot-framework{
+//
+//}
 
 /**
  * we will need Reponse Object to write on TCP client JSON objects and Commands to execute them on the fly.
@@ -120,12 +125,8 @@ bool MsgPackHandler::processStream() {
 		 * 	3 - report error on 4bytes commands Protocol with rollback action
 		 * 		for the previous state guarded on SD card
 		 */
-		if(processByte(_byte)) {
-			continue;
-		} else {
+		if(!processByte(_byte))
 			return false;
-		}
-
 	}
 
 	//END OF EXEUTION OF COMMANDS ON THE FLY WITH RESPECTIVES RESPONSES DONE
@@ -134,7 +135,15 @@ bool MsgPackHandler::processStream() {
 
 	//return after execution of each command with status and guard the new machine state on SD Card
 	//we will use SD Card as log. So must implement methods for getting this log if requested
-	return true;
+	if(status == MSGPACK_STATE_COMMAND_FINISHED) {
+		status = MSGPACK_STATE_IDLE;
+		return true;
+	}
+	else{
+		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
+		response->writeErrorMsgPackHasNotFinishedStatus();
+		return false;
+	}
 }
 
 
@@ -147,7 +156,7 @@ bool MsgPackHandler::processStream() {
  *
  *
  * if it is'nt array or map (which was checked before this method beeing called),
- * then it should be the 4Bytes command protocol, like a COMMAND_FLAG a COMMAND per si,
+ * then it should be the 4Bytes command protocol, like a COMMAND_FLAG a COMMAND per se,
  * known mapped ARGUMENTS or even some argument values for the COMMAND call.
  *
  * This switch is intent to:
