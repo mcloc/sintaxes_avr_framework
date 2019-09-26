@@ -26,6 +26,7 @@ class Responses{
         void writeErrorMsgPackHasNotFinishedStatus();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
+        void writeMsgPackProcessingFlowError();
         void writeSTXError();
 
 

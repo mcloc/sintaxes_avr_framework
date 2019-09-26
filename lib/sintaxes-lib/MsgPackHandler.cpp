@@ -89,14 +89,16 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
+		check4BCPProcesFlow();
+
 		uint8_t _byte = MsgPackHandler::next();
 //		response->writeByte(_byte);
 
 
 		/**
 		 * If it's an array or a map the LAYER 7 4B COMMANDS FRAMEWORK (RPC)
-		 * is already been processed, remember that this machine is suppouse
-		 * to interpret commands as defined per use et si.
+		 * is already been processed, remember that this machine is suppose
+		 * to interpret commands as defined per use et per si.
 		 */
 		//THIS IS AN ARRAY - [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		if(int array_size = isArray(_byte) > 0){
@@ -199,11 +201,14 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 			return true;
 		}
 
+		//TODO: implement more MessagePack types specification that could came as argument
+		//such as Float, ints 8 16 sign and unsigned and maybe strings for guardings literals on SD Card
+
 		default: {
 			error_code = ERROR_MSGPACK_PROCESSING;
 			response->writeMsgPackError(_byte);
 			response->writeByte(_byte); //DEBUG
-			//TODO: rollback from SD Card previous state and then send another message with rolledback
+			//TODO: rollback from SD Card previous state and then send another message with rollback
 			//		current state machine (maybe rollback should be on the previous function
 			//		or the previous previous, check it)
 			return false;
@@ -389,7 +394,8 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 
 	//ensure that _32bitword and it's associated fields are reseted;
 	reset_32bit_processing();
-	prev_status = status; //save the actual status and set it to MSGPACK_STATE_WORKING_32BIT
+
+	uint8_t actual_status = status;
 	status = MSGPACK_STATE_WORKING_32BIT;
 	while(_32bitword_remaining > 0){
 		uint8_t _byte = next();
@@ -411,7 +417,7 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 			_32bitword = (_32bitword_array[0] << 24) +
 				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
 			_32bitword_remaining--;
-			status = prev_status; //return machine status to the previous status
+			status = actual_status; //return machine status to the previous status
 			response->write32bitByte(_32bitword); // DEBUG
 			break;
 		}
@@ -444,6 +450,28 @@ bool MsgPackHandler::reset_32bit_processing() {
  * HELPER METHODS
  */
 
+bool MsgPackHandler::check4BCPProcesFlow(){
+	uint8_t last_process, actual_process, i;
+	i = sizeof(MSGPACK4BCPProcessFlow);
+	while (i > 0) {
+		actual_process = pgm_read_word(&MSGPACK4BCPProcessFlow[i]);
+		response->writeByte(actual_process);
+		if(status == actual_process) {
+			if(last_process != prev_status){
+				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
+				response->writeMsgPackProcessingFlowError();
+				return false;
+			}
+			next_status = pgm_read_word(&MSGPACK4BCPProcessFlow[i++]);
+			break;
+		}
+
+		last_process = actual_process;
+		i--;
+	}
+
+	return true;
+}
 
 unsigned int MsgPackHandler::isArray(uint8_t _byte){
 	if(_byte > MSGPACK_ARRAY_INITIAL && _byte <= MSGPACK_ARRAY_FINAL){

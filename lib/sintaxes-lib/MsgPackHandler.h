@@ -4,9 +4,8 @@
 #include <Stream.h>
 #include <Commands.h>
 #include <sintaxes-framework-defines.h>
-
-
-
+#include <msgpack_defines.h>
+#include <Arduino.h>
 
 
 class MsgPackHandler;
@@ -18,17 +17,15 @@ public:
 	bool init(Stream * _stream, int size);
 	bool processStream();
 
-
-
-
 private:
-	Stream * stream;
+	Stream *stream;
 	Responses *response;
 	Commands *commands;
 
 	uint8_t status;
 	uint8_t prev_status;
-	uint8_t process_state;
+	uint8_t next_status;
+//	static uint8_t process_state_stack[]; //Pointer to array in the SD Card, LOG PROCESS, and LOG in Commands execution footprint
 
 	unsigned int error_code;
 
@@ -38,7 +35,7 @@ private:
 	int buffer_bytes_remaining;
 	char buffer_processsing_byte;
 
-	uint8_t last_byte;
+	uint8_t last_byte; // may be we'll use to know if we are inseide array, but i think other controll should be done for that
 
 	//32bit word of the 4Bytes Command Protocol
 	unsigned long _32bitword; // this buffer is utilized directly from inside methods, beaware to don't overwrite it
@@ -55,12 +52,33 @@ private:
 	unsigned long ext_command_args3;
 	unsigned long ext_command_args4;
 
+	//FIXME: PROGMEM is ignored due
+	 static const uint8_t MSGPACK4BCPProcessFlow[9] PROGMEM = {
+		MSGPACK_STATE_IDLE,
+		MSGPACK_STATE_BEGIN,
+		MSGPACK_STATE_COMMAND_SET,
+		MSGPACK_STATE_COMMAND_SETTING_ARGS,
+		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
+		MSGPACK_STATE_COMMAND_EXECUTING,
+		MSGPACK_STATE_COMMAND_EXECUTED,
+		MSGPACK_STATE_COMMAND_FINISHED
+	};
+
+//
+//	uint8_t length = sizeof(some_array) / sizeof(some_array[0]);
+//
+//	for (uint8_t i = 0; i < length; i++) {
+//		Process(pgm_read_byte(&some_array[i]));
+//	}
+
 
 	uint8_t whatNext();
 	uint8_t next();
 	bool processByte(uint8_t _byte);
 	bool processArray(uint8_t _byte, int array_size);
 	bool processMap(uint8_t _byte, int map_elements_size);
+	bool check4BCPProcesFlow();
+
 	bool assemble32bitByte(uint8_t _byte);
 	bool reset_32bit_processing();
 	unsigned long _4BCPCheckForNext(unsigned long resource);
@@ -90,6 +108,8 @@ private:
 //	unsigned long ext_byte;
 //	unsigned long ext_byte_stack[MAX_MSGPACK_COMMANDS + MAX_MSGPACK_ARGS];
 };
+
+
 
 
 #endif

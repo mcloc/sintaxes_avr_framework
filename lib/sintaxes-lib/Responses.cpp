@@ -44,6 +44,11 @@ void Responses::writeMsgPackUnknowError(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeMsgPackProcessingFlowError(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_PROCESSING_FLOW,  ERROR_MSGPACK_4BCP_PROCESSING_FLOW_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeErrorMsgPackHasNotFinishedStatus(){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_NOT_IN_FINISHED_STATE,  ERROR_MSGPACK_NOT_IN_FINISHED_STATE_STR);
 	client->print(LocalBuffers::string_cpy_buffer);

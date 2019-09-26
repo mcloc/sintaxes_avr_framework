@@ -26,28 +26,39 @@
  *          a comman execution error
  *      6 - All COMMAND communication response must include the OLD STATE and the new STATE msgpack 
  * 
- * TODO: verify if we can use the 6 or the all 8 bytes
- * 
- * Besides messagePack packa this constants as uint32_t we should define them as hex
+ * Besides messagePack this constants as uint32_t we should define them as hex
  * 
  * Author: Mario Caseiro <mcl.caseiro@gmail.com>
  * 
  */
 
+/**
+ * COMMANDS CAN GO FROM 				0xFFFF[0]001 to 0xFFFF[0]FFF
+ * COMMANDS ARGS CAN GO FROM 			0xFFFF[F]001 to 0xFFFF[F]FFF
+ * DEVICES SENSORS CAN GO FROM 			0xFFFF[1]001 to 0xFFFF[1]FFF
+ * DEVICES CTUATORS CAN GO FROM 		0xFFFF[2]001 to 0xFFFF[2]FFF
+ * MODULES ID CAN GO FROM		 		0xFFFF[3]001 to 0xFFFF[3]FFF
+ */
 
 
 #ifndef __MODULE_COMMANDS_MAP_H_
 #define __MODULE_COMMANDS_MAP_H_
 
-//COMMANDS by convention from 0xFFFF0001 to 0xFFFF0FFF
-#define MODULE_COMMMAND_FLAG         0xFFFF0001 // control byte to advice a command is comming
-#define MODULE_COMMMAND_ARGS_FLAG    0xFFFF0002 // control byte to advice a argument array is comming
-#define MODULE_COMMMAND_EXECUTE_FLAG 0xFFFFFF13 // control byte to advice command to execute
-#define MODULE_COMMMAND_GET_STATE    0xFFFF0010
-#define MODULE_COMMMAND_GET_DATA     0xFFFF0011
-#define MODULE_COMMMAND_SET_ACTUATOR 0xFFFF0012
+//COMMANDS by convention from 0xFFFF[0]001 to 0xFFFF[0]FFF
+#define MODULE_COMMMAND_FLAG         	0xFFFF0001 // control byte to advice a command is comming
+#define MODULE_COMMMAND_ARGS_FLAG    	0xFFFF0002 // control byte to advice a argument array is comming
+#define MODULE_COMMMAND_EXECUTE_FLAG 	0xFFFF0013 // control byte to advice command to execute
+// GOES UNTIL 0xFFFF0019 FOR CONTROLS WORDS
 
-//COMMANDS ARGS by convention from 0xFFFFF001 to 0xFFFFFFFF
+//GET COMMANDS FROM 0xFFFF[0]020 to 0xFFFF[0]8FF
+#define MODULE_COMMMAND_GET_STATE   	0xFFFF0020
+#define MODULE_COMMMAND_GET_DATA     	0xFFFF0021
+#define MODULE_COMMAND_GET_PROCESS_FLOW 0xFFFF0022
+
+//SET COMMANDS 0xFFFF[0]801	to 0xFFFF[0]EFF
+#define MODULE_COMMMAND_SET_ACTUATOR 	0xFFFF0801
+
+//COMMANDS ARGS by convention from 0xFFFF[F]001 to 0xFFFF[F]FFF
 #define MODULE_COMMMAND_SET_ARGS1       0xFFFFF001
 #define MODULE_COMMMAND_SET_ARGS2       0xFFFFF002
 #define MODULE_COMMMAND_SET_ARGS3       0xFFFFF003
@@ -56,6 +67,7 @@
 #define MODULE_COMMMAND_SET_ARGS6       0xFFFFF006
 #define MODULE_COMMMAND_SET_ARGS7       0xFFFFF007
 #define MODULE_COMMMAND_SET_ARGS8       0xFFFFF008
+
 
 
 

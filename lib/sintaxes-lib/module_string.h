@@ -47,4 +47,5 @@
     const char ERROR_MSGPACK_4BCP_WORD_NOT_MAPPED_STR[] PROGMEM = "4BPC word is not mapped in this appliances. Try request 4BCP mapping";
     const char ERROR_MSGPACK_4BCP_WORD_EXPECTED_STR[] PROGMEM = "4BPC word is mapped but not the expected one at this momment. Try request 4BCP protocol reference.";
     const char ERROR_MSGPACK_4BCP_WORD_MISSING_STR[] PROGMEM = "4BPC word is missing after all request processed. Try request 4BCP protocol reference.";
+    const char ERROR_MSGPACK_4BCP_PROCESSING_FLOW_STR[] PROGMEM = "4BCP processs flow error. Check for process_flow in the MsgPackHandler::MSGPACK4BCPProcessFlow(), or request it by COMMAND"
 #endif

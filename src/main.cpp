@@ -6,16 +6,16 @@
  * is under his own headers. Change this project-defines.h as you want.
  */
 #include "main.h"
+#include <sintaxes-lib.h>
 #include <LocalBuffers.h>
 #include <Commands.h>
 #include <MsgPackHandler.h>
-//#include <sintaxes-lib.h>
-//#include <LocalBuffers.h>
 
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);
 const uint8_t mac[6] = { MACADDRESS };
 
+static SintaxesLib sintaxes_lib;
 static LocalBuffers localBuffers;
 static Responses response(&localBuffers);
 static Commands commands(&localBuffers, &response);
@@ -27,7 +27,8 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 void setup() {
 	pinMode(BUZZPIN, OUTPUT);
-	buzz(BUZZPIN, 800, 500);
+	sintaxes_lib.BUZZPIN = BUZZPIN;
+	sintaxes_lib.buzz(800, 500);
 
 	//Set all commands devices objects that will be need to execute commands
 	//like Reading DHT, and other Arduino Objects
@@ -36,17 +37,17 @@ void setup() {
 
 	// DHCP, will buzz for ever trying
 	while (Ethernet.begin(mac) == 0) {
-		buzz(BUZZPIN, 8000, 400, 2);
+		sintaxes_lib.buzz( 8000, 400, 2);
 		delay(500);
 	}
 	server.begin();
-	buzz(BUZZPIN, 5000, 300, 4);
+	sintaxes_lib.buzz( 5000, 300, 4);
 }
 
 void loop() {
 	size_t size;
 	while (EthernetClient client = server.available()) {
-		buzz(BUZZPIN, 8000, 200, 1);
+		sintaxes_lib.buzz( 8000, 200, 1);
 		while ((size = client.available()) > 0) {
 			response.setClient(&client);
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
@@ -61,7 +62,7 @@ void loop() {
 
 			//TODO: deal with headers and URL arguments, it must be raw msgpack 4BCP
 
-			//MsgPackHandler: Deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
+			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
 			msgpck.init((Stream *) &client, size);
 			//TODO: save previous state on SD Card, and LOG the request
