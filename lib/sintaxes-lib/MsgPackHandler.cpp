@@ -102,7 +102,7 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
 		uint8_t _byte = MsgPackHandler::next();
-//		response->writeByte(_byte);
+		response->writeByte(_byte);
 
 
 		/**
@@ -112,13 +112,13 @@ bool MsgPackHandler::processStream() {
 		 */
 		//THIS IS AN ARRAY - [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		if(int array_size = isArray(_byte) > 0){
-			processArray(_byte, array_size);
+//			processArray(_byte, array_size);
 			response->writeByte(_byte); //DEBUG
 			continue;
 		}
 		//THIS IS AN MAP- [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		if(int map_elements_size = isMap(_byte) > 0){
-			processMap(_byte, map_elements_size);
+//			processMap(_byte, map_elements_size);
 			response->writeByte(_byte); //DEBUG
 			continue;
 		}
@@ -138,7 +138,7 @@ bool MsgPackHandler::processStream() {
 		 * 		for the previous state guarded on SD card
 		 */
 		if(!processByte(_byte))
-			return false;
+			break;
 	}
 
 	//END OF EXEUTION OF COMMANDS ON THE FLY WITH RESPECTIVES RESPONSES DONE
@@ -154,6 +154,7 @@ bool MsgPackHandler::processStream() {
 	else{
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
 		response->writeErrorMsgPackHasNotFinishedStatus();
+		setStatus(MSGPACK_STATE_IDLE);
 		return false;
 	}
 }
@@ -217,7 +218,7 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 		default: {
 			error_code = ERROR_MSGPACK_PROCESSING;
 			response->writeMsgPackError(_byte);
-			response->writeByte(_byte); //DEBUG
+//			response->writeByte(_byte); //DEBUG
 			//TODO: rollback from SD Card previous state and then send another message with rollback
 			//		current state machine (maybe rollback should be on the previous function
 			//		or the previous previous, check it)
@@ -251,9 +252,14 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 		}
 
 		case MODULE_COMMMAND_GET_DATA: {
+			response->writeByte(0xFF); // DEBUG
+			response->writeByte(0xFF); // DEBUG
+			response->writeByte(0xFF); // DEBUG
+			response->writeByte(0xFF); // DEBUG
+
 			commands->command_executing = _32bitword;
 			commands->get_data();
-			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
+			setStatus(MSGPACK_STATE_COMMAND_FINISHED);
 			return true;
 		}
 
@@ -297,9 +303,9 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 				return true;
 			}
 
-			//If it's not a argument value it's an inconsistence on 4BCP
+			//If it's not a argument value it's an inconsistent on 4BCP
 			error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-//			response->write4BCPUnknowError();
+//			response->write4BCPUnknowError(); //TODO
 			return false;
 		}
 	}
@@ -381,6 +387,7 @@ uint8_t MsgPackHandler::whatNext() {
 uint8_t MsgPackHandler::next(){
 	buffer_bytes_remaining--;
 	buffer_position++;
+	//FIXME: last_byte has no function
 	last_byte = LocalBuffers::client_request_buffer[buffer_position];
 	return last_byte;
 }
@@ -461,7 +468,6 @@ bool MsgPackHandler::reset_32bit_processing() {
  */
 
 bool MsgPackHandler::check4BCPProcesFlow(){
-	response->writeByte(status);
 	uint8_t last_process, actual_process, i;
 	uint8_t position = 0;
 	i = sizeof(MSGPACK4BCPProcessFlow);
