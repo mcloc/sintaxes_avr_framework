@@ -528,8 +528,14 @@ unsigned long MsgPackHandler::isMapped(){
 bool MsgPackHandler::setStatus(uint8_t _status){
 	prev_status = status;
 	status = _status;
+
+	if(_status == MSGPACK_STATE_IDLE)
+		return true;
+
 	if(!check4BCPProcesFlow())
 		return false;
+
+	return true;
 }
 
 /**
