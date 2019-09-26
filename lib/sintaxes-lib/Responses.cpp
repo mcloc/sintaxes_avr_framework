@@ -10,6 +10,8 @@ typedef const __FlashStringHelper* FSH;
 
 Responses::Responses(LocalBuffers *_local_buffer){
 	localBuffers = _local_buffer;
+	response_json_initiated = false;
+//	response_json_finish_objects[] = {};
 }
 
 void Responses::setClient(EthernetClient *_client){
@@ -107,9 +109,39 @@ void Responses::writeModule500DataHeaders(){
 
 }
 
-void Responses::writeModuleDataResponse(){
-	writeModule200DataHeaders();
+void Responses::initJsonResponse(){
+	client->print(FSH(json_module_braces_open));
+	//Message Header
+	client->print(FSH(json_module_name));
+	client->print(FSH(json_module_comma_separator));
+	client->print(FSH(json_module_uptime));
+	client->print(FSH(json_module_comma_separator));
+	//Data Object
+	client->print(FSH(json_module_data_key));
+	client->print(FSH(json_module_braces_open));
 
+	//Strings that need to be finished after JSON snippets responses was sent
+	//this should call a finish JSON before closing connection.
+	// "if response_json_finish_objects > 8;do client-print(FSH(response_json_finish_objects[i]
+//	response_json_finish_objects[] += json_module_braces_close;
+//	response_json_finish_objects[] += json_module_comma_separator;
+//	response_json_finish_objects[] += json_module_status;
+//	response_json_finish_objects[] += json_module_braces_close;
+//	response_json_finish_objects[] += json_module_comma_separator
+//	response_json_finish_objects[] += json_module_braces_close;
+
+}
+
+void Responses::closeJsonResponse(){
+	uint8_t json_finish_objects_size = sizeof(response_json_finish_objects);
+	if( json_finish_objects_size > 0){
+		for(uint8_t i  = 0; i < json_finish_objects_size;i++)
+			client->print(FSH(response_json_finish_objects[i]));
+	}
+	client->print(FSH(json_module_new_line));
+}
+
+void Responses::sendFullStatusData(char *sensor1_data, char*sensor2_data){
 	//begin the construction of Json
 	client->print(FSH(json_module_braces_open));
 	//Message Header
@@ -129,14 +161,11 @@ void Responses::writeModuleDataResponse(){
 
 	//FIXME: how to get rid of local buffer, this is due sensor need to get called sepratly
 	// since everything uses the samebuffer LocalBuffers::string_cpy_buffer,
-//	char *str;
-//	// DTH21#1 ouput
-//	str = commands->getSensor1();
-//	client->print(str); //json object of the Sensor 1
-//	client->print(FSH(json_module_comma_separator));
-//	// DTH21#2 ouput
-//	str = commands->getSensor2();
-//	client->print(str); //json object of the Sensor 2
+	// DTH21#1 ouput
+	client->print(sensor1_data); //json object of the Sensor 1
+	client->print(FSH(json_module_comma_separator));
+	// DTH21#2 ouput
+	client->print(sensor2_data); //json object of the Sensor 2
 
 	// close Sensors array
 	client->print(FSH(json_module_brackets_close));
@@ -162,3 +191,4 @@ void Responses::writeModuleDataResponse(){
 	client->print(FSH(json_module_braces_close));
 	client->print(FSH(json_module_new_line));
 }
+

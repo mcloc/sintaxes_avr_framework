@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Commands.h>
+#include <Responses.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <StandardCplusplus.h>
@@ -8,23 +9,23 @@
 /**
  * command to execute / in execution
  */
-static uint32_t Commands::command_executing;
+ uint32_t Commands::command_executing;
 
 /**
  * uint32_t 8 bytes arguments for commands to be called
  */
-static uint32_t Commands::command_argument1;
-static uint32_t Commands::command_argument2;
-static uint32_t Commands::command_argument3;
-static uint32_t Commands::command_argument4;
-static uint32_t Commands::command_argument5;
-static uint32_t Commands::command_argument6;
-static uint32_t Commands::command_argument7;
-static uint32_t Commands::command_argument8;
+ uint32_t Commands::command_argument1;
+ uint32_t Commands::command_argument2;
+ uint32_t Commands::command_argument3;
+ uint32_t Commands::command_argument4;
+ uint32_t Commands::command_argument5;
+ uint32_t Commands::command_argument6;
+ uint32_t Commands::command_argument7;
+ uint32_t Commands::command_argument8;
 
 Commands::Commands(LocalBuffers *_localBuffers, Responses *_response){
 	localBuffers = _localBuffers;
-//	res
+	response = _response;
 }
 
 bool Commands::get_data(){
@@ -33,6 +34,10 @@ bool Commands::get_data(){
 	sensor1_data = getSensor1();
 	// DTH21#2 ouput
 	sensor2_data = getSensor2();
+
+	response->sendFullStatusData(sensor1_data, sensor2_data);
+
+	return true;
 
 }
 

@@ -6,6 +6,9 @@
  * is under his own headers. Change this project-defines.h as you want.
  */
 #include "main.h"
+#include <LocalBuffers.h>
+#include <Commands.h>
+#include <MsgPackHandler.h>
 //#include <sintaxes-lib.h>
 //#include <LocalBuffers.h>
 
@@ -48,20 +51,30 @@ void loop() {
 				break;
 			}
 
+//			if(size == 0){
+//				response.writeError_MAL_FORMED_REQUEST();
+//				break;
+//			}
+
+			//TODO: deal with headers and URL arguments, it must be raw msgpack 4BCP
+
+			//MsgPackHandler: Deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
+			//[check 4BCP specs Documentation for more information]
 			msgpck.init((Stream *) &client, size);
+			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpck.processStream()){
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
 			} else {
 				//TODO:roolback machine state from SD Card
+				break;
 			}
-
-
 //			client.write(LocalBuffers::client_request_buffer, size);
 		}
 		client.stop();
 	}
 
+//	LocalBuffers::reset()
 	LocalBuffers::float2char_buffer1[0] = '\0';
 	LocalBuffers::float2char_buffer2[0] = '\0';
 	LocalBuffers::string_cpy_buffer[0] = '\0';

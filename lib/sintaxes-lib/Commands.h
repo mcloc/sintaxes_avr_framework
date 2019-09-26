@@ -37,11 +37,10 @@ public:
     static uint32_t command_argument8;
 
     Commands();
-    Commands(LocalBuffers *localBuffers, Responses *response);
+    Commands(LocalBuffers *localBuffers, Responses *_response);
     bool get_data();
     void initSensors();
-    LocalBuffers *localBuffers;
-    Responses *reponse;
+
     DHT *dht1;
     DHT *dht2;
     void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
@@ -50,6 +49,8 @@ public:
 
 
 private:
+    LocalBuffers *localBuffers;
+    Responses *response;
     char *  getSensor1();
     char *  getSensor2();
     DHT getDHT1();

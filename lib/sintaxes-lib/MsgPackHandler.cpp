@@ -3,11 +3,11 @@
  * @ the END of our appliance needs. In this case we are using a new Layer 7 (Application Layer)
  * on TOP of MessagePack protocol layer.
  *
- * We call it "4Bytes COMMAND PROTOCOL" (4BCP). It's composed of only 32bit unsigned long (0xffff0000 to0xfffffff)
+ * We call it "4Bytes COMMAND PROTOCOL" (4BCP). It's composed of only 32bit unsigned long (0xffff0000 ~ 0xfffffff)
  * Note that first 2 bytes still reserved for improving the communications of 4Bytes CmdProtocol.
  *
  * This Layer is almost a implementation of RPC but built with a flow of execution designed to
- * be execution at real time processing message, with exceptions thrown @ real time trough TCP
+ * execute commands at real time on processing message, with exceptions thrown @ real time trough TCP
  * client stream as JSON formated and rollback support with previous state guarded on SD Card.
  * We can response JSON because all strings are stored @ flash memory with PROGMEM, so it's
  * quite simple to make a JSON response. But parse JSON requires too much memory
@@ -15,7 +15,7 @@
  * no string pointers (except the FlashStringPointers* which is a powerful tool that allows
  * snprintf_P() formated strings with run time values or other FlashStringPointer*).
  * So once again the most efficient way to send requests to 8bit controller devices (2KB RAM)
- * is MSGPACK with 4bytes COMMAND PROTOCOL on top of it, acting like a RPC
+ * is MSGPACK with 4Bytes COMMAND PROTOCOL on top of it, acting like a RPC
  *
  * commands_map.h, devices.h, is the main essentials headers which #defines all mapping for this
  * appliance at per si. So on the other hand, one whose going to consume and operate this appliance
@@ -23,7 +23,7 @@
  *
  * Don't worry on any request breaking your sketch this implementation have taken care of unmapped
  * commands, the only problem is to check the maps defines, maybe we should hash the contents of the map
- * to ensure we talking about the same things on both sides.
+ * in check if match to ensure we talking about the same things on both sides.
  *
  */
 
@@ -62,8 +62,11 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer, size);
 	buffer_bytes_remaining = buffer_lenght;
 
+
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
+	response_headers_already_sent = true;
+	response_headers_code = 200;
 
 	return true;
 }
@@ -215,7 +218,8 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 		case MODULE_COMMMAND_FLAG: {
 			//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
 			uint8_t _byte = next();
-			assemble32bitByte(_byte);
+			if(assemble32bitByte(_byte))
+				return false;
 			//This is a new _32bit_word the command to be executed
 			commands->command_executing = _32bitword;
 			status = MSGPACK_STATE_COMMAND_SET;
@@ -262,21 +266,22 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 
 			//Everything possible in _32bitword must be Mapped  :: A T T E N T I O N :: what about 32bit arguments values
 			//this default is not true check Machine status
-			if(status = MSGPACK_STATE_COMMAND_WATING_ARG_VALUE){
+			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE){
 				//it's a 32bit argument value
 				//TODO: set the value for the current argument
 				response->write32bitByte(_32bitword); // DEBUG
 				return true;
 			}
 
-
 			//If it's not a argument value it's an inconsistence on 4BCP
-			error_code = ERROR_MSGPACK_UNKNOW;
-			response->writeMsgPackUnknowError();
+			error_code = ERROR_MSGPACK_4BCP_UNKNOW;
+//			response->write4BCPUnknowError();
 			return false;
 		}
 	}
 
+	error_code = ERROR_MSGPACK_4BCP_UNKNOW;
+//	response->write4BCPUnknowError();
 	//TODO: if 32bitword is not mapped return false; send responses [ remember, throw is always @front  each false must than be taken CARE]
 	return false;
 }

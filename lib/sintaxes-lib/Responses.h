@@ -13,6 +13,11 @@ class Responses{
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
         void writeModule500DataHeaders();
+
+        void sendFullStatusData(char *sensor1_data, char*sensor2_data);
+        void initJsonResponse();
+        void closeJsonResponse();
+
         void writeError_MAX_SIZE_REQUEST();
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
@@ -20,6 +25,8 @@ class Responses{
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeSTXError();
+
+
         void writeByte(uint8_t byte);
         void write32bitByte(unsigned long word);
         void writeRaw(char *byte);
@@ -37,6 +44,9 @@ class Responses{
         LocalBuffers *localBuffers;
         EthernetClient *client;
         
+    	bool response_json_initiated = false;
+    	char response_json_finish_objects[];
+
         
 };
 

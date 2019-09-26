@@ -45,6 +45,9 @@ private:
 	uint8_t _32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong
 	unsigned long _32bitword_array[4]; //4th index is the NULL terminator
 
+	unsigned int response_headers_code;
+	bool response_headers_already_sent = false;
+
 	//4Bytes Command Protocol buffers
 	unsigned long ext_command;
 	unsigned long ext_command_args1;
