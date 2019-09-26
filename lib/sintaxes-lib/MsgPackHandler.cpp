@@ -56,9 +56,10 @@ static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[9] PROGMEM = {
 /**
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
-MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands) {
+MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, SintaxesLib *_sintaxes_lib) {
 	response = _responses;
 	commands = _commands;
+	sintaxesLib = _sintaxes_lib;
 	setStatus(MSGPACK_STATE_IDLE);
 }
 
@@ -71,7 +72,8 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands) {
  * in sintaxes-framework-defines.h
  */
 bool MsgPackHandler::init(Stream *_stream, int size) {
-	setStatus(MSGPACK_STATE_BEGIN);
+	if(!setStatus(MSGPACK_STATE_BEGIN))
+		return false;
 
 	reset_32bit_processing();
 	buffer_position = 0;
@@ -102,7 +104,7 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
 		uint8_t _byte = MsgPackHandler::next();
-		response->writeByte(_byte);
+//		response->writeByte(_byte);
 
 
 		/**
@@ -119,6 +121,7 @@ bool MsgPackHandler::processStream() {
 		//THIS IS AN MAP- [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		if(int map_elements_size = isMap(_byte) > 0){
 //			processMap(_byte, map_elements_size);
+			response->writeByte(map_elements_size); //DEBUG
 			response->writeByte(_byte); //DEBUG
 			continue;
 		}
@@ -137,8 +140,21 @@ bool MsgPackHandler::processStream() {
 		 * 	3 - report error on 4bytes commands Protocol with rollback action
 		 * 		for the previous state guarded on SD card
 		 */
-		if(!processByte(_byte))
+		if(!processByte(_byte)) {
+			return false;
+		}
+
+		if(status == MSGPACK_STATE_COMMAND_EXECUTED){
+			if(buffer_bytes_remaining > 0){
+				error_code = ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
+				response->writeErrorMsgPackHasFinishedWithBytes();
+				setStatus(MSGPACK_STATE_IDLE);
+				return false;
+			}
+			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
+				return false;
 			break;
+		}
 	}
 
 	//END OF EXEUTION OF COMMANDS ON THE FLY WITH RESPECTIVES RESPONSES DONE
@@ -148,7 +164,9 @@ bool MsgPackHandler::processStream() {
 	//return after execution of each command with status and guard the new machine state on SD Card
 	//we will use SD Card as log. So must implement methods for getting this log if requested
 	if(status == MSGPACK_STATE_COMMAND_FINISHED) {
-		setStatus(MSGPACK_STATE_IDLE);
+		if(!setStatus(MSGPACK_STATE_IDLE))
+			return false;
+
 		return true;
 	}
 	else{
@@ -185,6 +203,7 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 	switch (_byte) {
 		//LAYER 7 - 4Bytes COMMANDS FRAMEWORK PROCESSING - (RPC) [messagePack 0xce packet]
 		case MSGPACK_UINT32: {
+//			sintaxesLib->buzz(5000, 800,1);
 			if(!assemble32bitByte(_byte))
 				return false;
 
@@ -202,20 +221,29 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 
 		case MSGPACK_TRUE: {
 			//TODO set ARG VALUE
-			response->writeByte(true);//DEBUG
+//			response->writeByte(true);//DEBUG
 			return true;
 		}
 
 		case MSGPACK_FALSE: {
 			//TODO set ARG VALUE
-			response->writeByte(false);//DEBUG
+//			response->writeByte(false);//DEBUG
 			return true;
+		}
+
+		case true: {
+			return true;
+		}
+
+		case false: {
+			return false;
 		}
 
 		//TODO: implement more MessagePack types specification that could came as argument
 		//such as Float, ints 8 16 sign and unsigned and maybe strings for guardings literals on SD Card
 
 		default: {
+			response->writeByte(_byte);
 			error_code = ERROR_MSGPACK_PROCESSING;
 			response->writeMsgPackError(_byte);
 //			response->writeByte(_byte); //DEBUG
@@ -243,45 +271,63 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 		case MODULE_COMMMAND_FLAG: {
 			//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
 			uint8_t _byte = next();
-			if(assemble32bitByte(_byte))
+			if(!assemble32bitByte(_byte))
 				return false;
-			//This is a new _32bit_word the command to be executed
-			commands->command_executing = _32bitword;
-			setStatus(MSGPACK_STATE_COMMAND_SET);
-			return true;
-		}
 
-		case MODULE_COMMMAND_GET_DATA: {
-			response->writeByte(0xFF); // DEBUG
-			response->writeByte(0xFF); // DEBUG
-			response->writeByte(0xFF); // DEBUG
-			response->writeByte(0xFF); // DEBUG
-
+			//This is a new _32bit_word the command to be executed. Now assemble arguments and/or expect for MODULE_COMMMAND_EXECUTE_FLAG ()
 			commands->command_executing = _32bitword;
-			commands->get_data();
-			setStatus(MSGPACK_STATE_COMMAND_FINISHED);
+			if(!setStatus(MSGPACK_STATE_COMMAND_SET))
+				return false;
+
 			return true;
 		}
 
 		case MODULE_COMMMAND_EXECUTE_FLAG: {
-			commands->execute();
+			uint8_t _byte = next();
+			if(!_byte == MSGPACK_TRUE){
+				error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
+				response->writeErrorMsgPack4BCPExecuteFlagError();
+				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
+				return false;
+			}
+			//FIXME: POG to keep flow right
+			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
+			setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
+
+			if(!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
+				return false;
+
+
+			if(!commands->execute()){
+				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
+				return false;
+			}
+			//FIXME: POG to keep flow right
 			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
+
+			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
+				return false;
+
 			return true;
 		}
 
 		case MODULE_COMMMAND_SET_ARGS1:{
-			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
+			if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+				return false;
 //			if(commands->setArgumentField(MODULE_COMMMAND_SET_ARGS1)){
-				setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
+				if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+					return false;
 //				return true;
 //			}
 			return true; //DEBUG
 		}
 
 		case MODULE_COMMMAND_SET_ARGS2:{
-			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
+			if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+				return false;
 //			if(commands->setArgumentField(MODULE_COMMMAND_SET_ARGS2)){
-				setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
+				if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+					return false;
 //				return true;
 //			}
 			return true; //DEBUG
@@ -435,7 +481,7 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
 			_32bitword_remaining--;
 			status = actual_status; //return machine status to the previous status
-			response->write32bitByte(_32bitword); // DEBUG
+//			response->write32bitByte(_32bitword); // DEBUG
 			break;
 		}
 	}
@@ -478,11 +524,6 @@ bool MsgPackHandler::check4BCPProcesFlow(){
 //		response->writeByte(prev_status);
 		if(status == actual_process) {
 			if(last_process != prev_status && last_process != NULL){
-				//DEBUG
-//				response->writeByte(actual_process);
-//				response->writeByte(status);
-//				response->writeByte(prev_status);
-//				response->writeByte(last_process);
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
 				response->writeMsgPackProcessingFlowError();
 				return false;

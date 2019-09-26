@@ -1,6 +1,7 @@
 #ifndef __SINTAXES_MSGPACK_HANDLER_H_
 #define __SINTAXES_MSGPACK_HANDLER_H_
 
+#include <sintaxes-lib.h>
 #include <Stream.h>
 #include <Commands.h>
 #include <sintaxes-framework-defines.h>
@@ -13,7 +14,7 @@ class MsgPackHandler;
 class MsgPackHandler {
 public:
 	MsgPackHandler();
-	MsgPackHandler(Responses *_response, Commands *commands);
+	MsgPackHandler(Responses *_response, Commands *commands, SintaxesLib *sintax_lib);
 	bool init(Stream * _stream, int size);
 	bool processStream();
 
@@ -21,6 +22,7 @@ private:
 	Stream *stream;
 	Responses *response;
 	Commands *commands;
+	SintaxesLib *sintaxesLib;
 
 	uint8_t status;
 	uint8_t prev_status;

@@ -38,8 +38,11 @@ public:
 
     Commands();
     Commands(LocalBuffers *localBuffers, Responses *_response);
+
+
     bool get_data();
     void initSensors();
+
 
     DHT *dht1;
     DHT *dht2;

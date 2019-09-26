@@ -23,10 +23,14 @@ class Responses{
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
         void write4BCPWordNotMappedERROR();
+        void write4BCPUnknowCommand();
+        void writeErrorMsgPack4BCPExecuteFlagError();
         void writeErrorMsgPackHasNotFinishedStatus();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeMsgPackProcessingFlowError();
+        void writeErrorMsgPackHasFinishedWithBytes();
+
         void writeSTXError();
 
 

@@ -19,7 +19,7 @@ static SintaxesLib sintaxes_lib;
 static LocalBuffers localBuffers;
 static Responses response(&localBuffers);
 static Commands commands(&localBuffers, &response);
-static MsgPackHandler msgpck(&response, &commands);
+static MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 

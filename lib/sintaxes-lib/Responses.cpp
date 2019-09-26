@@ -33,6 +33,10 @@ void Responses::write4BCPWordNotMappedERROR(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::write4BCPUnknowCommand(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_UNKNOW_COMMAND,  ERROR_MSGPACK_4BCP_UNKNOW_COMMAND_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
 
 void Responses::writeMsgPackError(unsigned long _byte){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
@@ -49,20 +53,30 @@ void Responses::writeMsgPackProcessingFlowError(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeErrorMsgPackHasFinishedWithBytes(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES,  ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 void Responses::writeErrorMsgPackHasNotFinishedStatus(){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_NOT_IN_FINISHED_STATE,  ERROR_MSGPACK_NOT_IN_FINISHED_STATE_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
-void Responses::writeDEBUG_INT(unsigned long byte){
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_INT), byte);
-	client->println(LocalBuffers::string_cpy_buffer);
-}
-
-void Responses::writeDEBUG_CHAR(__FlashStringHelper  *byte){
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_CHAR), byte);
+void Responses::writeErrorMsgPack4BCPExecuteFlagError(){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_EXECUTE_FLAG,  ERROR_MSGPACK_4BCP_EXECUTE_FLAG_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
+
+//void Responses::writeDEBUG_INT(unsigned long byte){
+//	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_INT), byte);
+//	client->println(LocalBuffers::string_cpy_buffer);
+//}
+//
+//void Responses::writeDEBUG_CHAR(__FlashStringHelper  *byte){
+//	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_CHAR), byte);
+//	client->print(LocalBuffers::string_cpy_buffer);
+//}
 
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule500DataHeaders();
@@ -76,11 +90,11 @@ void Responses::writeError_MAL_FORMED_REQUEST(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
-void Responses::writeSTXError(){
-	writeModule500DataHeaders();
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MISSING_STX,  REQUEST_MISSING_STX_ERROR_STR);
-	client->print(LocalBuffers::string_cpy_buffer);
-}
+//void Responses::writeSTXError(){
+//	writeModule500DataHeaders();
+//	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MISSING_STX,  REQUEST_MISSING_STX_ERROR_STR);
+//	client->print(LocalBuffers::string_cpy_buffer);
+//}
 
 void Responses::writeRaw(char *byte){
 	client->println(byte);
@@ -196,10 +210,10 @@ void Responses::sendFullStatusData(char *sensor1_data, char*sensor2_data){
 	client->print(FSH(json_module_braces_close));
 	client->print(FSH(json_module_comma_separator));
 	client->print(FSH(json_module_status));
-	client->print(FSH(json_module_comma_separator));
+//	client->print(FSH(json_module_comma_separator));
 
 	//Errors data
-	client->print(FSH(json_module_error));
+//	client->print(FSH(json_module_error));
 
 
 	//end the construction of Json

@@ -1,10 +1,11 @@
 #include <Arduino.h>
 #include <Commands.h>
-#include <Commands.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
-#include <StandardCplusplus.h>
+//#include <StandardCplusplus.h>
 #include <module_string.h>
+#include <commands_map.h>
+#include <devices.h>
 //#include <sintaxes-lib.h>
 /**
  * command to execute / in execution
@@ -77,6 +78,23 @@ char *  Commands::getSensor2(){
 }
 
 bool Commands::execute(){
+
+	switch(command_executing){
+		case MODULE_COMMMAND_GET_DATA: {
+			if(!get_data())
+				return false;
+
+			return true;
+		}
+
+		default:{
+//			error_code = ERROR_MSGPACK_4BCP_UNKNOW_COMMAND;
+			response->write4BCPUnknowCommand();
+			return false;
+		}
+	}
+
+	return false;
 	//TODO 	GET THE ASSEMBLED COMMAND ON COMMANDS.buffers AND CAL THE COMMAND FUNCTION
 	//		on the function execution send json with assignature of 4bytes command executing and
 	//		all it's args

@@ -9,8 +9,7 @@
  * 
  */
 
-	const char DEBUG_INT[] PROGMEM = "{\"DEBUG INT\":%lu}";
-	const char DEBUG_CHAR[] PROGMEM = "{\"DEBUG CHAR\":%S}";
+
     static const char header_response_200[] PROGMEM = "HTTP/1.1 200 OK";
     const char header_response_500[] PROGMEM = "HTTP/1.1 500 Internal Server Error";
     const char header_content_type_json[] PROGMEM = "Content-Type: application/json;charset=utf-8";
@@ -38,7 +37,6 @@
     const char REQUEST_MAX_LENGHT_ERROR_STR[] PROGMEM = "max request lenght achieved.";
     const char ERROR_MAL_FORMED_REQUEST_STR[] PROGMEM = "BAD Request, request must not have headers or be empty. It must follow MessagePack with 4Bytes Commands Protocol (4BCP).";
     const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "mal formed msgpack or 4byteCommandProtocol";
-    const char REQUEST_MISSING_STX_ERROR_STR[] PROGMEM = "mal formed request, must begin with STX command char and end with ETX command char";
     const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "error trying to assembly 32bit word";
     const char ERROR_32BIT_RESETING_STR[] PROGMEM = "trying to reset _32bitword with Machine Status set as MSGPACK_STATE_WORKING_32BIT. Check your Program Flow, maybe you misunderstood STATUS Chain";
     const char ERROR_MSGPACK_PROCESSING_STR[] PROGMEM = "error processing messagePack on 4Bytes Commands Protocol. RETURNIN THAT OLD STATE!";
@@ -48,4 +46,9 @@
     const char ERROR_MSGPACK_4BCP_WORD_EXPECTED_STR[] PROGMEM = "4BPC word is mapped but not the expected one at this momment. Try request 4BCP protocol reference.";
     const char ERROR_MSGPACK_4BCP_WORD_MISSING_STR[] PROGMEM = "4BPC word is missing after all request processed. Try request 4BCP protocol reference.";
     const char ERROR_MSGPACK_4BCP_PROCESSING_FLOW_STR[] PROGMEM = "4BCP processs flow error. Check for process_flow in the MsgPackHandler::MSGPACK4BCPProcessFlow(), or request it by COMMAND";
+    const char ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES_STR[] PROGMEM = "4BCP has stated the COMMMAND IS FINISHED but there are still bytes to read. This state is only achieved after MODULE_COMMMAND_EXECUTE_FLAG, so it should be nothing more left to process.";
+    const char ERROR_MSGPACK_4BCP_UNKNOW_COMMAND_STR[] PROGMEM ="Unknow how to execute COMMAND";
+    const char ERROR_MSGPACK_4BCP_EXECUTE_FLAG_STR[] PROGMEM = "EXECUTE_COMMAND_FLAG (0xFFFF0013) is supposed to have a msgPack TRUE (0xc3) on next byte.";
+
+
 #endif
