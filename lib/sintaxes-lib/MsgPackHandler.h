@@ -76,7 +76,7 @@ private:
 	bool process4BytesCmdProtocol();
 	bool processMappedResource(unsigned long resource);
 
-	void setStatus(uint8_t _status);
+	bool setStatus(uint8_t _status);
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();

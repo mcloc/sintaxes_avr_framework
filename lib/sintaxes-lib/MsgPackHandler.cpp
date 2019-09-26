@@ -101,9 +101,6 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
-		if(!check4BCPProcesFlow())
-			return false;
-
 		uint8_t _byte = MsgPackHandler::next();
 //		response->writeByte(_byte);
 
@@ -528,9 +525,11 @@ unsigned long MsgPackHandler::isMapped(){
 	return _32bitword; //DEBUG t needs to return the type of 4BCP
 }
 
-void MsgPackHandler::setStatus(uint8_t _status){
+bool MsgPackHandler::setStatus(uint8_t _status){
 	prev_status = status;
 	status = _status;
+	if(!check4BCPProcesFlow())
+		return false;
 }
 
 /**
