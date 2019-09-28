@@ -30,11 +30,19 @@ Commands::Commands(LocalBuffers *_localBuffers, Responses *_response){
 }
 
 bool Commands::get_data(){
-	char *sensor1_data, *sensor2_data;
-	// DTH21#1 ouput
-	sensor1_data = getSensor1();
-	// DTH21#2 ouput
-	sensor2_data = getSensor2();
+	char sensor1_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
+	char sensor2_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
+	char *buffer;
+
+
+
+//	// DTH21#1 ouput
+	buffer = getSensor1();
+//	uint8_t size = strlen(buffer);
+	memmove(sensor1_data, buffer, MAX_SIZE_ALLOWED_PROGMEM_STRING);
+	buffer = getSensor2();
+//	// DTH21#2 ouput
+	memmove(sensor2_data, buffer, MAX_SIZE_ALLOWED_PROGMEM_STRING);
 
 	response->sendFullStatusData(sensor1_data, sensor2_data);
 

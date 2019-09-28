@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef __SINTAX_RESPONSES_H_
 #define __SINTAX_RESPONSES_H_
 #include <UIPEthernet.h>
@@ -14,7 +16,7 @@ class Responses{
         void writeModule200DataHeaders();
         void writeModule500DataHeaders();
 
-        void sendFullStatusData(char *sensor1_data, char*sensor2_data);
+        void sendFullStatusData(char *sensor1_data, char *sensor2_data);
         void initJsonResponse();
         void closeJsonResponse();
 

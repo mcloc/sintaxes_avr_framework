@@ -34,9 +34,10 @@
     const char json_module_sensor2[] PROGMEM  = "{\"uuid\":\"DHT21#2\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"heat_index\":\"xxxxx\"}]}";
     const char json_module_actuator1[] PROGMEM  = "{\"uuid\":\"solenoid#1\",\"value\":{\"active\":103,\"activated_time\":111}}";
 
-    const char REQUEST_MAX_LENGHT_ERROR_STR[] PROGMEM = "max request lenght achieved.";
+    const char ERROR_NONE_STR[] PROGMEM = "no errors";
+    const char ERROR_REQUEST_MAX_LENGHT_STR[] PROGMEM = "max request lenght achieved.";
     const char ERROR_MAL_FORMED_REQUEST_STR[] PROGMEM = "BAD Request, request must not have headers or be empty. It must follow MessagePack with 4Bytes Commands Protocol (4BCP).";
-    const char MAL_FORMATED_MSGPCK_ERROR_STR[] PROGMEM = "mal formed msgpack or 4byteCommandProtocol";
+    const char ERROR_MAL_FORMATED_MSGPCK_STR[] PROGMEM = "mal formed msgpack or 4byteCommandProtocol";
     const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "error trying to assembly 32bit word";
     const char ERROR_32BIT_RESETING_STR[] PROGMEM = "trying to reset _32bitword with Machine Status set as MSGPACK_STATE_WORKING_32BIT. Check your Program Flow, maybe you misunderstood STATUS Chain";
     const char ERROR_MSGPACK_PROCESSING_STR[] PROGMEM = "error processing messagePack on 4Bytes Commands Protocol. RETURNIN THAT OLD STATE!";

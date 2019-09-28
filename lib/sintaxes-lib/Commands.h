@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef __MODULE_COMMANDS_H_
 #define __MODULE_COMMANDS_H_
 
@@ -48,14 +50,14 @@ public:
     DHT *dht2;
     void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
     void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
+    char *  getSensor1();
+    char *  getSensor2();
     bool execute();
 
 
 private:
     LocalBuffers *localBuffers;
     Responses *response;
-    char *  getSensor1();
-    char *  getSensor2();
     DHT getDHT1();
     DHT getDHT2();
     

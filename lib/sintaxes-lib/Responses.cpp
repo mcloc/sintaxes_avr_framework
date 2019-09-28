@@ -80,7 +80,7 @@ void Responses::writeErrorMsgPack4BCPExecuteFlagError(){
 
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule500DataHeaders();
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MAX_LENGHT,  REQUEST_MAX_LENGHT_ERROR_STR);
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MAX_LENGHT,  ERROR_REQUEST_MAX_LENGHT_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
@@ -170,7 +170,7 @@ void Responses::closeJsonResponse(){
 	client->print(FSH(json_module_new_line));
 }
 
-void Responses::sendFullStatusData(char *sensor1_data, char*sensor2_data){
+void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
 	//begin the construction of Json
 	client->print(FSH(json_module_braces_open));
 	//Message Header
@@ -187,18 +187,18 @@ void Responses::sendFullStatusData(char *sensor1_data, char*sensor2_data){
 	client->print(FSH(json_module_sensors_key));
 	client->print(FSH(json_module_brackets_open));
 
-
-	//FIXME: how to get rid of local buffer, this is due sensor need to get called sepratly
-	// since everything uses the samebuffer LocalBuffers::string_cpy_buffer,
 	// DTH21#1 ouput
 	client->print(sensor1_data); //json object of the Sensor 1
+
 	client->print(FSH(json_module_comma_separator));
+
 	// DTH21#2 ouput
 	client->print(sensor2_data); //json object of the Sensor 2
 
 	// close Sensors array
 	client->print(FSH(json_module_brackets_close));
 	client->print(FSH(json_module_comma_separator));
+
 
 	//Data key Actuator
 	client->print(FSH(json_module_actuators_key));
@@ -210,13 +210,14 @@ void Responses::sendFullStatusData(char *sensor1_data, char*sensor2_data){
 	client->print(FSH(json_module_braces_close));
 	client->print(FSH(json_module_comma_separator));
 	client->print(FSH(json_module_status));
-//	client->print(FSH(json_module_comma_separator));
+	client->print(FSH(json_module_comma_separator));
 
-	//Errors data
+//	Errors data
 //	client->print(FSH(json_module_error));
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_NONE,  ERROR_NONE_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
 
-
-	//end the construction of Json
+//	end the construction of Json
 	client->print(FSH(json_module_braces_close));
 	client->print(FSH(json_module_new_line));
 }
