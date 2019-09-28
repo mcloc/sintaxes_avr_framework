@@ -1,9 +1,10 @@
 //FIXME: only user defines should be here or moved to defines.h
 #define STX 0x02
 #define ETX 0x03
-#define GREEN_LED 6
-#define DHT1PIN 7
-#define DHT2PIN 8
+#define RED_LED 22
+#define BOARD_LED 13
+#define DHT1PIN 40
+#define DHT2PIN 41
 #define DHTTYPE DHT21   // DHT 11
 #define BUZZPIN A0
 

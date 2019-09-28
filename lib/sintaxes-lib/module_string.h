@@ -10,7 +10,7 @@
  */
 
 
-    static const char header_response_200[] PROGMEM = "HTTP/1.1 200 OK";
+    const char header_response_200[] PROGMEM = "HTTP/1.1 200 OK";
     const char header_response_500[] PROGMEM = "HTTP/1.1 500 Internal Server Error";
     const char header_content_type_json[] PROGMEM = "Content-Type: application/json;charset=utf-8";
     const char header_server[] PROGMEM = "Server: AVR-Sintaxes-module-1";

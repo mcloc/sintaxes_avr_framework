@@ -26,6 +26,9 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 
 void setup() {
+	pinMode(RED_LED, OUTPUT);
+	pinMode(RED_LED, OUTPUT);
+	sintaxes_lib.setLed(RED_LED, LOW);
 	pinMode(BUZZPIN, OUTPUT);
 	sintaxes_lib._BUZZPIN = BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
@@ -35,6 +38,7 @@ void setup() {
 	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
 	commands.setDHT2(&dht2, DHT1PIN, DHTTYPE);
 
+	sintaxes_lib.blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying
 	while (Ethernet.begin(mac) == 0) {
 		sintaxes_lib.buzz( 8000, 400, 2);
@@ -42,6 +46,7 @@ void setup() {
 	}
 	server.begin();
 	sintaxes_lib.buzz( 5000, 300, 4);
+	sintaxes_lib.blink(BOARD_LED, 200, 4);
 }
 
 void loop() {

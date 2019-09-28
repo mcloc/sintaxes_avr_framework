@@ -15,3 +15,16 @@ void SintaxesLib::buzz(int freq, int _delay, uint8_t times = 1){
 		delay(_delay);
 	}
 }
+
+void SintaxesLib::setLed(uint8_t pin_led, uint8_t level){
+	digitalWrite(pin_led, level);
+}
+
+void SintaxesLib::blink(uint8_t pin_led, uint8_t _delay, uint8_t times = 1){
+	for(uint8_t i=0;i<times;i++){
+		setLed(pin_led, HIGH);
+		delay(_delay);        // ...for 1 sec
+		setLed(pin_led, LOW);
+		delay(_delay);
+	}
+}

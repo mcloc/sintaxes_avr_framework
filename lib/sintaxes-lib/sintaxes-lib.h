@@ -20,6 +20,8 @@ class SintaxesLib {
 public:
 	SintaxesLib();
 	void buzz(int freq, int _delay, uint8_t times = 1);
+	void setLed(uint8_t pin_led, uint8_t level);
+	void blink(uint8_t pin_led, uint8_t _delay, uint8_t times = 1);
 	uint8_t _BUZZPIN;
 
 };
