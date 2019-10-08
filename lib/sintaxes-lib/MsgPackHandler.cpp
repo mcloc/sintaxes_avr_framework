@@ -93,6 +93,7 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
+	response->initJsonResponse();
 	response_headers_already_sent = true;
 	response_headers_code = 200;
 
@@ -129,10 +130,10 @@ bool MsgPackHandler::processStream() {
 		array_size = isArray(_byte);
 		if( array_size > 0){
 //			processArray(_byte, array_size);
-			response->writeRaw(F("MAP:"));
-			response->writeByte(_byte); //DEBUG
-			response->writeRaw(F("SIZE:"));
-			response->writeByte(array_size); //DEBUG
+//			response->writeRaw(F("MAP:"));
+//			response->writeByte(_byte); //DEBUG
+//			response->writeRaw(F("SIZE:"));
+//			response->writeByte(array_size); //DEBUG
 
 			continue;
 		}
@@ -141,10 +142,10 @@ bool MsgPackHandler::processStream() {
 		map_elements_size = isMap(_byte);
 		if(map_elements_size > 0){
 //			processMap(_byte, map_elements_size);
-			response->writeRaw(F("MAP:"));
-			response->writeByte(_byte); //DEBUG
-			response->writeRaw(F("SIZE:"));
-			response->writeByte(map_elements_size); //DEBUG
+//			response->writeRaw(F("MAP:"));
+//			response->writeByte(_byte); //DEBUG
+//			response->writeRaw(F("SIZE:"));
+//			response->writeByte(map_elements_size); //DEBUG
 
 			continue;
 		}
@@ -195,7 +196,7 @@ bool MsgPackHandler::processStream() {
 
 		return true;
 	} else{
-		response->writeByte(status);
+//		response->writeByte(status);
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
 		response->writeErrorMsgPackHasNotFinishedStatus();
 		setStatus(MSGPACK_STATE_IDLE);
@@ -258,11 +259,15 @@ bool MsgPackHandler::processByte(uint8_t _byte) {
 		}
 
 		case true: {
+			//TODO set ARG VALUE
+//			response->writeByte(false);//DEBUG
 			return true;
 		}
 
 		case false: {
-			return false;
+			//TODO set ARG VALUE
+//			response->writeByte(false);//DEBUG
+			return true;
 		}
 
 		//TODO: implement more MessagePack types specification that could came as argument
@@ -552,19 +557,23 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 //		response->writeByte(prev_status);
 
 		if(status == actual_process) {
-			response->writeRaw(F("IDENTIFIED STATUS:"));
-			response->writeByte(actual_process);
-			response->writeRaw(F("PREV STATUS:"));
-			response->writeByte(prev_status);
-			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1);
-			response->writeRaw(F("NEXT STATUS:"));
-			response->writeByte(next_status); //DEBUG
+
+			//DEBUG
+//			response->writeRaw(F("IDENTIFIED STATUS:"));
+//			response->writeByte(actual_process);
+//			response->writeRaw(F("PREV STATUS:"));
+//			response->writeByte(prev_status);
+//			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1);
+//			response->writeRaw(F("NEXT STATUS:"));
+//			response->writeByte(next_status); //DEBUG
 
 			//LOOP for setting argument and wating arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
 			if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
 				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
 				return true;
 
+			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
+				next_status = MSGPACK_STATE_COMMAND_EXECUTING;
 
 			if(last_process != NULL && last_process != prev_status){
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
@@ -627,20 +636,20 @@ unsigned long MsgPackHandler::isMapped(){
 }
 
 bool MsgPackHandler::setStatus(uint8_t _status){
-	//DEBUG
-	if(status != MSGPACK_STATE_IDLE) {
-		response->writeRaw(F("MEM BEFORE CHANGE STATUS:"));//DEBUG
-		response->writeByte(status); //DEBUG
-	}
+//	//DEBUG
+//	if(status != MSGPACK_STATE_IDLE) {
+//		response->writeRaw(F("MEM BEFORE CHANGE STATUS:"));//DEBUG
+//		response->writeByte(status); //DEBUG
+//	}
 
 	prev_status = status;
 	status = _status;
 
 	//DEBUG
-	if(status != MSGPACK_STATE_IDLE) {
-		response->writeRaw(F("CHANGED STATUS TO:"));//DEBUG
-		response->writeByte(status); //DEBUG
-	}
+//	if(status != MSGPACK_STATE_IDLE) {
+//		response->writeRaw(F("CHANGED STATUS TO:"));//DEBUG
+//		response->writeByte(status); //DEBUG
+//	}
 
 
 	if(_status == MSGPACK_STATE_IDLE)

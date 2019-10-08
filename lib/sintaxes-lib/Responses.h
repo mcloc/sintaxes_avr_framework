@@ -48,7 +48,7 @@ class Responses{
         void writeDEBUG_CHAR(__FlashStringHelper *byte);
 //        void writeDEBUG_CHAR(unsigned long byte);
         int	error_MAX_SIZE_REQUEST_SIZE();
-
+        void setReponseJsonInitiated();
 
 
     

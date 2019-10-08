@@ -31,6 +31,7 @@
     const char json_module_msg_pack_flow_status[] PROGMEM = "{\"status_flow\":\"4BCP processs flow. Actual previous status: %02X  -- status:%02X -- next status:%02X\"}";
     const char json_module_error_key[] PROGMEM = "\"error\":";
     const char json_module_data_key[] PROGMEM  = "\"data\":";
+    const char json_module_reponse_key[] PROGMEM = "\"reponse\":";
     const char json_module_sensors_key[] PROGMEM  = "\"sensors\":";
     const char json_module_actuators_key[] PROGMEM  = "\"actuators\":";
     const char json_module_sensor1[] PROGMEM  = "{\"uuid\":\"DHT21#1\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"heat_index\":\"xxxxx\"}]}";

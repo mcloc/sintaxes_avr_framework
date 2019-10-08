@@ -18,68 +18,122 @@ void Responses::setClient(EthernetClient *_client){
 	client = _client;
 }
 
+//void Responses::setReponseJsonInitiated(){
+//	response_json_initiated = true;
+//}
+
 void Responses::writeProcess32bitwordERROR(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_32BIT_PROCESSING,  ERROR_32BIT_PROCESSING_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeReseting32bitwordERROR(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_32BIT_RESETING,  ERROR_32BIT_RESETING_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::write4BCPWordNotMappedERROR(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_WORD_NOT_MAPPED,  ERROR_MSGPACK_4BCP_WORD_NOT_MAPPED_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::write4BCPUnknowCommand(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_UNKNOW_COMMAND,  ERROR_MSGPACK_4BCP_UNKNOW_COMMAND_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeMsgPackError(unsigned long _byte){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_PROCESSING,  ERROR_MSGPACK_PROCESSING_STR, _byte);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeMsgPackUnknowError(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_UNKNOW,  ERROR_MSGPACK_UNKNOW_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeMsgPackProcessingFlowError(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_PROCESSING_FLOW,  ERROR_MSGPACK_4BCP_PROCESSING_FLOW_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error_msg_pack_flow), ERROR_MSGPACK_4BCP_PROCESSING_FLOW, prev, status, next);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, uint8_t prev){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_msg_pack_flow_status), prev, status, next);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 
 void Responses::writeErrorMsgPackHasFinishedWithBytes(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES,  ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeErrorMsgPackHasNotFinishedStatus(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_NOT_IN_FINISHED_STATE,  ERROR_MSGPACK_NOT_IN_FINISHED_STATE_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::writeErrorMsgPack4BCPExecuteFlagError(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_EXECUTE_FLAG,  ERROR_MSGPACK_4BCP_EXECUTE_FLAG_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
 void Responses::write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_4BCP_unknown_error), ERROR_MSGPACK_4BCP_UNKNOW,  prev, status, next);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
@@ -162,8 +216,8 @@ void Responses::initJsonResponse(){
 	client->print(FSH(json_module_uptime));
 	client->print(FSH(json_module_comma_separator));
 	//Data Object
-	client->print(FSH(json_module_data_key));
-	client->print(FSH(json_module_braces_open));
+	client->print(FSH(json_module_reponse_key));
+//	client->print(FSH(json_module_braces_open));
 
 	//Strings that need to be finished after JSON snippets responses was sent
 	//this should call a finish JSON before closing connection.
