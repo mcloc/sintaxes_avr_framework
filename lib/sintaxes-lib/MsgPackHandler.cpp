@@ -173,6 +173,7 @@ bool MsgPackHandler::processStream() {
 			if(buffer_bytes_remaining > 0){
 				error_code = ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
 				response->writeErrorMsgPackHasFinishedWithBytes();
+				response->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
@@ -191,14 +192,17 @@ bool MsgPackHandler::processStream() {
 	//return after execution of each command with status and guard the new machine state on SD Card
 	//we will use SD Card as log. So must implement methods for getting this log if requested
 	if(status == MSGPACK_STATE_COMMAND_FINISHED) {
-		if(!setStatus(MSGPACK_STATE_IDLE))
+		if(!setStatus(MSGPACK_STATE_IDLE)) {
+			response->closeJsonResponse();
 			return false;
+		}
 
 		return true;
 	} else{
 //		response->writeByte(status);
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
 		response->writeErrorMsgPackHasNotFinishedStatus();
+		response->closeJsonResponse();
 		setStatus(MSGPACK_STATE_IDLE);
 		return false;
 	}

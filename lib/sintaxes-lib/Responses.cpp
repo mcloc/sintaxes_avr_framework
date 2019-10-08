@@ -217,6 +217,7 @@ void Responses::initJsonResponse(){
 	client->print(FSH(json_module_comma_separator));
 	//Data Object
 	client->print(FSH(json_module_reponse_key));
+	client->print(FSH(json_module_brackets_open));
 //	client->print(FSH(json_module_braces_open));
 
 	//Strings that need to be finished after JSON snippets responses was sent
@@ -232,12 +233,9 @@ void Responses::initJsonResponse(){
 }
 
 void Responses::closeJsonResponse(){
-	uint8_t json_finish_objects_size = sizeof(response_json_finish_objects);
-	if( json_finish_objects_size > 0){
-		for(uint8_t i  = 0; i < json_finish_objects_size;i++)
-			client->print(FSH(response_json_finish_objects[i]));
-	}
-	client->print(FSH(json_module_new_line));
+	client->print(FSH(json_module_brackets_close));
+	client->print(FSH(json_module_braces_close));
+	client->println();
 }
 
 void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
