@@ -9,10 +9,10 @@
 #define LIB_SINTAXES_LIB_SINTAXES_FRAMEWORK_DEFINES_H_
 
 // 180 bytes allowed in post get incomming requests
-#define MAX_SIZE_ALLOWED_REQUEST 180
+#define MAX_SIZE_ALLOWED_REQUEST 220
 
 // 180 bytes for working with flash strings like snprintf() LocalBuffers::string_cpy_buffer
-#define MAX_SIZE_ALLOWED_PROGMEM_STRING 180
+#define MAX_SIZE_ALLOWED_PROGMEM_STRING 220
 
 //msgPack max per request. This limit this must at compliance with ext_command_args1 fields
 //This aapliance we limitting 3 commands per request and 4 args per command

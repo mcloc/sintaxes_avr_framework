@@ -53,6 +53,17 @@ void Responses::writeMsgPackProcessingFlowError(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error_msg_pack_flow), ERROR_MSGPACK_4BCP_PROCESSING_FLOW, prev, status, next);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, uint8_t prev){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_msg_pack_flow_status), prev, status, next);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
 void Responses::writeErrorMsgPackHasFinishedWithBytes(){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES,  ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
@@ -65,6 +76,11 @@ void Responses::writeErrorMsgPackHasNotFinishedStatus(){
 
 void Responses::writeErrorMsgPack4BCPExecuteFlagError(){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_EXECUTE_FLAG,  ERROR_MSGPACK_4BCP_EXECUTE_FLAG_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next){
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_4BCP_unknown_error), ERROR_MSGPACK_4BCP_UNKNOW,  prev, status, next);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
@@ -178,6 +194,7 @@ void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
 	client->print(FSH(json_module_comma_separator));
 	client->print(FSH(json_module_uptime));
 	client->print(FSH(json_module_comma_separator));
+
 	//Data Object
 	client->print(FSH(json_module_data_key));
 	client->print(FSH(json_module_braces_open));
@@ -213,7 +230,7 @@ void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
 	client->print(FSH(json_module_comma_separator));
 
 //	Errors data
-//	client->print(FSH(json_module_error));
+	client->print(FSH(json_module_error_key));
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_NONE,  ERROR_NONE_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 

@@ -8,6 +8,8 @@
 #include <msgpack_defines.h>
 #include <Arduino.h>
 
+#define MSGPACK4BCPProcessFlow_SIZE 	9
+#define MSGPACK4BCPProcessFlow2_SIZE 	7
 
 class MsgPackHandler;
 
@@ -55,7 +57,9 @@ private:
 	unsigned long ext_command_args4;
 
 	//FIXME: PROGMEM is ignored due
-	 static const uint8_t MSGPACK4BCPProcessFlow[];
+	 static const uint8_t MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE];
+	 static const uint8_t MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE];
+//	 static const uint8_t MSGPACK4BCPProcessFlow3[];
 
 //
 //	uint8_t length = sizeof(some_array) / sizeof(some_array[0]);
@@ -70,7 +74,8 @@ private:
 	bool processByte(uint8_t _byte);
 	bool processArray(uint8_t _byte, int array_size);
 	bool processMap(uint8_t _byte, int map_elements_size);
-	bool check4BCPProcesFlow();
+	bool check4BCPProcesFlow(const uint8_t *flow_array_ptr, uint8_t array_size);
+	bool checkFlow();
 
 	bool assemble32bitByte(uint8_t _byte);
 	bool reset_32bit_processing();

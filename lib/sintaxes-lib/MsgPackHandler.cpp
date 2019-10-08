@@ -42,12 +42,21 @@
 //}
 
 //static class members must be declared also in cpp.
-static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[9] PROGMEM = {
+static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE] PROGMEM = {
 		MSGPACK_STATE_IDLE,
 		MSGPACK_STATE_BEGIN,
 		MSGPACK_STATE_COMMAND_SET,
 		MSGPACK_STATE_COMMAND_SETTING_ARGS,
 		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
+		MSGPACK_STATE_COMMAND_EXECUTING,
+		MSGPACK_STATE_COMMAND_EXECUTED,
+		MSGPACK_STATE_COMMAND_FINISHED
+	};
+
+static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE] PROGMEM = {
+		MSGPACK_STATE_IDLE,
+		MSGPACK_STATE_BEGIN,
+		MSGPACK_STATE_COMMAND_SET,
 		MSGPACK_STATE_COMMAND_EXECUTING,
 		MSGPACK_STATE_COMMAND_EXECUTED,
 		MSGPACK_STATE_COMMAND_FINISHED
@@ -103,6 +112,10 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
+		uint8_t array_size = 0;
+		uint8_t map_elements_size = 0;
+
+
 		uint8_t _byte = MsgPackHandler::next();
 //		response->writeByte(_byte);
 
@@ -113,16 +126,26 @@ bool MsgPackHandler::processStream() {
 		 * to interpret commands as defined per use et per si.
 		 */
 		//THIS IS AN ARRAY - [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
-		if(int array_size = isArray(_byte) > 0){
+		array_size = isArray(_byte);
+		if( array_size > 0){
 //			processArray(_byte, array_size);
+			response->writeRaw(F("MAP:"));
 			response->writeByte(_byte); //DEBUG
+			response->writeRaw(F("SIZE:"));
+			response->writeByte(array_size); //DEBUG
+
 			continue;
 		}
+
 		//THIS IS AN MAP- [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
-		if(int map_elements_size = isMap(_byte) > 0){
+		map_elements_size = isMap(_byte);
+		if(map_elements_size > 0){
 //			processMap(_byte, map_elements_size);
-			response->writeByte(map_elements_size); //DEBUG
+			response->writeRaw(F("MAP:"));
 			response->writeByte(_byte); //DEBUG
+			response->writeRaw(F("SIZE:"));
+			response->writeByte(map_elements_size); //DEBUG
+
 			continue;
 		}
 
@@ -141,6 +164,7 @@ bool MsgPackHandler::processStream() {
 		 * 		for the previous state guarded on SD card
 		 */
 		if(!processByte(_byte)) {
+			response->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
 			return false;
 		}
 
@@ -157,6 +181,8 @@ bool MsgPackHandler::processStream() {
 		}
 	}
 
+//	response->writeMsgPackProcessingFlowError(status, next_status, prev_status); //DEBUG
+
 	//END OF EXEUTION OF COMMANDS ON THE FLY WITH RESPECTIVES RESPONSES DONE
 	//NOTHING MORE TO DO JUST RETURN true TO MAIN FUNCTION SAVE THE MACHINE STATE ON SD Card
 	//AND ALL 4BCP FOOTPRINT OF THIS REQUEST FOR  LOG PROPOUSES
@@ -168,8 +194,8 @@ bool MsgPackHandler::processStream() {
 			return false;
 
 		return true;
-	}
-	else{
+	} else{
+		response->writeByte(status);
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
 		response->writeErrorMsgPackHasNotFinishedStatus();
 		setStatus(MSGPACK_STATE_IDLE);
@@ -291,8 +317,8 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 				return false;
 			}
 			//FIXME: POG to keep flow right
-			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
-			setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
+//			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
+//			setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
 
 			if(!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
 				return false;
@@ -302,9 +328,9 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
 				return false;
 			}
-			//FIXME: POG to keep flow right
-			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
 
+			//TODO: LOG AND RETURN COMMAND STATUS MESSAGE THEN change status to FINISHED
+			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
 			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
 				return false;
 
@@ -335,7 +361,8 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 
 		default: {
 			//TODO: case in the commands or devices or arguments
-			if(unsigned long resource = isMapped()){
+			unsigned long resource = isMapped();
+			if(resource > 0 ){
 				if(processMappedResource(resource))
 					return true;
 			}
@@ -351,13 +378,13 @@ bool MsgPackHandler::process4BytesCmdProtocol(){
 
 			//If it's not a argument value it's an inconsistent on 4BCP
 			error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-//			response->write4BCPUnknowError(); //TODO
+			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 			return false;
 		}
 	}
 
 	error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-//	response->write4BCPUnknowError();
+	response->write4BCPUnknowError(prev_status, status, next_status);
 	//TODO: if 32bitword is not mapped return false; send responses [ remember, throw is always @front  each false must than be taken CARE]
 	return false;
 }
@@ -513,39 +540,66 @@ bool MsgPackHandler::reset_32bit_processing() {
  * HELPER METHODS
  */
 
-bool MsgPackHandler::check4BCPProcesFlow(){
-	uint8_t last_process, actual_process, i;
+bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, uint8_t array_size){
+	uint8_t last_process, actual_process;
 	uint8_t position = 0;
-	i = sizeof(MSGPACK4BCPProcessFlow);
-	while (i > 0) {
-		actual_process = pgm_read_word(&MSGPACK4BCPProcessFlow[position]);
 
+	while (array_size > 0) {
+		actual_process = pgm_read_word(&msgPack4BCPProcessFlow[position]);
+//		response->writeRaw(F("LOOPING STATUS:"));
 //		response->writeByte(actual_process);
+//		response->writeRaw(F("PREV STATUS:"));
 //		response->writeByte(prev_status);
+
 		if(status == actual_process) {
-			if(last_process != prev_status && last_process != NULL){
+			response->writeRaw(F("IDENTIFIED STATUS:"));
+			response->writeByte(actual_process);
+			response->writeRaw(F("PREV STATUS:"));
+			response->writeByte(prev_status);
+			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1);
+			response->writeRaw(F("NEXT STATUS:"));
+			response->writeByte(next_status); //DEBUG
+
+			//LOOP for setting argument and wating arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
+			if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
+				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
+				return true;
+
+
+			if(last_process != NULL && last_process != prev_status){
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
-				response->writeMsgPackProcessingFlowError();
+				response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 				return false;
 			}
-			next_status = pgm_read_word(&MSGPACK4BCPProcessFlow[position++]);
+
+
 			break;
 		}
 
 		last_process = actual_process;
-		i--;
+		array_size--;
 		position++;
 	}
 
 
-//	response->writeByte(next_status); //DEBUG
-
 	return true;
 }
 
+bool MsgPackHandler::checkFlow(){
+
+	if(check4BCPProcesFlow(MSGPACK4BCPProcessFlow, MSGPACK4BCPProcessFlow_SIZE))
+		return true;
+
+	if(check4BCPProcesFlow(MSGPACK4BCPProcessFlow2, MSGPACK4BCPProcessFlow2_SIZE))
+		return true;
+
+	return false;
+}
+
+
 unsigned int MsgPackHandler::isArray(uint8_t _byte){
 	if(_byte > MSGPACK_ARRAY_INITIAL && _byte <= MSGPACK_ARRAY_FINAL){
-		return _byte - MSGPACK_ARRAY_INITIAL;
+		return _byte - MSGPACK_ARRAY_INITIAL ;
 	}
 
 	return 0;
@@ -553,7 +607,7 @@ unsigned int MsgPackHandler::isArray(uint8_t _byte){
 
 unsigned int MsgPackHandler::isMap(uint8_t _byte){
 	if(_byte > MSGPACK_MAP_INITIAL && _byte <= MSGPACK_MAP_FINAL){
-		return _byte - MSGPACK_MAP_INITIAL;
+		return _byte - MSGPACK_MAP_INITIAL ;
 	}
 
 	return 0;
@@ -573,13 +627,26 @@ unsigned long MsgPackHandler::isMapped(){
 }
 
 bool MsgPackHandler::setStatus(uint8_t _status){
+	//DEBUG
+	if(status != MSGPACK_STATE_IDLE) {
+		response->writeRaw(F("MEM BEFORE CHANGE STATUS:"));//DEBUG
+		response->writeByte(status); //DEBUG
+	}
+
 	prev_status = status;
 	status = _status;
+
+	//DEBUG
+	if(status != MSGPACK_STATE_IDLE) {
+		response->writeRaw(F("CHANGED STATUS TO:"));//DEBUG
+		response->writeByte(status); //DEBUG
+	}
+
 
 	if(_status == MSGPACK_STATE_IDLE)
 		return true;
 
-	if(!check4BCPProcesFlow())
+	if(!checkFlow())
 		return false;
 
 	return true;

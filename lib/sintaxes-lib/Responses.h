@@ -27,10 +27,13 @@ class Responses{
         void write4BCPWordNotMappedERROR();
         void write4BCPUnknowCommand();
         void writeErrorMsgPack4BCPExecuteFlagError();
+        void write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next);
         void writeErrorMsgPackHasNotFinishedStatus();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeMsgPackProcessingFlowError();
+        void writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev);
+        void writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, uint8_t prev);
         void writeErrorMsgPackHasFinishedWithBytes();
 
         void writeSTXError();
