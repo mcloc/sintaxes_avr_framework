@@ -26,15 +26,16 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Embedded Template Library_ID930/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -42,13 +43,13 @@
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.922107295" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40003"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_UNO"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega328P__"/>
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.149990277" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -57,15 +58,16 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Embedded Template Library_ID930/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -73,13 +75,13 @@
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1198905600" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40003"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_UNO"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega328P__"/>
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.762536863" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -88,15 +90,16 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Embedded Template Library_ID930/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -104,13 +107,13 @@
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.884639970" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40003"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_UNO"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega328P__"/>
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.549319812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -145,15 +148,16 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Embedded Template Library_ID930/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -161,13 +165,13 @@
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1743427839" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40003"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_UNO"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega328P__"/>
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.919136836" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -176,15 +180,16 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Embedded Template Library_ID930/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -192,13 +197,13 @@
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2055633423" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40003"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_UNO"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega328P__"/>
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.445650141" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -207,15 +212,16 @@
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
 									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/uno/Embedded Template Library_ID930/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/standard"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
@@ -223,13 +229,13 @@
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2122043341" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40003"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_UNO"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
 									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega328P__"/>
+									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.207004812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
@@ -252,7 +258,7 @@
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/uno"/>
+			<resource resourceType="PROJECT" workspacePath="/mega"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>

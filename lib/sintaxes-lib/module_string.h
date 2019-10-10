@@ -28,7 +28,10 @@
     const char json_module_uptime[] PROGMEM = "\"uptime\":132";
     const char json_module_error[] PROGMEM  = "{\"error_code\":%d,\"error_msg\":\"%S\"}";
     const char json_module_error_msg_pack_flow[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"4BCP processs flow error. Check for process_flow in the MsgPackHandler. Actual previous status: %02X  -- status:%02X -- next status:%02X\"}";
+    const char json_module_msgpack_unknown_type[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"unknow type:%02X\"}";
+    const char json_module_msgpack_hash_no_key[] PROGMEM  = "{\"error_code\":%d,\"error_msg\":\"4BCP element has no key. Byte type received as key :%02X\"}";
     const char json_module_msg_pack_flow_status[] PROGMEM = "{\"status_flow\":\"4BCP processs flow. Actual previous status: %02X  -- status:%02X -- next status:%02X\"}";
+    const char json_module_error_msgpack_processing_map[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"MSGPACK 4BCP error processing element . prev_status: %02X  -- status:%02X -- next_status:%02X\"}";
     const char json_module_error_key[] PROGMEM = "\"error\":";
     const char json_module_data_key[] PROGMEM  = "\"data\":";
     const char json_module_reponse_key[] PROGMEM = "\"reponse\":";
@@ -42,7 +45,8 @@
 
 
     const char ERROR_NONE_STR[] PROGMEM = "no errors";
-    const char ERROR_REQUEST_MAX_LENGHT_STR[] PROGMEM = "max request lenght achieved.";
+    const char ERROR_REQUEST_MAX_LENGHT_STR[] PROGMEM = "max request length achieved.";
+    const char ERROR_INIT_MSGPACK_STR[] PROGMEM = "Error on INIT class MsgPackaHandler";
     const char ERROR_MAL_FORMED_REQUEST_STR[] PROGMEM = "BAD Request, request must not have headers or be empty. It must follow MessagePack with 4Bytes Commands Protocol (4BCP).";
     const char ERROR_MAL_FORMATED_MSGPCK_STR[] PROGMEM = "mal formed msgpack or 4byteCommandProtocol";
     const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "error trying to assembly 32bit word";
@@ -59,6 +63,7 @@
     const char ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES_STR[] PROGMEM = "4BCP has stated the COMMMAND IS FINISHED but there are still bytes to read. This state is only achieved after MODULE_COMMMAND_EXECUTE_FLAG, so it should be nothing more left to process.";
     const char ERROR_MSGPACK_4BCP_UNKNOW_COMMAND_STR[] PROGMEM ="Unknow how to execute COMMAND";
     const char ERROR_MSGPACK_4BCP_EXECUTE_FLAG_STR[] PROGMEM = "EXECUTE_COMMAND_FLAG (0xFFFF0013) is supposed to have a msgPack TRUE (0xc3) on next byte.";
+    const char ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING_STR[] PROGMEM ="Unknown error on processing key map.";
 
 
 #endif

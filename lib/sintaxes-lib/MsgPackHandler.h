@@ -4,6 +4,8 @@
 #include <sintaxes-lib.h>
 #include <Stream.h>
 #include <Commands.h>
+#include <MsgPack4BCPMapElement.h>
+#include <MsgPack4BCPMap.h>
 #include <sintaxes-framework-defines.h>
 #include <msgpack_defines.h>
 #include <Arduino.h>
@@ -49,6 +51,12 @@ private:
 	unsigned int response_headers_code;
 	bool response_headers_already_sent = false;
 
+
+
+	//4Bytes Command Protocol map
+	MsgPack4BCPMap map;
+
+
 	//4Bytes Command Protocol buffers
 	unsigned long ext_command;
 	unsigned long ext_command_args1;
@@ -56,10 +64,13 @@ private:
 	unsigned long ext_command_args3;
 	unsigned long ext_command_args4;
 
-	//FIXME: PROGMEM is ignored due
+
+
+	//FIXME: PROGMEM is ignored due FIXED: PROGMEM is on cpp file
 	 static const uint8_t MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE];
 	 static const uint8_t MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE];
 //	 static const uint8_t MSGPACK4BCPProcessFlow3[];
+	 static const uint8_t MSGPACKTYPES[MSGPACK4BCPProcessFlow2_SIZE];
 
 //
 //	uint8_t length = sizeof(some_array) / sizeof(some_array[0]);
@@ -74,6 +85,13 @@ private:
 	bool processByte(uint8_t _byte);
 	bool processArray(uint8_t _byte, int array_size);
 	bool processMap(uint8_t _byte, int map_elements_size);
+	MsgPack4BCPMapElement processMapKeyElement(MsgPack4BCPMapElement *element, uint8_t _byte);
+	bool processMapValueElement(MsgPack4BCPMapElement *element, uint8_t _byte);
+	bool processCommandHeader(uint8_t _word);
+	bool checkModulesMap();
+	uint8_t getNextType();
+	bool setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte);
+
 	bool check4BCPProcesFlow(const uint8_t *flow_array_ptr, uint8_t array_size);
 	bool checkFlow();
 

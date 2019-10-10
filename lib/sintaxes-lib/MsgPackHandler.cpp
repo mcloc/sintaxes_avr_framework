@@ -29,6 +29,9 @@
 
 #include <Arduino.h>
 #include <MsgPackHandler.h>
+#include <MsgPackDataTypes.h>
+#include <MsgPack4BCPMapElement.h>
+#include <MsgPack4BCPMap.h>
 #include <msgpack_defines.h>
 #include <module_string.h>
 #include <errors_code.h>
@@ -40,6 +43,8 @@
 //namespace sintax-iot-framework{
 //
 //}
+
+
 
 //static class members must be declared also in cpp.
 static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE] PROGMEM = {
@@ -81,8 +86,12 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
  * in sintaxes-framework-defines.h
  */
 bool MsgPackHandler::init(Stream *_stream, int size) {
-	if(!setStatus(MSGPACK_STATE_BEGIN))
+	if(!setStatus(MSGPACK_STATE_BEGIN)) {
+		response->writeError_on_INIT();
+		response_headers_already_sent = true;
+		response_headers_code = 500;
 		return false;
+	}
 
 	reset_32bit_processing();
 	buffer_position = 0;
@@ -90,6 +99,8 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer, size);
 	buffer_bytes_remaining = buffer_lenght;
 
+	map = MsgPack4BCPMap();
+	MsgPack4BCPMapElement elements[MAX_MSGPACK_ARGS];
 
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
@@ -113,14 +124,13 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
-		uint8_t array_size = 0;
-		uint8_t map_elements_size = 0;
-
-
+		//Get next byte on buffer
 		uint8_t _byte = MsgPackHandler::next();
 //		response->writeByte(_byte);
 
 
+		uint8_t array_size = 0;
+		uint8_t map_elements_size = 0;
 		/**
 		 * If it's an array or a map the LAYER 7 4B COMMANDS FRAMEWORK (RPC)
 		 * is already been processed, remember that this machine is suppose
@@ -140,14 +150,12 @@ bool MsgPackHandler::processStream() {
 
 		//THIS IS AN MAP- [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		map_elements_size = isMap(_byte);
-		if(map_elements_size > 0){
-//			processMap(_byte, map_elements_size);
+		if(map_elements_size > 0) {
+			processMap(_byte, map_elements_size);
 //			response->writeRaw(F("MAP:"));
 //			response->writeByte(_byte); //DEBUG
 //			response->writeRaw(F("SIZE:"));
 //			response->writeByte(map_elements_size); //DEBUG
-
-			continue;
 		}
 
 
@@ -416,8 +424,329 @@ unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
 	return resource; //DEBUG MUST BE THE NEXT WORD 4BCP kind of is awaiting
 }
 
-bool MsgPackHandler::processMap(uint8_t _word, int map_elements_size) {
+bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
+
+	uint8_t element_number = 0;
+	map.size = map_elements_size;
+	map.position = 0;
+
+	while(map_elements_size > 0) {
+		if(status == MSGPACK_STATE_BEGIN) {
+			processCommandHeader(_byte);
+			map_elements_size--;
+//			continue;
+		}
+
+		MsgPack4BCPMapElement element;
+
+		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
+		if(status == MSGPACK_STATE_COMMAND_SET) {
+			_byte = getNextType();
+
+			//get key uint32_t
+			if(!assemble32bitByte(_byte))
+				return false;
+
+			if(checkModulesMap()){
+				element.setKey(_32bitword);
+				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+					return false;
+			}
+		}
+
+		//We already have the key on tuple for executing the command
+		if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS ){
+			_byte = getNextType();
+			uint8_t map_size = isMap(_byte);
+			if(map_size > 0) {
+				//This is each new array() on the msgpack generally 0x81 0x82 0x83 this are the values for SETTING Actuators
+				while(map_size > 0){
+					if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+						return false;
+					_byte = getNextType();
+					MsgPack4BCPMapElement element_1;
+
+					//get key uint32_t
+					if(!assemble32bitByte(_byte))
+						return false;
+
+					if(checkModulesMap()){
+						element_1.setKey(_32bitword);
+						_byte = getNextType();
+						element_1.setType(_byte);
+						setElementValue(&element_1, _byte);
+						if(!element.setElement(element_1)){
+							//TODO:
+	//						error_code = ERROR_MSGPACK_4BCP_UNKNOW;
+	//						response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+							return false;
+						}
+					}
+					map_size--;
+				}
+				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+					return false;
+			}
+		}
+		map.elements[element_number] = element;
+		element_number++;
+		map_elements_size--;
+	}
 	return true; //DEBUG
+}
+
+bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte){
+	element->value_type = _byte;
+	switch(_byte){
+		case MSGPACK_NIL: {
+			element->value_bool = false;
+			return true;
+		}
+
+		case MSGPACK_FALSE: {
+			element->value_bool = false;
+			return true;
+		}
+
+		case MSGPACK_TRUE: {
+			element->value_bool = true;
+			return true;
+		}
+
+//		case MSGPACK_BIN8: {
+//			return true;
+//		}
+//
+//		case MSGPACK_BIN16: {
+//			return true;
+//		}
+//
+//		case MSGPACK_BIN32: {
+//			return true;
+//		}
+//
+//		case MSGPACK_EXT8: {
+//			return true;
+//		}
+//
+//		case MSGPACK_EXT16: {
+//			return true;
+//		}
+//
+//		case MSGPACK_EXT32: {
+//			return true;
+//		}
+
+		case MSGPACK_FLOAT32: {
+//			if(!assemble32bitFloat(_byte))
+//				return false;
+//			element->value_float = _32bitword;
+			return true;
+		}
+
+		case MSGPACK_FLOAT64: {
+			return true;
+		}
+
+		case MSGPACK_UINT8: {
+			element->value_uint8 = next();
+			return true;
+		}
+
+		case MSGPACK_UINT16: {
+			return true;
+		}
+
+		case MSGPACK_UINT32: {
+			if(!assemble32bitByte(_byte))
+				return false;
+			element->value_uint32 = _32bitword;
+			return true;
+		}
+
+		case MSGPACK_UINT64: {
+			return true;
+		}
+
+		case MSGPACK_INT8: {
+			element->value_int8 = next();
+			return true;
+		}
+
+		case MSGPACK_INT16: {
+			return true;
+		}
+
+		case MSGPACK_INT32: {
+//			if(!assemble32bitByte(_byte))
+//				return false;
+//			element->value_uint32 = _32bitword;
+			return true;
+		}
+
+//		case MSGPACK_INT64: {
+//			return true;
+//		}
+//
+//		case MSGPACK_FIXEXT1: {
+//			return true;
+//		}
+//
+//		case MSGPACK_FIXEXT2: {
+//			return true;
+//		}
+//
+//		case MSGPACK_FIXEXT4: {
+//			return true;
+//		}
+//
+//		case MSGPACK_FIXEXT8: {
+//			return true;
+//		}
+//
+//		case MSGPACK_FIXEXT16: {
+//			return true;
+//		}
+
+		case MSGPACK_STR8: {
+			element->value_fixstring = next();
+			return true;
+		}
+
+//		case MSGPACK_STR16: {
+////			element->value_fixstring = next();
+//			return true;
+//		}
+//
+//		case MSGPACK_STR32: {
+////			element->value_fixstring = next();
+//			return true;
+//		}
+
+//		case MSGPACK_ARRAY16: {
+//			return true;
+//		}
+//
+//		case MSGPACK_ARRAY32: {
+//			return true;
+//		}
+//
+//		case MSGPACK_MAP16: {
+//			return true;
+//		}
+//
+//		case MSGPACK_MAP32: {
+//			return true;
+//		}
+
+		default:{
+			return false;
+		}
+	}
+
+	return false;
+	}
+}
+
+uint8_t  MsgPackHandler::getNextType() {
+	uint8_t _byte = next();
+
+	if(!MsgPackDataTypes::checkDataType(_byte)){
+		//If it's not a recognized type on MsgPack definitions
+		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+		response->writeMsgPackUnknownType(_byte);
+		return false;
+	}
+
+	return _byte;
+}
+
+bool MsgPackHandler::checkModulesMap(){
+	//TODO loop into devices sensors actuators map
+	return true;
+}
+
+bool MsgPackHandler::processCommandHeader(uint8_t _byte){
+	//PROCESS KEY
+	if(!MsgPackDataTypes::checkDataType(_byte)){
+		//If it's not a recognized type on MsgPack definitions
+		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+		response->writeMsgPackUnknownType(_byte);
+		return false;
+	}
+
+	//get key uint32_t
+	if(!assemble32bitByte(_byte))
+		return false;
+
+	if(_32bitword != MODULE_COMMMAND_FLAG){
+//				error_code = ERROR_32BIT_PROCESSING;
+//				response->writeProcess32bitwordERROR();
+		return false;
+	}
+
+	_byte = next();
+	if(!assemble32bitByte(_byte))
+		return false;
+
+	commands->command_executing = _32bitword;
+	if(!setStatus(MSGPACK_STATE_COMMAND_SET))
+		return false;
+	return true;
+
+//	error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
+//	response->writeErrorMsgPack4BCPElementKeyProcessing();
+//	return false;
+}
+
+MsgPack4BCPMapElement MsgPackHandler::processMapKeyElement(_4BCP_MAP_ELEMENT *element, uint8_t _byte){
+	if(!MsgPackDataTypes::checkDataType(_byte)){
+		//If it's not a recognized type on MsgPack definitions
+		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+		response->writeMsgPackUnknownType(_byte);
+		return false;
+	}
+
+	if(element->key == NULL || element->key <= 0) {
+		if(_byte != MSGPACK_UINT32) {
+			error_code = ERROR_MSGPACK_4BCP_ELEMENT_HAS_NO_KEY;
+			response->writeErrorMsgPack4BCPElementHasNoKey(_byte);
+			return false;
+		}
+
+		if(!assemble32bitByte(_byte))
+			return false;
+
+		element->key = _32bitword;
+		return true;
+	}
+
+	error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
+	response->writeErrorMsgPack4BCPElementKeyProcessing();
+	return false;
+}
+
+bool MsgPackHandler::processMapValueElement(_4BCP_MAP_ELEMENT *element, uint8_t _byte){
+	if(!MsgPackDataTypes::checkDataType(_byte)){
+		//If it's not a recognized type on MsgPack definitions
+		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+		response->writeMsgPackUnknownType(_byte);
+		return false;
+	}
+
+	if(element->key == NULL || element->key <= 0) {
+			error_code = ERROR_MSGPACK_4BCP_ELEMENT_HAS_NO_KEY;
+			response->writeErrorMsgPack4BCPElementHasNoKey(_byte);
+			return false;
+	}
+
+	switch(_byte){
+
+	}
+
+	error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
+	response->writeErrorMsgPack4BCPElementKeyProcessing();
+	return false;
 }
 
 bool MsgPackHandler::processArray(uint8_t _word, int array_size) {

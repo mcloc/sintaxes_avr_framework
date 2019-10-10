@@ -102,6 +102,44 @@ void Responses::writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, u
 }
 
 
+void Responses::writeMsgPackProcessingMap(uint8_t status, uint8_t next, uint8_t prev){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error_msgpack_processing_map), ERROR_MSGPACK_4BCP_ELEMENT_PROCESSING, prev, status, next);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
+void Responses::writeMsgPackUnknownType(uint8_t _byte){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_msgpack_unknown_type), ERROR_MSGPACK_UNKNOW_TYPE, _byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::writeErrorMsgPack4BCPElementHasNoKey(uint8_t _byte){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_msgpack_hash_no_key), ERROR_MSGPACK_4BCP_ELEMENT_HAS_NO_KEY, _byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+void Responses::writeErrorMsgPack4BCPElementKeyProcessing(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING,  ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
 void Responses::writeErrorMsgPackHasFinishedWithBytes(){
 	if(response_json_initiated)
 		client->print(FSH(json_module_comma_separator));
@@ -150,15 +188,29 @@ void Responses::write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next)
 
 void Responses::writeError_MAX_SIZE_REQUEST(){
 	writeModule500DataHeaders();
+	initJsonResponse();
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_REQUEST_MAX_LENGHT,  ERROR_REQUEST_MAX_LENGHT_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
+	closeJsonResponse();
 }
 
 void Responses::writeError_MAL_FORMED_REQUEST(){
 	writeModule500DataHeaders();
+	initJsonResponse();
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MAL_FORMED_REQUEST,  ERROR_MAL_FORMED_REQUEST_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
+	closeJsonResponse();
 }
+
+void Responses::writeError_on_INIT(){
+	writeModule500DataHeaders();
+	initJsonResponse();
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_INIT_MSGPACK,  ERROR_INIT_MSGPACK_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+	closeJsonResponse();
+}
+
+
 
 //void Responses::writeSTXError(){
 //	writeModule500DataHeaders();
@@ -196,7 +248,7 @@ void Responses::writeModule200DataHeaders(){
 }
 
 void Responses::writeModule500DataHeaders(){
-	client->println(FSH(header_response_200));
+	client->println(FSH(header_response_500));
 	client->print(FSH(json_module_new_line));
 	client->print(FSH(header_content_type_json));
 	client->print(FSH(json_module_new_line));
@@ -207,6 +259,7 @@ void Responses::writeModule500DataHeaders(){
 	client->print(FSH(json_module_new_line));
 
 }
+
 
 void Responses::initJsonResponse(){
 	client->print(FSH(json_module_braces_open));

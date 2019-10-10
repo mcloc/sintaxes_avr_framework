@@ -22,18 +22,23 @@ class Responses{
 
         void writeError_MAL_FORMED_REQUEST();
         void writeError_MAX_SIZE_REQUEST();
+        void writeError_on_INIT();
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
         void write4BCPWordNotMappedERROR();
         void write4BCPUnknowCommand();
+        void writeErrorMsgPack4BCPElementHasNoKey(uint8_t byte);
+        void writeErrorMsgPack4BCPElementKeyProcessing();
         void writeErrorMsgPack4BCPExecuteFlagError();
         void write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next);
         void writeErrorMsgPackHasNotFinishedStatus();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
+        void writeMsgPackUnknownType(uint8_t type);
         void writeMsgPackProcessingFlowError();
         void writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev);
         void writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, uint8_t prev);
+        void writeMsgPackProcessingMap(uint8_t status, uint8_t next, uint8_t prev);
         void writeErrorMsgPackHasFinishedWithBytes();
 
         void writeSTXError();
