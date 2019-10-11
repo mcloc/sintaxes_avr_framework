@@ -14,6 +14,7 @@ MsgPack4BCPMap::MsgPack4BCPMap() {
 
 void MsgPack4BCPMap::setSize(uint8_t _size){
 	size = _size;
+	position = 0;
 }
 uint8_t MsgPack4BCPMap::getSize(){
 	return size;

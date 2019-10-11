@@ -53,6 +53,7 @@ static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFl
 		MSGPACK_STATE_COMMAND_SET,
 		MSGPACK_STATE_COMMAND_SETTING_ARGS,
 		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
+		MSGPACK_STATE_COMMAND_ARGS_READY,
 		MSGPACK_STATE_COMMAND_EXECUTING,
 		MSGPACK_STATE_COMMAND_EXECUTED,
 		MSGPACK_STATE_COMMAND_FINISHED
@@ -100,7 +101,6 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 	buffer_bytes_remaining = buffer_lenght;
 
 	map = MsgPack4BCPMap();
-	MsgPack4BCPMapElement elements[MAX_MSGPACK_ARGS];
 
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
@@ -122,6 +122,26 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  * 			WHAT TODO. THE EXCEPTIONS MESSAGES ARE THRONW REAL TIME ON THE TCP STREAMS
  * 			AS JSON FORMATED
  */
+
+/**
+ * ON COMMAND FRAMEWORK PROTOCOL WILL ALWAYS BE LOOKING FOR 32BIT UNSINED LONG
+ * THE INTERPRETATION OF THE 'RPC' IS ALL BASED ON 4BYTES CONSTANTS;
+ * THE 4BYTES CONSTANTS COMMAND PROTOCOL IS DEFINED IN OTHERS FILES SUCH commands_map.h
+ * AND devices.h WHICH SHOULD BE WRITTEN SPECIFIC per APPLIANCE et se, FOLLOWING THE
+ * 4BCP GUIDELINES.
+ *
+ *
+ * if it is'nt array or map (which was checked before this method beeing called),
+ * then it should be the 4Bytes command protocol, like a COMMAND_FLAG a COMMAND per se,
+ * known mapped ARGUMENTS or even some argument values for the COMMAND call.
+ *
+ * 	1 - unpack 4Bytes Commends Protocol (4BCP)
+ * 	2 - look for arguments values for 4BPC
+ * 	3 - report error on 4Bytes Commands Protocol with rollback action
+ * 		to previous state guarded on SD card by returning false so method processStream() can return false as well
+ * 		and let to main() function do what's necessary on processing fail
+ */
+
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
 		//Get next byte on buffer
@@ -148,14 +168,11 @@ bool MsgPackHandler::processStream() {
 			continue;
 		}
 
-		//THIS IS AN MAP- [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
+		//THIS IS AN MAP- [COMMANDS FRAMEWORK], all 4BCP communication begins with a MAP
 		map_elements_size = isMap(_byte);
 		if(map_elements_size > 0) {
-			processMap(_byte, map_elements_size);
-//			response->writeRaw(F("MAP:"));
-//			response->writeByte(_byte); //DEBUG
-//			response->writeRaw(F("SIZE:"));
-//			response->writeByte(map_elements_size); //DEBUG
+			if(!processMap(_byte, map_elements_size))
+				return false;
 		}
 
 
@@ -172,10 +189,10 @@ bool MsgPackHandler::processStream() {
 		 * 	3 - report error on 4bytes commands Protocol with rollback action
 		 * 		for the previous state guarded on SD card
 		 */
-		if(!processByte(_byte)) {
-			response->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
-			return false;
-		}
+//		if(!processByte(_byte)) {
+//			response->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
+//			return false;
+//		}
 
 		if(status == MSGPACK_STATE_COMMAND_EXECUTED){
 			if(buffer_bytes_remaining > 0){
@@ -191,8 +208,6 @@ bool MsgPackHandler::processStream() {
 		}
 	}
 
-//	response->writeMsgPackProcessingFlowError(status, next_status, prev_status); //DEBUG
-
 	//END OF EXEUTION OF COMMANDS ON THE FLY WITH RESPECTIVES RESPONSES DONE
 	//NOTHING MORE TO DO JUST RETURN true TO MAIN FUNCTION SAVE THE MACHINE STATE ON SD Card
 	//AND ALL 4BCP FOOTPRINT OF THIS REQUEST FOR  LOG PROPOUSES
@@ -207,7 +222,6 @@ bool MsgPackHandler::processStream() {
 
 		return true;
 	} else{
-//		response->writeByte(status);
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
 		response->writeErrorMsgPackHasNotFinishedStatus();
 		response->closeJsonResponse();
@@ -217,218 +231,22 @@ bool MsgPackHandler::processStream() {
 }
 
 
-/**
- * ON COMMAND FRAMEWORK PROTOCOL WILL ALWAYS BE LOOKING FOR 32BIT UNSINED LONG
- * THE INTERPRETATION OF THE 'RPC' IS ALL BASED ON 4BYTES CONSTANTS;
- * THE 4BYTES CONSTANTS COMMAND PROTOCOL IS DEFINED IN OTHERS FILES SUCH commands_map.h
- * AND devices.h WHICH SHOULD BE WRITTEN SPECIFIC per APPLIANCE et si, FOLLOWING THE
- * 4BCP GUIDELINES.
- *
- *
- * if it is'nt array or map (which was checked before this method beeing called),
- * then it should be the 4Bytes command protocol, like a COMMAND_FLAG a COMMAND per se,
- * known mapped ARGUMENTS or even some argument values for the COMMAND call.
- *
- * This switch is intent to:
- * 	1 - unpack 4Bytes Commends Protocol (4BCP)
- * 	2 - look for arguments values for 4BPC
- * 	3 - report error on 4Bytes Commands Protocol with rollback action
- * 		to previous state guarded on SD card by returning false so method processStream() can return false as well
- * 		and let to main() function do what's necessary on processing fail
- */
-bool MsgPackHandler::processByte(uint8_t _byte) {
 
-	//remind that the proposal scope of this switch() is the 3 guidelines mentioned above in the method
-	switch (_byte) {
-		//LAYER 7 - 4Bytes COMMANDS FRAMEWORK PROCESSING - (RPC) [messagePack 0xce packet]
-		case MSGPACK_UINT32: {
-//			sintaxesLib->buzz(5000, 800,1);
-			if(!assemble32bitByte(_byte))
-				return false;
-
-			//this method process4BytesCmdProtocol() is the one in charge for assemble the Command Class
-			//in order to process our 4BCP requests
-			if(!process4BytesCmdProtocol())
-				return false;
-
-
-			//always remember to reset _32bitword which is a 1 buffer of uint32 which care the 4BCP word
-			//it's always reused on going processing
-			reset_32bit_processing();
-			return true;
-		}
-
-		case MSGPACK_TRUE: {
-			//TODO set ARG VALUE
-//			response->writeByte(true);//DEBUG
-			return true;
-		}
-
-		case MSGPACK_FALSE: {
-			//TODO set ARG VALUE
-//			response->writeByte(false);//DEBUG
-			return true;
-		}
-
-		case true: {
-			//TODO set ARG VALUE
-//			response->writeByte(false);//DEBUG
-			return true;
-		}
-
-		case false: {
-			//TODO set ARG VALUE
-//			response->writeByte(false);//DEBUG
-			return true;
-		}
-
-		//TODO: implement more MessagePack types specification that could came as argument
-		//such as Float, ints 8 16 sign and unsigned and maybe strings for guardings literals on SD Card
-
-		default: {
-			response->writeByte(_byte);
-			error_code = ERROR_MSGPACK_PROCESSING;
-			response->writeMsgPackError(_byte);
-//			response->writeByte(_byte); //DEBUG
-			//TODO: rollback from SD Card previous state and then send another message with rollback
-			//		current state machine (maybe rollback should be on the previous function
-			//		or the previous previous, check it)
-			return false;
-		}
-	}
-	error_code = ERROR_MSGPACK_UNKNOW;
-	response->writeMsgPackUnknowError();
-	return false;
-}
-
-/**
- * 4Bytes Command Protocol
- * here we assemble the COMMANDS and wait for code EXECUTE! 0xffffff13
- *
- * Remember that this method should only be called exactly after assemble32bitByte(_byte) so
- * the field _32bitword should be ready
- *
- */
-bool MsgPackHandler::process4BytesCmdProtocol(){
-	switch(_32bitword){
-		case MODULE_COMMMAND_FLAG: {
-			//next byte must be a MSGPACK_UINT32 MessagePack 0xce with the COMMAND to be executed
-			uint8_t _byte = next();
-			if(!assemble32bitByte(_byte))
-				return false;
-
-			//This is a new _32bit_word the command to be executed. Now assemble arguments and/or expect for MODULE_COMMMAND_EXECUTE_FLAG ()
-			commands->command_executing = _32bitword;
-			if(!setStatus(MSGPACK_STATE_COMMAND_SET))
-				return false;
-
-			return true;
-		}
-
-		case MODULE_COMMMAND_EXECUTE_FLAG: {
-			uint8_t _byte = next();
-			if(!_byte == MSGPACK_TRUE){
-				error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
-				response->writeErrorMsgPack4BCPExecuteFlagError();
-				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
-				return false;
-			}
-			//FIXME: POG to keep flow right
-//			setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS);
-//			setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE);
-
-			if(!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
-				return false;
-
-
-			if(!commands->execute()){
-				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
-				return false;
-			}
-
-			//TODO: LOG AND RETURN COMMAND STATUS MESSAGE THEN change status to FINISHED
-			setStatus(MSGPACK_STATE_COMMAND_EXECUTED);
-			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
-				return false;
-
-			return true;
-		}
-
-		case MODULE_COMMMAND_SET_ARGS1:{
-			if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-				return false;
-//			if(commands->setArgumentField(MODULE_COMMMAND_SET_ARGS1)){
-				if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
-					return false;
-//				return true;
+//		case MODULE_COMMMAND_EXECUTE_FLAG: {
+//			uint8_t _byte = next();
+//			if(!_byte == MSGPACK_TRUE){
+//				error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
+//				response->writeErrorMsgPack4BCPExecuteFlagError();
+//				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
+//				return false;
 //			}
-			return true; //DEBUG
-		}
 
-		case MODULE_COMMMAND_SET_ARGS2:{
-			if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-				return false;
-//			if(commands->setArgumentField(MODULE_COMMMAND_SET_ARGS2)){
-				if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
-					return false;
-//				return true;
-//			}
-			return true; //DEBUG
-		}
-
-		default: {
-			//TODO: case in the commands or devices or arguments
-			unsigned long resource = isMapped();
-			if(resource > 0 ){
-				if(processMappedResource(resource))
-					return true;
-			}
-
-			//Everything possible in _32bitword must be Mapped  :: A T T E N T I O N :: what about 32bit arguments values
-			//this default is not true check Machine status
-			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE){
-				//it's a 32bit argument value
-				//TODO: set the value for the current argument
-				response->write32bitByte(_32bitword); // DEBUG
-				return true;
-			}
-
-			//If it's not a argument value it's an inconsistent on 4BCP
-			error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
-			return false;
-		}
-	}
-
-	error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-	response->write4BCPUnknowError(prev_status, status, next_status);
-	//TODO: if 32bitword is not mapped return false; send responses [ remember, throw is always @front  each false must than be taken CARE]
-	return false;
-}
-
-
-bool MsgPackHandler::processMappedResource(unsigned long resource){
-	unsigned long waiting_for = _4BCPCheckForNext(resource);
-	//TODO: implement a table of with ENUN on DEFINED RESOURCES to flash PROGMEM
-	return true;
-}
-
-/**
- * Check in 4bytes Command Protocol what's the next 4BCP resource his waiting for
- */
-unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
-	//TODO: implement a table of execution flow with ENUN on the flash PROGMEM
-	//on error
-//	error_code = ERROR_MSGPACK_4BCP_WORD_EXPECTED;
-//	response->writeMsgPackError(_32bitword);
-	return resource; //DEBUG MUST BE THE NEXT WORD 4BCP kind of is awaiting
-}
 
 
 /**
  *	processMap() is a state machine based processor. Every package must be encoded with 4BCP protocol which defines
  *	that always will be sent in the request a msgpack format MAP with 1 (one) and only ONE type of command per request.
- *	It command can be executed multiple times with different devices, p.e. one can send a request to SET different actuators
+ *	Each command can be executed multiple times with different devices, p.e. one can send a request to SET different actuators
  *	with different arguments values. The command is the same 'MODULE_COMMMAND_SET_ACTUATOR' and it can be repeated for
  *	multiples actuators devices (which is mapped by 4BCP) with different values. Or it can be a simples GET command with no
  *	arguments at all, p.e. 'MODULE_COMMMAND_GET_DATA', 'MODULE_COMMMAND_GET_STATE', 'MODULE_COMMAND_GET_PROCESS_FLOW'.
@@ -437,8 +255,8 @@ unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
  *	message on top of msgpack protocol.
  *
  *
- * Our PHP client test pack the 4BCP on top of msgpack protocol. Just have in mind that the main goal of 4BCP is to have a lot
- * of mapping devices, sensors, commands, in 32bit unsigned long hex words:
+ * Our PHP test client pack the 4BCP on top of msgpack protocol. Just have in mind that the main goal of 4BCP is to have a lot
+ * of mapping devices, sensors, commands, in 32bit unsigned long hex words constants, avoid String parsing for processing requests.
  *
  *
  * $payload = $packer->pack([
@@ -459,7 +277,7 @@ unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
  *   ]
  *	);
  *
- *	Note that 4BCP is constant defined based. Each constant has a uint32bit_t hex value and it's used to process RPC's
+ *	Note that 4BCP is constants defined based. Each constant has a unique uint32bit_t hex value and it's used to process RPC's
  *	In the example above, the first thing you'll notice is that the first tuple is the COMMAND definition. The key tells
  *	the processor that it's value is a command, so it will look on commands_map.h to check if it's implemented.
  *
@@ -467,14 +285,14 @@ unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
  *
  *	In this case the command is SET ACTUATORS values. Since we can have several actuators in one module, each must have a
  *	unique signature which is the 4BCP uint32_t hex value defined in 'devices.h'. This message tell us that the command is
- *	MODULE_COMMMAND_SET_ACTUATOR and the other tuples is the definition of each actuator that must be run the command for with
+ *	MODULE_COMMMAND_SET_ACTUATOR and the other tuples is the definition of each actuator that must run the command with
  *	another msgpack MAP containing the actuators set values. The max number of commands to execute and the maximum numbers
  *	of arguments is defined in 'sintaxes-framework-defines.h' For example we can set a command to execute the maximum of 4 times,
  *	and the maximum of 4 arguments per command.This is defined in the constants 'MAX_MSGPACK_COMMANDS' and 'MAX_MSGPACK_ARGS'
  *
  *	On the case of our example for set actuators we defined another 3 tuples with the actuators UUID as key for the arguments MAP
  *	of this actuator itself. The number of arguments must be defined per COMMAND function. In this case only 2. 1 - if it
- *	should be ON/OFF (true/false) and the time it must be on that state. There will be soon a watchdog for proposes like this.
+ *	should be ON/OFF (true/false) and 2 - the time it must be on that state. There will be soon a watchdog for proposes like this.
  *
  *	A simpler request could be to get the sensors data of this module like this:
  *
@@ -484,66 +302,90 @@ unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
  *   ]
  * );
  *
- * As before, first tuple to set command, in this case 'MODULE_COMMMAND_GET_DATA'. Note that the same
+ * As before, first tuple is to set command, in this case 'MODULE_COMMMAND_GET_DATA'. Note that the same
  * way as before the last tuple must be MODULE_COMMMAND_EXECUTE_FLAG 4BCP constant with value true.
  *
  * This last tuple is used by the processor to tell the module RUN COMMAND, everything has been set.
+ *
+ * Be aware that we still have to process the msgpack protocol for arguments values which can be any of msgpack types.
  *
  */
 bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 
 	uint8_t element_number = 0;
-	map.size = map_elements_size;
-	map.position = 0;
 
+	//size of the first msgpack map which is our base for 4BCP processing
+	map.setSize(map_elements_size);
+
+
+	//While there're tuples to process
 	while(map_elements_size > 0) {
 
 		//SET Command with first element of MAP which is mandatory to be COMMAND_FLAG WITH VALUE AS COMMAND_TO_EXECUTE
 		if(status == MSGPACK_STATE_BEGIN) {
+			//process the first tuple (COMMAND SET)
 			processCommandHeader(_byte);
 			map_elements_size--;
 			continue;
 		}
 
-		//This will be the first tuple
+		//This will be the first tuple after COMMAND SET (command args tuples)
 		MsgPack4BCPMapElement element;
 
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
 		if(status == MSGPACK_STATE_COMMAND_SET) {
+			//This should be 4BCP key (0xce)
 			_byte = getNextType();
 
-			//get key uint32_t
+			//get uint32_t key for this element
 			if(!assemble32bitByte(_byte))
 				return false;
 
+			//Check if word if mapped by this module
 			if(checkModulesMap()){
+				//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
 				element.setKey(_32bitword);
+				//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
 				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
 					return false;
 			}
+			//we can't continue we are setting the element and we must set the element values
 		}
 
 		//We already have the key on tuple for executing the command
 		if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS ){
+			//get next msgpack data type which should be a MAP of arguments value
 			_byte = getNextType();
 			uint8_t map_size = isMap(_byte);
+
+			//If it's a map it has no single argument value, it has more then one attribute to set
 			if(map_size > 0) {
-				//This is each new array() on the msgpack generally 0x81 0x82 0x83 this are the values for SETTING Actuators
+				//This is each new arguments map() on the msgpack generally 0x81 0x82 0x83 this are the values for SETTING Actuators p.e.
 				while(map_size > 0){
+					//
 					if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
 						return false;
+
 					_byte = getNextType();
+					//this is the nested tuple with arguments value of the outside tuple which is the UUID of device to be set.
 					MsgPack4BCPMapElement element_1;
 
 					//get key uint32_t
 					if(!assemble32bitByte(_byte))
 						return false;
 
+					//Check if the UUID key of the argument exists
 					if(checkModulesMap()){
 						element_1.setKey(_32bitword);
+
+						//this is the msgpack data type of the argument value
 						_byte = getNextType();
 						element_1.setType(_byte);
+
+						//set value based on switch() case statement for each kind of msgpack data type
 						setElementValue(&element_1, _byte);
+
+						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
 						if(!element.setElement(element_1)){
 							//TODO:
 	//						error_code = ERROR_MSGPACK_4BCP_UNKNOW;
@@ -552,20 +394,37 @@ bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 						}
 					}
 					map_size--;
-				}
-				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-					return false;
+					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
+				} // END of WHILE arguments MAP of a device key
+			} // END of IF MAP
+			else { //process msgpack value that is not a MAP
+				//this is the msgpack data type of the argument value
+				_byte = getNextType();
+				element.setType(_byte);
+
+				//set value based on switch() case statement for each kind of msgpack data type
+				setElementValue(&element, _byte);
 			}
+			//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
+			//back status to MSGPACK_STATE_COMMAND_SET so the loop can roll again for other devices that must be set.
+			if(!setStatus(MSGPACK_STATE_COMMAND_SET))
+				return false;
 		}
 		map.elements[element_number] = element;
 		element_number++;
 		map_elements_size--;
-	}
-	return true; //DEBUG
+	} // END of WHILE 4BCP MAP tuples
+
+	//now the status should be execute command
+	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+		return false;
+
+	return true;
 }
 
 bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte){
 	element->value_type = _byte;
+
 	switch(_byte){
 		case MSGPACK_NIL: {
 			element->value_bool = false;
@@ -678,7 +537,7 @@ bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _by
 //		}
 
 		case MSGPACK_STR8: {
-			element->value_fixstring = next();
+//			element->value_fixstring = next();
 			return true;
 		}
 
@@ -709,12 +568,17 @@ bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _by
 //		}
 
 		default:{
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+//			response->writeMsgPackUnknownType(_byte);
 			return false;
 		}
 	}
 
+	//TODO:
+//	error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+//	response->writeMsgPackUnknownType(_byte);
 	return false;
-	}
 }
 
 uint8_t  MsgPackHandler::getNextType() {
@@ -749,8 +613,9 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte){
 		return false;
 
 	if(_32bitword != MODULE_COMMMAND_FLAG){
-//				error_code = ERROR_32BIT_PROCESSING;
-//				response->writeProcess32bitwordERROR();
+		//TODO:
+//		error_code = ERROR_32BIT_PROCESSING;
+//		response->writeProcess32bitwordERROR();
 		return false;
 	}
 
@@ -761,99 +626,16 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte){
 	commands->command_executing = _32bitword;
 	if(!setStatus(MSGPACK_STATE_COMMAND_SET))
 		return false;
+
 	return true;
-
-//	error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
-//	response->writeErrorMsgPack4BCPElementKeyProcessing();
-//	return false;
 }
 
-MsgPack4BCPMapElement MsgPackHandler::processMapKeyElement(_4BCP_MAP_ELEMENT *element, uint8_t _byte){
-	if(!MsgPackDataTypes::checkDataType(_byte)){
-		//If it's not a recognized type on MsgPack definitions
-		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType(_byte);
-		return false;
-	}
-
-	if(element->key == NULL || element->key <= 0) {
-		if(_byte != MSGPACK_UINT32) {
-			error_code = ERROR_MSGPACK_4BCP_ELEMENT_HAS_NO_KEY;
-			response->writeErrorMsgPack4BCPElementHasNoKey(_byte);
-			return false;
-		}
-
-		if(!assemble32bitByte(_byte))
-			return false;
-
-		element->key = _32bitword;
-		return true;
-	}
-
-	error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
-	response->writeErrorMsgPack4BCPElementKeyProcessing();
-	return false;
-}
-
-bool MsgPackHandler::processMapValueElement(_4BCP_MAP_ELEMENT *element, uint8_t _byte){
-	if(!MsgPackDataTypes::checkDataType(_byte)){
-		//If it's not a recognized type on MsgPack definitions
-		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType(_byte);
-		return false;
-	}
-
-	if(element->key == NULL || element->key <= 0) {
-			error_code = ERROR_MSGPACK_4BCP_ELEMENT_HAS_NO_KEY;
-			response->writeErrorMsgPack4BCPElementHasNoKey(_byte);
-			return false;
-	}
-
-	switch(_byte){
-
-	}
-
-	error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
-	response->writeErrorMsgPack4BCPElementKeyProcessing();
-	return false;
-}
 
 bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
-	return true; //DEBUG
-//	uint8_t next_word = whatNext();
-//
-//	while (array_size > 0) {
-//		array_size--;
-//		uint8_t _word = next();
-//		response->writeByte(_word);
-//
-//		//THIS IS A MAP
-//		if (_word > MSGPACK_MAP_INITIAL && _word <= MSGPACK_MAP_FINAL) {
-//			uint8_t map_size = _word - MSGPACK_MAP_INITIAL;
-//			while (map_size > 0) {
-//				uint8_t _word = next();
-//				map_size--;
-//				switch (_word) {
-//				case MSGPACK_UINT32:
-//					while (_32bitword_remaining > 0) {
-//						uint8_t _word = next();
-//						assemble32bitByte(_word);
-//					}
-//					response->write32bitByte(_32bitword); // DEBUG
-//					reset_32bit_processing();
-//					break;
-//				case MSGPACK_TRUE:
-//					response->writeByte(true);
-//					break;
-//				case MSGPACK_FALSE:
-//					response->writeByte(false);
-//					break;
-//				}
-//			}
-//		}
-//	}
-
-	return true; //return false if/but all errors had been took care and reponses has already trasmitted
+	//TODO
+//	error_code = ERROR_MSGPACK_NOT_IMPLEMENTED;
+//	response->writeMsgPackUnknownType(_byte);
+	return false; //return false if/but all errors had been took care and reponses has already trasmitted
 }
 
 
@@ -997,7 +779,6 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 }
 
 bool MsgPackHandler::checkFlow(){
-
 	if(check4BCPProcesFlow(MSGPACK4BCPProcessFlow, MSGPACK4BCPProcessFlow_SIZE))
 		return true;
 
@@ -1025,34 +806,17 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte){
 }
 
 unsigned long MsgPackHandler::isMapped(){
-
-//#infdef _32bitword
+	//TODO:
 //	error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
 //	response->write32bitByte(_32bitword);
 //	response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
 //	response->writeMsgPackError(_32bitword);
-//	return 0;
-//#endif
-	//TODO: check if it's in the ENUN in Flash PROGMEM
 	return _32bitword; //DEBUG t needs to return the type of 4BCP
 }
 
 bool MsgPackHandler::setStatus(uint8_t _status){
-//	//DEBUG
-//	if(status != MSGPACK_STATE_IDLE) {
-//		response->writeRaw(F("MEM BEFORE CHANGE STATUS:"));//DEBUG
-//		response->writeByte(status); //DEBUG
-//	}
-
 	prev_status = status;
 	status = _status;
-
-	//DEBUG
-//	if(status != MSGPACK_STATE_IDLE) {
-//		response->writeRaw(F("CHANGED STATUS TO:"));//DEBUG
-//		response->writeByte(status); //DEBUG
-//	}
-
 
 	if(_status == MSGPACK_STATE_IDLE)
 		return true;
@@ -1064,7 +828,7 @@ bool MsgPackHandler::setStatus(uint8_t _status){
 }
 
 /**
- * we wont use pointer to another pointer just for standards [&](){ cout << F(x)} ...
+ * we wont use (at least minimal) pointer to another pointer just for standards [&](){ cout << F(x)} ...
  */
 //unsigned long MsgPackHandler::get32bitByte(){
 //	return _32bitword;
