@@ -424,6 +424,72 @@ unsigned long MsgPackHandler::_4BCPCheckForNext(unsigned long resource){
 	return resource; //DEBUG MUST BE THE NEXT WORD 4BCP kind of is awaiting
 }
 
+
+/**
+ *	processMap() is a state machine based processor. Every package must be encoded with 4BCP protocol which defines
+ *	that always will be sent in the request a msgpack format MAP with 1 (one) and only ONE type of command per request.
+ *	It command can be executed multiple times with different devices, p.e. one can send a request to SET different actuators
+ *	with different arguments values. The command is the same 'MODULE_COMMMAND_SET_ACTUATOR' and it can be repeated for
+ *	multiples actuators devices (which is mapped by 4BCP) with different values. Or it can be a simples GET command with no
+ *	arguments at all, p.e. 'MODULE_COMMMAND_GET_DATA', 'MODULE_COMMMAND_GET_STATE', 'MODULE_COMMAND_GET_PROCESS_FLOW'.
+ *
+ *	The main effort is to understand 4BCP, which is described in our wiki. But for a glance here's a simple example of 4BCP structure
+ *	message on top of msgpack protocol.
+ *
+ *
+ * Our PHP client test pack the 4BCP on top of msgpack protocol. Just have in mind that the main goal of 4BCP is to have a lot
+ * of mapping devices, sensors, commands, in 32bit unsigned long hex words:
+ *
+ *
+ * $payload = $packer->pack([
+ *     MODULE_COMMMAND_FLAG => MODULE_COMMMAND_SET_ACTUATOR,
+ *     MODULE_ACTUATOR_DN20_1_1 => array(
+ *       MODULE_COMMMAND_SET_ARGS1 => true,
+ *       MODULE_COMMMAND_SET_ARGS2 => 57.88
+ *     ),
+ *     MODULE_ACTUATOR_DN20_1_2 => array(
+ *       MODULE_COMMMAND_SET_ARGS1 => false,
+ *       MODULE_COMMMAND_SET_ARGS2 => 788633
+ *     ),
+ *     MODULE_ACTUATOR_DN20_1_3 => array(
+ *       MODULE_COMMMAND_SET_ARGS1 => true,
+ *       MODULE_COMMMAND_SET_ARGS2 => 788.63
+ *     ),
+ *     MODULE_COMMMAND_EXECUTE_FLAG => true
+ *   ]
+ *	);
+ *
+ *	Note that 4BCP is constant defined based. Each constant has a uint32bit_t hex value and it's used to process RPC's
+ *	In the example above, the first thing you'll notice is that the first tuple is the COMMAND definition. The key tells
+ *	the processor that it's value is a command, so it will look on commands_map.h to check if it's implemented.
+ *
+ *	IT'S MANDATORY THAT FIRST TUPLE BE THE COMMAND SET INSTRUCTIONS
+ *
+ *	In this case the command is SET ACTUATORS values. Since we can have several actuators in one module, each must have a
+ *	unique signature which is the 4BCP uint32_t hex value defined in 'devices.h'. This message tell us that the command is
+ *	MODULE_COMMMAND_SET_ACTUATOR and the other tuples is the definition of each actuator that must be run the command for with
+ *	another msgpack MAP containing the actuators set values. The max number of commands to execute and the maximum numbers
+ *	of arguments is defined in 'sintaxes-framework-defines.h' For example we can set a command to execute the maximum of 4 times,
+ *	and the maximum of 4 arguments per command.This is defined in the constants 'MAX_MSGPACK_COMMANDS' and 'MAX_MSGPACK_ARGS'
+ *
+ *	On the case of our example for set actuators we defined another 3 tuples with the actuators UUID as key for the arguments MAP
+ *	of this actuator itself. The number of arguments must be defined per COMMAND function. In this case only 2. 1 - if it
+ *	should be ON/OFF (true/false) and the time it must be on that state. There will be soon a watchdog for proposes like this.
+ *
+ *	A simpler request could be to get the sensors data of this module like this:
+ *
+ * $payload = $packer->pack([
+ *     MODULE_COMMMAND_FLAG => MODULE_COMMMAND_GET_DATA,
+ *     MODULE_COMMMAND_EXECUTE_FLAG => true
+ *   ]
+ * );
+ *
+ * As before, first tuple to set command, in this case 'MODULE_COMMMAND_GET_DATA'. Note that the same
+ * way as before the last tuple must be MODULE_COMMMAND_EXECUTE_FLAG 4BCP constant with value true.
+ *
+ * This last tuple is used by the processor to tell the module RUN COMMAND, everything has been set.
+ *
+ */
 bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 
 	uint8_t element_number = 0;
@@ -431,12 +497,15 @@ bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 	map.position = 0;
 
 	while(map_elements_size > 0) {
+
+		//SET Command with first element of MAP which is mandatory to be COMMAND_FLAG WITH VALUE AS COMMAND_TO_EXECUTE
 		if(status == MSGPACK_STATE_BEGIN) {
 			processCommandHeader(_byte);
 			map_elements_size--;
-//			continue;
+			continue;
 		}
 
+		//This will be the first tuple
 		MsgPack4BCPMapElement element;
 
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
