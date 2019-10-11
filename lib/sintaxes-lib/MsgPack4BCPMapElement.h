@@ -42,7 +42,7 @@ public:
 	uint8_t value_fixarray;
 
 private:
-	MsgPack4BCPMapElement *nested_element[MAX_MSGPACK_ARGS];
+	MsgPack4BCPMapElement *nested_element[MAX_MSGPACK_COMMANDS];
 	uint8_t total_nested_elements = 0;
 };
 

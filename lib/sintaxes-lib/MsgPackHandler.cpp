@@ -145,7 +145,7 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 bool MsgPackHandler::processStream() {
 	while (buffer_bytes_remaining > 0) {
 		//Get next byte on buffer
-		uint8_t _byte = MsgPackHandler::next();
+		uint8_t _byte = next();
 //		response->writeByte(_byte);
 
 
@@ -159,20 +159,42 @@ bool MsgPackHandler::processStream() {
 		//THIS IS AN ARRAY - [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		array_size = isArray(_byte);
 		if( array_size > 0){
-//			processArray(_byte, array_size);
-//			response->writeRaw(F("MAP:"));
-//			response->writeByte(_byte); //DEBUG
-//			response->writeRaw(F("SIZE:"));
-//			response->writeByte(array_size); //DEBUG
-
-			continue;
+			//TODO: not implemented
+//			error_code = ERROR_MSGPACK_4BCP_NOT_IMPLEMENTED;
+//			response->writeErrorMsgPackHasFinishedWithBytes();
+			response->closeJsonResponse();
+			setStatus(MSGPACK_STATE_IDLE);
+			return false;
 		}
 
-		//THIS IS AN MAP- [COMMANDS FRAMEWORK], all 4BCP communication begins with a MAP
+
+		/**
+		 * 4BCP determines that it's message should be encapsulated inside a msgpack MAP (0x80 ~ 0x8f)
+		 * Have a look at processMap() comments to have the idea of how we translate 4BCP messages.
+		 * It's the main function for processing 4BCP messages. Remember that 4BCP Messages is sent
+		 * on top of msgpack protocol
+		 */
 		map_elements_size = isMap(_byte);
 		if(map_elements_size > 0) {
-			if(!processMap(_byte, map_elements_size))
+			if(!assembleMap(_byte, map_elements_size)) {
+				response->closeJsonResponse();
+				setStatus(MSGPACK_STATE_IDLE);
 				return false;
+			}
+
+			if(!processMap()) {
+				response->closeJsonResponse();
+				setStatus(MSGPACK_STATE_IDLE);
+				return false;
+			}
+
+
+		} else {
+			error_code = ERROR_MAL_FORMED_MSGPCK;
+//			response->writeError
+			response->closeJsonResponse();
+			setStatus(MSGPACK_STATE_IDLE);
+			return false;
 		}
 
 
@@ -310,7 +332,7 @@ bool MsgPackHandler::processStream() {
  * Be aware that we still have to process the msgpack protocol for arguments values which can be any of msgpack types.
  *
  */
-bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
+bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 
 	uint8_t element_number = 0;
 
@@ -329,7 +351,9 @@ bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 			continue;
 		}
 
-		//This will be the first tuple after COMMAND SET (command args tuples)
+		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
+		//p.e. device MODULE_ACTUATOR_DN20_1_1 is a element which contains for example 2 nested elements, one for status (ON/OFF)
+		//and other for time period of the state. Each loop in this while can be considered a device that will be set or read.
 		MsgPack4BCPMapElement element;
 
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
@@ -410,6 +434,14 @@ bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 			if(!setStatus(MSGPACK_STATE_COMMAND_SET))
 				return false;
 		}
+
+		//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
+		if(element_number >= MAX_MSGPACK_COMMANDS){
+			//TODO:
+//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+			return false;
+		}
 		map.elements[element_number] = element;
 		element_number++;
 		map_elements_size--;
@@ -418,6 +450,19 @@ bool MsgPackHandler::processMap(uint8_t _byte, int map_elements_size) {
 	//now the status should be execute command
 	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
 		return false;
+
+	return true;
+}
+
+bool MsgPackHandler::processMap(){
+	if(! map.haveElements()){
+		//TODO:
+//		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+//		response->writeMsgPackUnknownType(_byte);
+		return false;
+	}
+
+
 
 	return true;
 }
@@ -596,6 +641,12 @@ uint8_t  MsgPackHandler::getNextType() {
 
 bool MsgPackHandler::checkModulesMap(){
 	//TODO loop into devices sensors actuators map
+
+	//TODO: if( error )
+//	error_code = ERROR_MSGPACK_4BCP_UNKNOW;
+//	response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+//	return false
+
 	return true;
 }
 

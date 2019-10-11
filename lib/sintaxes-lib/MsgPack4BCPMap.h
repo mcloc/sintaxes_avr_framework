@@ -17,7 +17,8 @@ public:
 	void setSize(uint8_t size);
 	uint8_t getSize();
 	uint16_t getPosition();
-	MsgPack4BCPMapElement elements[];
+	MsgPack4BCPMapElement elements[MAX_MSGPACK_COMMANDS];
+	bool haveElements();
 
 private:
 	uint8_t size;

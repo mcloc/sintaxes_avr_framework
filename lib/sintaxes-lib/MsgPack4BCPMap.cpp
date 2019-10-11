@@ -8,8 +8,8 @@
 #include <MsgPack4BCPMap.h>
 
 MsgPack4BCPMap::MsgPack4BCPMap() {
-	// TODO Auto-generated constructor stub
-
+	size = 0;
+	position = 0;
 }
 
 void MsgPack4BCPMap::setSize(uint8_t _size){
@@ -21,4 +21,11 @@ uint8_t MsgPack4BCPMap::getSize(){
 }
 uint16_t MsgPack4BCPMap::getPosition(){
 	return position;
+}
+
+bool MsgPack4BCPMap::haveElements(){
+	if(! size > 0)
+		return false;
+
+	return true;
 }

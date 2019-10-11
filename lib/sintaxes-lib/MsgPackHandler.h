@@ -82,11 +82,9 @@ private:
 
 	uint8_t whatNext();
 	uint8_t next();
-	bool processByte(uint8_t _byte);
 	bool processArray(uint8_t _byte, int array_size);
-	bool processMap(uint8_t _byte, int map_elements_size);
-	MsgPack4BCPMapElement processMapKeyElement(MsgPack4BCPMapElement *element, uint8_t _byte);
-	bool processMapValueElement(MsgPack4BCPMapElement *element, uint8_t _byte);
+	bool assembleMap(uint8_t _byte, int map_elements_size);
+	bool processMap();
 	bool processCommandHeader(uint8_t _word);
 	bool checkModulesMap();
 	uint8_t getNextType();
@@ -97,9 +95,6 @@ private:
 
 	bool assemble32bitByte(uint8_t _byte);
 	bool reset_32bit_processing();
-	unsigned long _4BCPCheckForNext(unsigned long resource);
-	bool process4BytesCmdProtocol();
-	bool processMappedResource(unsigned long resource);
 
 	bool setStatus(uint8_t _status);
 	unsigned int isArray(uint8_t _byte);
@@ -107,23 +102,12 @@ private:
 	unsigned long isMapped();
 
 	/**
-	 * we wont use pointer to another pointer just for standards [&](){ cout << F(x)} ...
+	 * we wont use pointer to another pointer (at least minimal when talking to other classes due to scope)
+	 * just for standards [&](){ cout << F(x)} ...
 	 */
 	//unsigned long get32bitByte();
 
 
-//	auto command_args1;
-//	auto command_args2;
-//	auto command_args3;
-//	auto command_args4;
-
-
-
-
-//	unsigned long ext_next_type;
-//	unsigned long ext_byte_type;
-//	unsigned long ext_byte;
-//	unsigned long ext_byte_stack[MAX_MSGPACK_COMMANDS + MAX_MSGPACK_ARGS];
 };
 
 
