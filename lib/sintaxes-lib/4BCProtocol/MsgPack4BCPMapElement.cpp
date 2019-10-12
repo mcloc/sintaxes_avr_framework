@@ -5,10 +5,10 @@
  *      Author: mcloc
  */
 
-#include <MsgPack4BCPMapElement.h>
-#include <msgpack_defines.h>
-#include <commands_map.h>
-#include <devices.h>
+#include <4BCProtocol/MsgPack4BCPMapElement.h>
+#include <defines/commands_map.h>
+#include <defines/devices.h>
+#include <defines/msgpack_defines.h>
 
 MsgPack4BCPMapElement::MsgPack4BCPMapElement() {
 	// TODO Auto-generated constructor stub

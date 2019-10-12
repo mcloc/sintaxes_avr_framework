@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <Commands.h>
+#include <defines/commands_map.h>
+#include <defines/devices.h>
+#include <defines/module_string.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 //#include <StandardCplusplus.h>
-#include <module_string.h>
-#include <commands_map.h>
-#include <devices.h>
 //#include <sintaxes-lib.h>
 /**
  * command to execute / in execution

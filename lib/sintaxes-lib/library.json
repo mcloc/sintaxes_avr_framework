@@ -26,7 +26,12 @@
     }, 
     "homepage": null, 
     "export": {
-        "include": null, 
+        "include": [
+        "lib/sintaxes-lib/defines/*",
+        "lib/sintaxes-lib/4BCProtocol/*",
+        "lib/sintaxes-lib/msgpack/*",
+        "lib/sintaxes-lib/msgpack/type_values/*"
+    	], 
         "exclude": [
             "extras", 
             "docs", 
@@ -36,5 +41,15 @@
             "*.pdf"
         ]
     }, 
+    "build": {
+	    "flags": [
+	        "-I defines",
+        	"-I 4BCProtocol",
+        	"-I msgpack",
+        	"-I msgpack/type_value"
+	    ],
+	     "extraScript": "subfolders_extra_script.py"
+	},
+
     "id": 9995
 }

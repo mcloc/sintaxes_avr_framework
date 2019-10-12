@@ -5,10 +5,10 @@
  *      Author: mcloc
  */
 
-#ifndef LIB_SINTAXES_LIB_MSGPACK4BCPMAP_H_
-#define LIB_SINTAXES_LIB_MSGPACK4BCPMAP_H_
+#ifndef LIB_SINTAXES_LIB_4BCPROTOCOL_MSGPACK4BCPMAP_H_
+#define LIB_SINTAXES_LIB_4BCPROTOCOL_MSGPACK4BCPMAP_H_
+#include <4BCProtocol/MsgPack4BCPMapElement.h>
 #include <Arduino.h>
-#include <MsgPack4BCPMapElement.h>
 
 
 class MsgPack4BCPMap {
@@ -26,4 +26,4 @@ private:
 
 };
 
-#endif /* LIB_SINTAXES_LIB_MSGPACK4BCPMAP_H_ */
+#endif /* LIB_SINTAXES_LIB_4BCPROTOCOL_MSGPACK4BCPMAP_H_ */

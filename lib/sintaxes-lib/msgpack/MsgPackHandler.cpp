@@ -27,16 +27,16 @@
  *
  */
 
+#include <4BCProtocol/MsgPack4BCPMap.h>
+#include <4BCProtocol/MsgPack4BCPMapElement.h>
 #include <Arduino.h>
-#include <MsgPackHandler.h>
-#include <MsgPackDataTypes.h>
-#include <MsgPack4BCPMapElement.h>
-#include <MsgPack4BCPMap.h>
-#include <msgpack_defines.h>
-#include <module_string.h>
-#include <errors_code.h>
-#include <commands_map.h>
-#include <devices.h>
+#include <defines/commands_map.h>
+#include <defines/devices.h>
+#include <defines/errors_code.h>
+#include <defines/module_string.h>
+#include <defines/msgpack_defines.h>
+#include <msgpack/MsgPackDataTypes.h>
+#include <msgpack/MsgPackHandler.h>
 
 
 //TODO: sintax-framework namespace
@@ -461,8 +461,6 @@ bool MsgPackHandler::processMap(){
 //		response->writeMsgPackUnknownType(_byte);
 		return false;
 	}
-
-
 
 	return true;
 }

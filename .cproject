@@ -1,381 +1,1508 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?fileVersion 4.0.0?><cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
-	<storageModule moduleId="org.eclipse.cdt.core.settings">
-		<cconfiguration id="0.910961921">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.910961921" moduleId="org.eclipse.cdt.core.settings" name="Default">
-				<externalSettings/>
-				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="sintaxes_avr_framework" buildProperties="" description="" id="0.910961921" name="Default" parent="org.eclipse.cdt.build.core.prefbase.cfg">
-					<folderInfo id="0.910961921." name="/" resourcePath="">
-						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.952979152" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
-							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.eclipse.cdt.build.core.prefbase.toolchain.952979152.52310970" name=""/>
-							<builder arguments="-f -c eclipse" cleanBuildTarget="run --target clean" command="platformio" id="org.eclipse.cdt.build.core.settings.default.builder.1519453406" incrementalBuildTarget="run" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1409095472" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.1624502120" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.239157887" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
-								</option>
-								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.922107295" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
-									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
-									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
-									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
-								</option>
-								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.149990277" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
-							</tool>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.54121539" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1096940598" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
-								</option>
-								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1198905600" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
-									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
-									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
-									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
-								</option>
-								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.762536863" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
-							</tool>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.1310559623" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.41298875" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
-								</option>
-								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.884639970" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
-									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
-									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
-									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
-								</option>
-								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.549319812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-		</cconfiguration>
-		<cconfiguration id="0.910961921.1363900502">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.910961921.1363900502" moduleId="org.eclipse.cdt.core.settings" name="Debug">
-				<externalSettings/>
-				<extensions>
-					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-				</extensions>
-			</storageModule>
-			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="mbed" buildProperties="" description="" id="0.910961921.1363900502" name="Debug" parent="org.eclipse.cdt.build.core.prefbase.cfg">
-					<folderInfo id="0.910961921.1363900502." name="/" resourcePath="">
-						<toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.2116690625" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
-							<targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.eclipse.cdt.build.core.prefbase.toolchain.2116690625.848954921" name=""/>
-							<builder arguments="-f -c eclipse debug" cleanBuildTarget="run --target clean" command="platformio" enableCleanBuild="false" id="org.eclipse.cdt.build.core.settings.default.builder.985867833" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1855678035" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.30528994" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.794801023" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
-								</option>
-								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1743427839" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
-									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
-									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
-									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
-								</option>
-								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.919136836" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
-							</tool>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.1146422798" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.650084869" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
-								</option>
-								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2055633423" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
-									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
-									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
-									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
-								</option>
-								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.445650141" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
-							</tool>
-							<tool id="org.eclipse.cdt.build.core.settings.holder.1637357529" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
-								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1246337321" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
-								</option>
-								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2122043341" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
-									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
-									<listOptionValue builtIn="false" value="BOARD_HAS_PSRAM"/>
-									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
-									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
-									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
-								</option>
-								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.207004812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
-							</tool>
-						</toolChain>
-					</folderInfo>
-				</configuration>
-			</storageModule>
-			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
-		</cconfiguration>
-	</storageModule>
-	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="sintaxes_avr_framework.null.189551033" name="sintaxes_avr_framework"/>
-	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="0.910961921">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
-	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/mega"/>
-		</configuration>
-	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
-		<buildTargets>
-			<target name="PlatformIO: Upload using Programmer" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run --target program</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Upload SPIFFS image" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run --target uploadfs</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Build" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Verbose Build" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run --verbose</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Upload" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run --target upload</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Verbose Upload" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run --target upload --verbose</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>run --target clean</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Test" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>test</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Remote" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>remote run --target upload</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Rebuild C/C++ Project Index" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>init --ide eclipse</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: List Devices" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>device list</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Update Project Libraries" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>lib update</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Update All" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>update</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-			<target name="PlatformIO: Upgrade Core" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
-				<buildCommand>platformio</buildCommand>
-				<buildArguments>-f -c eclipse</buildArguments>
-				<buildTarget>upgrade</buildTarget>
-				<stopOnError>true</stopOnError>
-				<useDefaultCommand>false</useDefaultCommand>
-				<runAllBuilders>false</runAllBuilders>
-			</target>
-		</buildTargets>
-	</storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.core.settings">
+        		
+        <cconfiguration id="0.910961921">
+            			
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.910961921" moduleId="org.eclipse.cdt.core.settings" name="Default">
+                				
+                <externalSettings/>
+                				
+                <extensions>
+                    					
+                    <extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    				
+                </extensions>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                				
+                <configuration artifactName="sintaxes_avr_framework" buildProperties="" description="" id="0.910961921" name="Default" optionalBuildProperties="" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+                    					
+                    <folderInfo id="0.910961921." name="/" resourcePath="">
+                        						
+                        <toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.952979152" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+                            							
+                            <targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.eclipse.cdt.build.core.prefbase.toolchain.952979152.52310970" name=""/>
+                            							
+                            <builder arguments="-f -c eclipse" cleanBuildTarget="run --target clean" command="platformio" id="org.eclipse.cdt.build.core.settings.default.builder.1519453406" incrementalBuildTarget="run" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.libs.1409095472" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.1624502120" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.incpaths.239157887" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack/type_values"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
+                                    								
+                                </option>
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.symbols.922107295" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="F_CPU=16000000L"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO=10805"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.149990277" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.54121539" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.incpaths.1096940598" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack/type_values"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
+                                    								
+                                </option>
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.symbols.1198905600" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="F_CPU=16000000L"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO=10805"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.762536863" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.1310559623" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.incpaths.41298875" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack/type_values"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
+                                    								
+                                </option>
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="org.eclipse.cdt.build.core.settings.holder.symbols.884639970" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="F_CPU=16000000L"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO=10805"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.549319812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                                							
+                            </tool>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
+                    <fileInfo id="0.910961921.1847534948" name="Commands.cpp" rcbsApplicability="disable" resourcePath="lib/sintaxes-lib/Commands.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1860369164">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1860369164" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.251747920" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.886736357" name="LocalBuffers.cpp" rcbsApplicability="disable" resourcePath="lib/sintaxes-lib/LocalBuffers.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.2023250887">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.2023250887" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.943030721" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.95882597" name="sintaxes-lib.cpp" rcbsApplicability="disable" resourcePath="lib/sintaxes-lib/sintaxes-lib.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1873436421">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1873436421" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1471300112" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.329596706" name="Responses.cpp" rcbsApplicability="disable" resourcePath="lib/sintaxes-lib/Responses.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1784216683">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1784216683" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1743062254" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.995884336" name="new_op.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/new_op.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1709481728">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1709481728" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.436685269" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1013625664" name="ios.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/ios.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1579660446">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1579660446" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.392056152" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1529666935" name="del_opvnt.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/del_opvnt.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1150079662">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1150079662" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.948366109" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.69733076" name="del_op.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/del_op.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1045286979">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1045286979" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.945419246" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1369247164" name="ostream.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/ostream.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.2121857787">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.2121857787" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.303747781" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.85042942" name="queue.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/queue.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1341896020">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1341896020" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1273109965" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.974160772" name="wstring.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/wstring.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1501537093">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1501537093" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.496662084" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.2063775531" name="valarray.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/valarray.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.96264103">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.96264103" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.682185329" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1619102653" name="fstream.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/fstream.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1438494171">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1438494171" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1573896805" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.782932261" name="algorithm.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/algorithm.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.638263488">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.638263488" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.230686188" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1304283574" name="stdexcept.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/stdexcept.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1925599111">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1925599111" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1284742936" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.2035585923" name="numeric.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/numeric.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.892505576">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.892505576" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.457662911" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.903378890" name="eh_alloc.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/eh_alloc.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1775370014">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1775370014" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.174135249" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1330334085" name="stack.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/stack.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.14929335">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.14929335" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.874952064" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.2145565787" name="support.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/support.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1693713844">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1693713844" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1094137769" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.459611067" name="char_traits.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/char_traits.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.490201363">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.490201363" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.178490211" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.163634585" name="exception.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/exception.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1229079507">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1229079507" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1369043920" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.546990098" name="del_opnt.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/del_opnt.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.41627152">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.41627152" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1951420372" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1690228311" name="istream.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/istream.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.617886271">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.617886271" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1705171424" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.631436896" name="bitset.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/bitset.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1278577213">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1278577213" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1171725607" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1037198945" name="sstream.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/sstream.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1329796687">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1329796687" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.2086338018" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.407603650" name="utility.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/utility.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.973317394">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.973317394" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1984641286" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1339125390" name="map.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/map.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1294321468">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1294321468" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.2050791165" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1627630440" name="typeinfo.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/typeinfo.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1006989014">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1006989014" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.949495426" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.54964589" name="streambuf.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/streambuf.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.544329281">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.544329281" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1158655301" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.2019315207" name="associative_base.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/associative_base.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1973270592">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1973270592" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1009668923" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.392257450" name="new_opvnt.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/new_opvnt.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.864390952">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.864390952" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.22769861" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.597759858" name="iostream.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/iostream.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.817523344">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.817523344" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.158582226" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1473296119" name="iomanip.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/iomanip.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.121688784">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.121688784" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.583835714" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.2009245625" name="func_exception.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/func_exception.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.628841164">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.628841164" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.866876700" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1881242661" name="locale.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/locale.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.2020533326">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.2020533326" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1577878616" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1357383318" name="set.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/set.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.522362199">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.522362199" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.908252208" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.243046546" name="deque.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/deque.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1572417335">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1572417335" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.2109250809" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.499131178" name="string.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/string.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1397167656">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1397167656" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.525529874" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1544094148" name="new_handler.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/new_handler.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.267230145">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.267230145" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1111850361" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1160082734" name="new_opv.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/new_opv.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1036407190">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1036407190" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1472816314" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1341767132" name="eh_globals.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/eh_globals.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1491712350">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1491712350" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1407324314" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1231088114" name="list.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/list.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1777612477">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1777612477" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.350157599" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.618419539" name="del_opv.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/del_opv.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1838900963">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1838900963" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1738064855" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1717761419" name="limits.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/limits.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.429790194">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.429790194" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.765790832" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1611410558" name="new_opnt.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/new_opnt.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.150677584">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.150677584" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1107070309" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1445271841" name="complex.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/complex.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.2054908189">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.2054908189" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.84143255" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1784589749" name="vector.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/vector.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1029662672">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1029662672" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1185794071" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.196528830" name="iterator.cpp" rcbsApplicability="disable" resourcePath="lib/StandardCplusplus/iterator.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1055752247">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1055752247" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1959967928" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.455385646" name="main.cpp" rcbsApplicability="disable" resourcePath="src/main.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.780822787">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.780822787" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.78310111" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1874250344" name="DHT_U.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/DHT sensor library_ID19/DHT_U.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.530436194">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.530436194" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.287205815" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.958919687" name="DHT.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/DHT sensor library_ID19/DHT.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.267093065">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.267093065" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1410528940" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1265650003" name="UIPEthernet.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/UIPEthernet.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.750272685">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.750272685" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1431698807" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1143706920" name="UIPUdp.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/UIPUdp.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.728819270">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.728819270" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.799986014" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.2046961929" name="UIPServer.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/UIPServer.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.832202303">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.832202303" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.757981696" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1148679597" name="Dns.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/Dns.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.854229403">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.854229403" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.128293586" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.219953896" name="mempool.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/mempool.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.572857468">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.572857468" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.403819951" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1195409020" name="uip_timer.c" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/uip_timer.c" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.1310559623.258199567">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.1310559623.258199567" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder.1310559623">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.231596050" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1362124444" name="uip.c" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/uip.c" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.1310559623.621345336">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.1310559623.621345336" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder.1310559623">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1114162541" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1511025705" name="uip_arp.c" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/uip_arp.c" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.1310559623.942364337">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.1310559623.942364337" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder.1310559623">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.331345785" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.720108355" name="Enc28J60Network.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/Enc28J60Network.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1742936510">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1742936510" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.296177167" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.823982114" name="uip_debug.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/uip_debug.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.1774566860">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.1774566860" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.514990640" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.1792994666" name="clock-arch.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/utility/clock-arch.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.632541928">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.632541928" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.351451293" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.734827613" name="UIPClient.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/UIPClient.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.658686685">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.658686685" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1954325376" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    					
+                    <fileInfo id="0.910961921.841954474" name="Dhcp.cpp" rcbsApplicability="disable" resourcePath=".pio/libdeps/mega/UIPEthernet_ID1484/Dhcp.cpp" toolsToInvoke="org.eclipse.cdt.build.core.settings.holder.54121539.415075665">
+                        						
+                        <tool id="org.eclipse.cdt.build.core.settings.holder.54121539.415075665" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder.54121539">
+                            							
+                            <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.1536207328" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                            						
+                        </tool>
+                        					
+                    </fileInfo>
+                    				
+                </configuration>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+            		
+        </cconfiguration>
+        		
+        <cconfiguration id="0.910961921.1363900502">
+            			
+            <storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="0.910961921.1363900502" moduleId="org.eclipse.cdt.core.settings" name="Debug">
+                				
+                <externalSettings/>
+                				
+                <extensions>
+                    					
+                    <extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.VCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GmakeErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.CWDLocator" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GASErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    					
+                    <extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+                    				
+                </extensions>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+                				
+                <configuration artifactName="mbed" buildProperties="" description="" id="0.910961921.1363900502" name="Debug" parent="org.eclipse.cdt.build.core.prefbase.cfg">
+                    					
+                    <folderInfo id="0.910961921.1363900502." name="/" resourcePath="">
+                        						
+                        <toolChain id="org.eclipse.cdt.build.core.prefbase.toolchain.2116690625" name="No ToolChain" resourceTypeBasedDiscovery="false" superClass="org.eclipse.cdt.build.core.prefbase.toolchain">
+                            							
+                            <targetPlatform binaryParser="org.eclipse.cdt.core.ELF" id="org.eclipse.cdt.build.core.prefbase.toolchain.2116690625.848954921" name=""/>
+                            							
+                            <builder arguments="-f -c eclipse debug" cleanBuildTarget="run --target clean" command="platformio" enableCleanBuild="false" id="org.eclipse.cdt.build.core.settings.default.builder.985867833" incrementalBuildTarget="" keepEnvironmentInBuildfile="false" managedBuildOn="false" name="Gnu Make Builder" superClass="org.eclipse.cdt.build.core.settings.default.builder"/>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.libs.1855678035" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.30528994" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
+                                								
+                                <option id="org.eclipse.cdt.build.core.settings.holder.incpaths.794801023" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack/type_values"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
+                                    								
+                                </option>
+                                								
+                                <option id="org.eclipse.cdt.build.core.settings.holder.symbols.1743427839" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="F_CPU=16000000L"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO=10805"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.919136836" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.1146422798" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
+                                								
+                                <option id="org.eclipse.cdt.build.core.settings.holder.incpaths.650084869" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack/type_values"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
+                                    								
+                                </option>
+                                								
+                                <option id="org.eclipse.cdt.build.core.settings.holder.symbols.2055633423" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="F_CPU=16000000L"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO=10805"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.445650141" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                                							
+                            </tool>
+                            							
+                            <tool id="org.eclipse.cdt.build.core.settings.holder.1637357529" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
+                                								
+                                <option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1246337321" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack/type_values"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/4BCProtocol"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
+                                    								
+                                </option>
+                                								
+                                <option id="org.eclipse.cdt.build.core.settings.holder.symbols.2122043341" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
+                                    									
+                                    <listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="F_CPU=16000000L"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="ARDUINO=10805"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
+                                    								
+                                </option>
+                                								
+                                <inputType id="org.eclipse.cdt.build.core.settings.holder.inType.207004812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
+                                							
+                            </tool>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    				
+                </configuration>
+                			
+            </storageModule>
+            			
+            <storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+            		
+        </cconfiguration>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="cdtBuildSystem" version="4.0.0">
+        		
+        <project id="sintaxes_avr_framework.null.189551033" name="sintaxes_avr_framework"/>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
+    	
+    <storageModule moduleId="refreshScope" versionNumber="2">
+        		
+        <configuration configurationName="Default">
+            			
+            <resource resourceType="PROJECT" workspacePath="/mega"/>
+            		
+        </configuration>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+    	
+    <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+        		
+        <buildTargets>
+            			
+            <target name="PlatformIO: Upload using Programmer" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run --target program</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Upload SPIFFS image" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run --target uploadfs</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Build" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Verbose Build" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run --verbose</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Upload" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run --target upload</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Verbose Upload" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run --target upload --verbose</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>run --target clean</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Test" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>test</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Remote" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>remote run --target upload</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Rebuild C/C++ Project Index" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>init --ide eclipse</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: List Devices" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>device list</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Update Project Libraries" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>lib update</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Update All" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>update</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            			
+            <target name="PlatformIO: Upgrade Core" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+                				
+                <buildCommand>platformio</buildCommand>
+                				
+                <buildArguments>-f -c eclipse</buildArguments>
+                				
+                <buildTarget>upgrade</buildTarget>
+                				
+                <stopOnError>true</stopOnError>
+                				
+                <useDefaultCommand>false</useDefaultCommand>
+                				
+                <runAllBuilders>false</runAllBuilders>
+                			
+            </target>
+            		
+        </buildTargets>
+        	
+    </storageModule>
+    	
+    <storageModule moduleId="scannerConfiguration">
+        		
+        <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+        		
+        <scannerConfigBuildInfo instanceId="0.910961921">
+            			
+            <autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
+            		
+        </scannerConfigBuildInfo>
+        	
+    </storageModule>
+    
 </cproject>

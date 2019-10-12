@@ -1,11 +1,12 @@
+
 #define __MODULE_COMMANDS_H_
 #include <UIPEthernet.h>
 #include <Arduino.h>
 typedef const __FlashStringHelper* FSH;
 #include <Responses.h>
 #include <LocalBuffers.h>
-#include <module_string.h>
-#include <errors_code.h>
+#include <defines/module_string.h>
+#include <defines/errors_code.h>
 
 
 Responses::Responses(LocalBuffers *_local_buffer){

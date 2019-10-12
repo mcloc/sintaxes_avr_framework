@@ -1,14 +1,14 @@
 #ifndef __SINTAXES_MSGPACK_HANDLER_H_
 #define __SINTAXES_MSGPACK_HANDLER_H_
 
+#include <4BCProtocol/MsgPack4BCPMap.h>
+#include <4BCProtocol/MsgPack4BCPMapElement.h>
 #include <sintaxes-lib.h>
 #include <Stream.h>
 #include <Commands.h>
-#include <MsgPack4BCPMapElement.h>
-#include <MsgPack4BCPMap.h>
-#include <sintaxes-framework-defines.h>
-#include <msgpack_defines.h>
 #include <Arduino.h>
+#include <defines/msgpack_defines.h>
+#include <defines/sintaxes-framework-defines.h>
 
 #define MSGPACK4BCPProcessFlow_SIZE 	9
 #define MSGPACK4BCPProcessFlow2_SIZE 	7

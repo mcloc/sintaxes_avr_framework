@@ -1,12 +1,12 @@
 #ifndef __SINTAXES_H_
 #define __SINTAXES_H_
 
-#include <errors_code.h>
-#include <commands_map.h>
-#include <devices.h>
-#include <sintaxes-framework-defines.h>
-
 #include <Arduino.h>
+#include <defines/commands_map.h>
+#include <defines/devices.h>
+#include <defines/errors_code.h>
+#include <defines/sintaxes-framework-defines.h>
+//#include "msgpack/MsgPackHandler.h"
 
 //#define foreach(list, index) for(index = 0; index < list.size(); index++)
 //foreach(cookies, i)

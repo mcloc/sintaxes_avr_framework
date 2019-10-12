@@ -34,19 +34,8 @@ SOFTWARE.
 #include "../../platform.h"
 #include "../../type_traits.h"
 
-#if defined(ETL_IN_UNIT_TEST)
-  #if !defined(ETLSTD)
-    #define ETLSTD etlstd
-  #endif
-  namespace etlstd
-#else
-  #if !defined(ETLSTD)
-    #define ETLSTD std
-  #endif
-  namespace std
-#endif
+namespace etlstd
 {
-#if !defined(ETL_COMPILER_ARM6)
   //******************************************************************************
   template <typename T1, typename T2>
   struct pair
@@ -92,7 +81,7 @@ SOFTWARE.
       other.second = temp2;
     }
   };
-#endif
+
   //******************************************************************************
   template <typename T1, typename T2>
   inline pair<T1, T2> make_pair(T1 a, T2 b)
@@ -100,7 +89,6 @@ SOFTWARE.
     return pair<T1, T2>(a, b);
   }
 
-#if !defined(ETL_COMPILER_ARM6)
   //******************************************************************************
   template <typename T1, typename T2>
   inline void swap(pair<T1, T2>& a, pair<T1, T2>& b)
@@ -145,7 +133,6 @@ SOFTWARE.
   {
     return !(a < b);
   }
-#endif
 
 #if ETL_CPP11_SUPPORTED
   //******************************************************************************

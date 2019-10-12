@@ -5,12 +5,12 @@
  *      Author: mcloc
  */
 
-#ifndef LIB_SINTAXES_LIB_MSGPACK4BCPMAPELEMENT_H_
-#define LIB_SINTAXES_LIB_MSGPACK4BCPMAPELEMENT_H_
+#ifndef LIB_SINTAXES_LIB_4BCPROTOCOL_MSGPACK4BCPMAPELEMENT_H_
+#define LIB_SINTAXES_LIB_4BCPROTOCOL_MSGPACK4BCPMAPELEMENT_H_
 
 #include <Arduino.h>
-#include <sintaxes-framework-defines.h>
-#include <msgpack_defines.h>
+#include <defines/msgpack_defines.h>
+#include <defines/sintaxes-framework-defines.h>
 
 
 
@@ -46,4 +46,4 @@ private:
 	uint8_t total_nested_elements = 0;
 };
 
-#endif /* LIB_SINTAXES_LIB_MSGPACK4BCPMAPELEMENT_H_ */
+#endif /* LIB_SINTAXES_LIB_4BCPROTOCOL_MSGPACK4BCPMAPELEMENT_H_ */

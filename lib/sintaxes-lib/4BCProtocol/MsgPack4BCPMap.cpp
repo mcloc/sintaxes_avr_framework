@@ -5,7 +5,7 @@
  *      Author: mcloc
  */
 
-#include <MsgPack4BCPMap.h>
+#include <4BCProtocol/MsgPack4BCPMap.h>
 
 MsgPack4BCPMap::MsgPack4BCPMap() {
 	size = 0;

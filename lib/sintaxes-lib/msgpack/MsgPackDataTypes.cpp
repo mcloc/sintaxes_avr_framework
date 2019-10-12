@@ -5,8 +5,8 @@
  *      Author: mcloc
  */
 
-#include <MsgPackDataTypes.h>
-#include <msgpack_defines.h>
+#include <defines/msgpack_defines.h>
+#include <msgpack/MsgPackDataTypes.h>
 
 
 // A T T E N T I O N, this is a copy of #defined macros on msgpack_defines.h which includes MSGPACK_TOTAL_ELEMENTS

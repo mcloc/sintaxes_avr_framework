@@ -1,7 +1,7 @@
 #ifndef __SINTAX_LOCAL_BUFFERS_H_
 #define __SINTAX_LOCAL_BUFFERS_H_
 
-#include <sintaxes-framework-defines.h>
+#include <defines/sintaxes-framework-defines.h>
 
 class LocalBuffers;
 
