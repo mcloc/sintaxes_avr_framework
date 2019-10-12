@@ -13,9 +13,10 @@
 //abstract class for all msgpack data type classes
 class MsgpackValue {
 public:
-	virtual MsgpackValue() = 0;
-	virtual ~MsgpackValue() = 0;
-	virtual auto getValue() = 0;
+	MsgpackValue();
+	virtual uint8_t getValueUINT8() = 0;
+	virtual uint8_t getValueUINT16() = 0;
+	virtual uint8_t getValueUINT32() = 0;
 	uint8_t getType();
 private:
 	uint8_t value_type;
