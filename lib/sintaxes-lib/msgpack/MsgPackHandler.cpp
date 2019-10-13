@@ -333,7 +333,6 @@ bool MsgPackHandler::processStream() {
 bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 	uint8_t element_number = 0;
-	uint8_t nested_element_number = 0;
 
 	//size of the first msgpack map which is our base for 4BCP processing
 	map4BCP.size = map_elements_size;
@@ -389,11 +388,18 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
 						return false;
 
+					if(element.total_nested_elemtns >= MAX_MSGPACK_NESTED_ELEMENTS){
+						//TODO:
+			//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+			//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+						return false;
+					}
+
 					_byte = getNextType();
 					//this is the nested tuple with arguments value of the outside tuple which is the UUID of device to be set.
 					_4BCPMapElement nested_element;
 
-					//get key uint32_t
+					//get argument key uint32_t
 					if(!assemble32bitByte(_byte))
 						return false;
 
@@ -404,19 +410,12 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 						//this is the msgpack data type of the argument value
 						_byte = getNextType();
 						nested_element.value_type = _byte;
-
 						//set value based on switch() case statement for each kind of msgpack data type
 						setElementValue(&nested_element);
 
-						if(nested_element_number >= MAX_MSGPACK_NESTED_ELEMENTS){
-							//TODO:
-				//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-				//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
-							return false;
-						}
 						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
-						memcpy(element.nested_elements[nested_element_number], &nested_element, sizeof(_4BCPMapElement));
-						nested_element_number++;
+						memcpy(element.nested_elements[element.total_nested_elemtns], &nested_element, sizeof(_4BCPMapElement));
+						element.total_nested_elemtns++;
 					}
 					map_size--;
 					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
@@ -455,12 +454,32 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 }
 
 bool MsgPackHandler::processMap(){
-	if(! map4BCP.size > 0){
+	//check both MSGPACK4BCPProcessFlow with arguments without arguments
+	if(status != MSGPACK_STATE_COMMAND_ARGS_READY && status != MSGPACK_STATE_COMMAND_SET ){
+		//TODO:
+//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+		return false;
+	}
+	if(!(map4BCP.size > 0)){
 		//TODO:
 //		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
 //		response->writeMsgPackUnknownType(_byte);
 		return false;
 	}
+
+	for(uint8_t i = 0; i < map4BCP.size;i++){
+		_4BCPMapElement element = map4BCP.elements[i];
+
+		//nested elements
+		if(isMap(element.value_type)){
+			for(uint8_t j = 0; j < element.total_nested_elemtns; j++){
+				_4BCPMapElement *nested_element = element.nested_elements[j];
+			}
+//			_4BCPMapElement nested_element = element.;
+		}
+	}
+
 
 	return true;
 }
@@ -611,6 +630,10 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 //		}
 
 		default:{
+
+			//MAP nested element
+			if(element->value_type > 0x80 && element->value_type <= 0x8f)
+				return true;
 			//TODO:
 //			error_code = ERROR_MSGPACK_UNKNOW_TYPE;
 //			response->writeMsgPackUnknownType(_byte);
@@ -741,9 +764,8 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 			_32bitword_remaining--;
 			break;
 		case 1:
-			//The arithmetic should be performed with the 4 bytes at one. Does'nt work storing in the array already shifted
-			_32bitword = (_32bitword_array[0] << 24) +
-				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
+			//The arithmetic should be performed with the 4 bytes at once. Does'nt work storing in the array bytes already shifted
+			_32bitword = (_32bitword_array[0] << 24) + (_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
 			_32bitword_remaining--;
 			status = actual_status; //return machine status to the previous status
 //			response->write32bitByte(_32bitword); // DEBUG
@@ -790,7 +812,6 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 //		response->writeByte(prev_status);
 
 		if(status == actual_process) {
-
 			//DEBUG
 //			response->writeRaw(F("IDENTIFIED STATUS:"));
 //			response->writeByte(actual_process);
@@ -823,7 +844,6 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 		position++;
 	}
 
-
 	return true;
 }
 
@@ -855,7 +875,7 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte){
 }
 
 unsigned long MsgPackHandler::isMapped(){
-	//TODO:
+	//TODO: map all defines into PROGMEM array or use #ifdef but by value
 //	error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
 //	response->write32bitByte(_32bitword);
 //	response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
@@ -877,7 +897,7 @@ bool MsgPackHandler::setStatus(uint8_t _status){
 }
 
 /**
- * we wont use (at least minimal) pointer to another pointer just for standards [&](){ cout << F(x)} ...
+ * we wont use (at least try to) pointer to another pointer just for standards [&](){ cout << F(x)} ...
  */
 //unsigned long MsgPackHandler::get32bitByte(){
 //	return _32bitword;

@@ -59,6 +59,7 @@ private:
 	typedef struct _4BCPMapElement {
 		uint8_t key;
 		uint8_t value_type;
+		uint8_t total_nested_elemtns = 0;
 		void *value;
 		_4BCPMapElement *nested_elements[];
 	} _4BCPMapElement;
