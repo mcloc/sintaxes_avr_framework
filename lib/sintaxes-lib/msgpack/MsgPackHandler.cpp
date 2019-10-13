@@ -403,7 +403,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					if(checkModulesMap()){
 						_4BCPMapElement *nested_element;
 
-
+						//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS in this case 8 elements maximum
 						switch(element4BCP_number){
 							case 0:{
 								nested_element = &element4BCP_1;
@@ -446,7 +446,10 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 								break;
 							}
 							default:{
-
+								//TODO:
+//								error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+//								response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+								return false;
 							}
 						}
 						nested_element->key = _32bitword;
@@ -603,8 +606,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_UINT8: {
 			uint8_t _byte = next();
-			uint8_t *ptr = &_byte;
-			memcpy(element->value, (uint8_t *)ptr, sizeof(uint8_t));
+//			uint8_t *ptr = &_byte;
+			memcpy(element->value, (uint8_t *)&_byte, sizeof(uint8_t));
 //			memcpy(element->value, (uint8_t *)&ptr, sizeof(uint8_t));//TODO: check this
 			return true;
 		}
@@ -614,8 +617,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			uint16_t i = ((uint16_t) _byte)<<8;
 			_byte = next();
 			i += (uint16_t) _byte;
-			uint16_t *ptr = &i;
-			memcpy(element->value, (uint16_t *)ptr, sizeof(uint16_t));
+//			uint16_t *ptr = &i;
+			memcpy(element->value, (uint16_t *)&i, sizeof(uint16_t));
 //			memcpy(element->value, (uint16_t *)&ptr, sizeof(uint16_t)); // TODO: check this
 
 			return true;
@@ -625,8 +628,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			if(!assemble_uint32_Byte(element->value_type))
 				return false;
 
-			uint32_t * ptr = &_32bitword;
-			memcpy(element->value, (uint32_t *)ptr, sizeof(_32bitword));
+//			uint32_t * ptr = &_32bitword;
+			memcpy(element->value, (uint32_t *)&_32bitword, sizeof(_32bitword));
 //			memcpy(element->value, (uint32_t *)&ptr, sizeof(_32bitword));// TODO: check this
 			return true;
 		}
@@ -640,8 +643,7 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_INT8: {
 			int8_t _byte = next();
-			int8_t *ptr = &_byte;
-			memcpy(element->value, (int8_t *)ptr, sizeof(int8_t));
+			memcpy(element->value, (int8_t *)&_byte, sizeof(int8_t));
 
 			return true;
 		}
@@ -652,8 +654,7 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			_byte = next();
 			i += (int16_t) _byte;
 
-			int16_t *ptr = &i;
-			memcpy(element->value, (int16_t *) ptr, sizeof(int16_t));
+			memcpy(element->value, (int16_t *) &i, sizeof(int16_t));
 			return true;
 		}
 
@@ -684,8 +685,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 					}
 				}
 
-			int32_t *ptr = &int32bitword;
-			memcpy(element->value, (int32_t *) &ptr, sizeof(int32_t));
+//			int32_t *ptr = &int32bitword;
+			memcpy(element->value, (int32_t *) &int32bitword, sizeof(int32_t));
 
 			return true;
 		}
@@ -734,8 +735,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_STR8: {
 			char _byte = next();
-			char *ptr = &_byte;
-			memcpy(element->value, (char *)&ptr, sizeof(char));
+//			char *ptr = &_byte;
+			memcpy(element->value, (char *)&_byte, sizeof(char));
 //			memcpy(element->value, (char *)ptr, sizeof(char)); //TODO: check this
 
 			return true;
