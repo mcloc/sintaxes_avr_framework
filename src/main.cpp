@@ -1,9 +1,14 @@
 /**
- * includes of the framework are all in <sintax-lieb> which is included in main.h
+ *
+ * deepest HW initiation, main firmware loop, must be as memory efficient as hell -- D E E P --
+ *
+ * Here is the place for 4CBP data package struct, - no no ...-;
+ *
+ * includes of the framework are all in <sintax-lib> which is included in main.h
  * main.h also includes local project specific includes like commands.h devices.h etc
  * INITIAL PROJECT SPECIFIC #defines STAYS UNDER project-defines.h file
- * do not worray with the framework with this file, it's all yours, the framework #defines
- * is under his own headers. Change this project-defines.h as you want.
+ * do not worry with the framework with in this file, it's all yours, the framework #defines
+ * is under his own headers. Change project-defines.h as you want.
  */
 #include "main.h"
 #include <sintaxes-lib.h>
