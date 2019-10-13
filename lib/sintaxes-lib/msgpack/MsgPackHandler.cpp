@@ -360,7 +360,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			_byte = getNextType();
 
 			//get uint32_t key for this element
-			if(!assemble32bitByte(_byte))
+			if(!assemble_uint32_Byte(_byte))
 				return false;
 
 			//Check if word if mapped by this module
@@ -400,7 +400,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					_4BCPMapElement nested_element;
 
 					//get argument key uint32_t
-					if(!assemble32bitByte(_byte))
+					if(!assemble_uint32_Byte(_byte))
 						return false;
 
 					//Check if the UUID key of the argument exists
@@ -505,27 +505,42 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 //		case MSGPACK_BIN8: {
 //			return true;
-//		}
-//
-//		case MSGPACK_BIN16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_BIN32: {
-//			return true;
-//		}
-//
-//		case MSGPACK_EXT8: {
-//			return true;
-//		}
-//
-//		case MSGPACK_EXT16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_EXT32: {
-//			return true;
-//		}
+		}
+
+		case MSGPACK_BIN16: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_BIN32: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_EXT8: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_EXT16: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_EXT32: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
 
 		case MSGPACK_FLOAT32: {
 //			if(!assemble32bitFloat(_byte))
@@ -539,95 +554,173 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 		}
 
 		case MSGPACK_UINT8: {
-			element->value = (uint8_t *) next();
+			uint8_t *ptr = (uint8_t *) next();
+			memcpy(element->value, &ptr, sizeof(uint8_t));
 			return true;
 		}
 
 		case MSGPACK_UINT16: {
+			uint8_t _byte = next();
+			uint16_t i = ((uint16_t) _byte)<<8;
+			_byte = next();
+			i += (uint16_t) _byte;
+			element->value = (uint16_t *) i;
 			return true;
 		}
 
 		case MSGPACK_UINT32: {
-			if(!assemble32bitByte(element->value_type))
+			if(!assemble_uint32_Byte(element->value_type))
 				return false;
-			element->value = (uint32_t *) _32bitword;
+
+			uint32_t * ptr = (uint32_t *) _32bitword;
+			memcpy(element->value, &ptr, sizeof(_32bitword));
 			return true;
 		}
 
 		case MSGPACK_UINT64: {
-			return true;
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
 		}
 
 		case MSGPACK_INT8: {
-			element->value = (int8_t *) next();
+			int8_t *ptr = (int8_t *) next();
+			memcpy(element->value, &ptr, sizeof(int8_t));
 			return true;
 		}
 
 		case MSGPACK_INT16: {
+			int8_t _byte = next();
+			int16_t i = ((int16_t) _byte)<<8;
+			_byte = next();
+			i += (int16_t) _byte;
+			element->value = (int16_t *) i;
 			return true;
 		}
 
 		case MSGPACK_INT32: {
-//			if(!assemble32bitByte(_byte))
-//				return false;
-//			element->value_uint32 = _32bitword;
+			long int32word_array[4];
+			long int32bitword;
+			uint8_t int32_remaining = 4;
+			while(int32_remaining > 0){
+					int8_t _byte = next();
+					switch (int32_remaining) {
+					case 4:
+						int32word_array[0] = _byte;
+						int32_remaining--;
+						break;
+					case 3:
+						int32word_array[1] = _byte;
+						int32_remaining--;
+						break;
+					case 2:
+						int32word_array[2] = _byte;
+						int32_remaining--;
+						break;
+					case 1:
+						//The arithmetic should be performed with the 4 bytes at once. Does'nt work storing in the array bytes already shifted
+						int32bitword = (int32word_array[0] << 24) + (int32word_array[1] << 16) + (int32word_array[2] << 8) + _byte;
+						int32_remaining--;
+						break;
+					}
+				}
+
+			int32_t *ptr = (int32_t *) int32bitword;
+			memcpy(element->value, &ptr, sizeof(int32_t));
+
 			return true;
 		}
 
-//		case MSGPACK_INT64: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT1: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT2: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT4: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT8: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT16: {
-//			return true;
-//		}
+		case MSGPACK_INT64: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_FIXEXT1: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_FIXEXT2: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_FIXEXT4: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_FIXEXT8: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_FIXEXT16: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
 
 		case MSGPACK_STR8: {
-			element->value = (char *) next();
+			char *ptr = (char *) next();
+			memcpy(element->value, &ptr, sizeof(char));
 			return true;
 		}
 
-//		case MSGPACK_STR16: {
-////			element->value_fixstring = next();
-//			return true;
-//		}
-//
-//		case MSGPACK_STR32: {
-////			element->value_fixstring = next();
-//			return true;
-//		}
+		case MSGPACK_STR16: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
 
-//		case MSGPACK_ARRAY16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_ARRAY32: {
-//			return true;
-//		}
-//
-//		case MSGPACK_MAP16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_MAP32: {
-//			return true;
-//		}
+		case MSGPACK_STR32: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_ARRAY16: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_ARRAY32: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_MAP16: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
+
+		case MSGPACK_MAP32: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
+		}
 
 		default:{
 
@@ -681,7 +774,7 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte){
 	}
 
 	//get key uint32_t
-	if(!assemble32bitByte(_byte))
+	if(!assemble_uint32_Byte(_byte))
 		return false;
 
 	if(_32bitword != MODULE_COMMMAND_FLAG){
@@ -692,7 +785,7 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte){
 	}
 
 	_byte = next();
-	if(!assemble32bitByte(_byte))
+	if(!assemble_uint32_Byte(_byte))
 		return false;
 
 	commands->command_executing = _32bitword;
@@ -735,7 +828,7 @@ uint8_t MsgPackHandler::next(){
  *		UINT8 var4 = 0x0F; //0000 1111
  *		UINT32 bigvar = (var1 << 24) + (var2 << 16) + (var3 << 8) + var4;
  */
-bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
+bool MsgPackHandler::assemble_uint32_Byte(uint8_t _byte) {
 	//IF NOT MSGPACK_UINT32 (unsigned long) MessaPack 0xce which is 4Bytes CmdProtocol relies
 	if(_byte != MSGPACK_UINT32) {
 		error_code = ERROR_32BIT_PROCESSING;
@@ -793,8 +886,22 @@ bool MsgPackHandler::reset_32bit_processing() {
 	return true;
 }
 
-
-
+//bool MsgPackHandler::assemble_uint16_Byte(uint8_t _byte){
+//	if(_byte != MSGPACK_UINT16) {
+//		//TODO:
+////		error_code = ERROR_16BIT_PROCESSING;
+////		response->writeProcess16bitwordERROR();
+//		return false;
+//	}
+//
+//	uint8_t actual_status = status;
+//	status = MSGPACK_STATE_WORKING_16BIT;
+//
+//
+//
+//	uint16_t i = ((uint16_t) c)<<8;
+//
+//}
 
 /**
  * HELPER METHODS

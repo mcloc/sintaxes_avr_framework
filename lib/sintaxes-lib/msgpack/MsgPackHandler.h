@@ -48,6 +48,12 @@ private:
 	uint8_t _32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong
 	unsigned long _32bitword_array[4]; //4th index is the NULL terminator
 
+
+	//msgpack values data type > 8bit
+//	uint16_t _16bitword;
+
+
+
 	unsigned int response_headers_code;
 	bool response_headers_already_sent = false;
 
@@ -106,7 +112,8 @@ private:
 	bool check4BCPProcesFlow(const uint8_t *flow_array_ptr, uint8_t array_size);
 	bool checkFlow();
 
-	bool assemble32bitByte(uint8_t _byte);
+	bool assemble_uint32_Byte(uint8_t _byte);
+	bool assemble_uint16_Byte(uint8_t _byte);
 	bool reset_32bit_processing();
 
 	bool setStatus(uint8_t _status);
