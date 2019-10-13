@@ -503,8 +503,11 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			return true;
 		}
 
-//		case MSGPACK_BIN8: {
-//			return true;
+		case MSGPACK_BIN8: {
+			//TODO:
+//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+//			response->writeMsgPackUnknownType(_byte);
+			return false;
 		}
 
 		case MSGPACK_BIN16: {
