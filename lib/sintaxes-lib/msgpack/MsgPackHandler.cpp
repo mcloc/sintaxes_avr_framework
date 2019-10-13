@@ -27,8 +27,6 @@
  *
  */
 
-#include <4BCProtocol/MsgPack4BCPMap.h>
-#include <4BCProtocol/MsgPack4BCPMapElement.h>
 #include <Arduino.h>
 #include <defines/commands_map.h>
 #include <defines/devices.h>

@@ -1,8 +1,6 @@
 #ifndef __SINTAXES_MSGPACK_HANDLER_H_
 #define __SINTAXES_MSGPACK_HANDLER_H_
 
-#include <4BCProtocol/MsgPack4BCPMap.h>
-#include <4BCProtocol/MsgPack4BCPMapElement.h>
 #include <sintaxes-lib.h>
 #include <Stream.h>
 #include <Commands.h>
