@@ -53,8 +53,17 @@ private:
 
 
 
-	//4Bytes Command Protocol map
-	MsgPack4BCPMap map;
+//	//4Bytes Command Protocol map
+//	MsgPack4BCPMap map;
+	//old_c_structs
+	typedef struct _4BCPMapElement {
+		void *value;
+
+	} _4BCPMapElement;
+	typedef struct _4BCPMap {
+		uint8_t value_type;
+		_4BCPMapElement value;
+	} _4BCPMap;
 
 
 	//4Bytes Command Protocol buffers

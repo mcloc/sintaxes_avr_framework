@@ -468,6 +468,7 @@ bool MsgPackHandler::processMap(){
 bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte){
 	element->value_type = _byte;
 
+	//! yes this, will be a loop within a struct * or [&]
 	switch(_byte){
 		case MSGPACK_NIL: {
 			element->value_bool = false;

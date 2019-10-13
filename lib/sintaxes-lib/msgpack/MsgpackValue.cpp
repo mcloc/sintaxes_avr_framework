@@ -7,6 +7,6 @@
 
 #include <msgpack/MsgpackValue.h>
 
-uint8_t MsgpackValue::getType(){
-	return value_type;
-}
+//uint8_t MsgpackValue::getType(){
+//	return value_type;
+//}
