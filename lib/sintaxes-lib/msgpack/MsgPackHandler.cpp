@@ -330,8 +330,6 @@ bool MsgPackHandler::processStream() {
  */
 bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
-	uint8_t element_number = 0;
-
 	//size of the first msgpack map which is our base for 4BCP processing
 	map4BCP.size = map_elements_size;
 
@@ -350,7 +348,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
 		//p.e. device MODULE_ACTUATOR_DN20_1_1 is a element which contains for example 2 nested elements, one for status (ON/OFF)
 		//and other for time period of the state. Each loop in this while can be considered a device that will be set or read.
-		_4BCPMapElement element;
+//		_4BCPMapElement element;
 
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
 		if(status == MSGPACK_STATE_COMMAND_SET) {
@@ -364,7 +362,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			//Check if word if mapped by this module
 			if(checkModulesMap()){
 				//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
-				element.key = _32bitword;
+				element4BCP_main.key = _32bitword;
 				//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
 				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
 					return false;
@@ -386,7 +384,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
 						return false;
 
-					if(element.total_nested_elemtns >= MAX_MSGPACK_NESTED_ELEMENTS){
+					if(element4BCP_main.total_nested_elemtns >= MAX_MSGPACK_NESTED_ELEMENTS){
 						//TODO:
 			//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
 			//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
@@ -395,7 +393,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 					_byte = getNextType();
 					//this is the nested tuple with arguments value of the outside tuple which is the UUID of device to be set.
-					_4BCPMapElement nested_element;
+//					_4BCPMapElement nested_element;
 
 					//get argument key uint32_t
 					if(!assemble_uint32_Byte(_byte))
@@ -403,17 +401,64 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 					//Check if the UUID key of the argument exists
 					if(checkModulesMap()){
-						nested_element.key = _32bitword;
+						_4BCPMapElement *nested_element;
+
+
+						switch(element4BCP_number){
+							case 0:{
+								nested_element = &element4BCP_1;
+								element4BCP_number++;
+								break;
+							}
+							case 1:{
+								nested_element = &element4BCP_2;
+								element4BCP_number++;
+								break;
+							}
+							case 2:{
+								nested_element = &element4BCP_3;
+								element4BCP_number++;
+								break;
+							}
+							case 3:{
+								nested_element = &element4BCP_4;
+								element4BCP_number++;
+								break;
+							}
+							case 4:{
+								nested_element = &element4BCP_5;
+								element4BCP_number++;
+								break;
+							}
+							case 5:{
+								nested_element = &element4BCP_6;
+								element4BCP_number++;
+								break;
+							}
+							case 6:{
+								nested_element = &element4BCP_7;
+								element4BCP_number++;
+								break;
+							}
+							case 7:{
+								nested_element = &element4BCP_8;
+								element4BCP_number++;
+								break;
+							}
+							default:{
+
+							}
+						}
+						nested_element->key = _32bitword;
 
 						//this is the msgpack data type of the argument value
 						_byte = getNextType();
-						nested_element.value_type = _byte;
+						nested_element->value_type = _byte;
 						//set value based on switch() case statement for each kind of msgpack data type
-						setElementValue(&nested_element);
+						setElementValue(nested_element);
 
 						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
-						memcpy(element.nested_elements[element.total_nested_elemtns], &nested_element, sizeof(_4BCPMapElement));
-						element.total_nested_elemtns++;
+						element4BCP_main.nested_elements[element4BCP_number] = nested_element;
 					}
 					map_size--;
 					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
@@ -422,9 +467,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			else { //process msgpack value that is not a MAP
 				//this is the msgpack data type of the argument value
 				_byte = getNextType();
-				element.value_type = _byte;
+				element4BCP_main.value_type = _byte;
 				//set value based on switch() case statement for each kind of msgpack data type
-				setElementValue(&element);
+				setElementValue(&element4BCP_main);
 			}
 			//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
 			//back status to MSGPACK_STATE_COMMAND_SET so the loop can roll again for other devices that must be set.
@@ -433,14 +478,14 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		}
 
 		//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
-		if(element_number >= MAX_MSGPACK_COMMANDS){
+		if(element4BCP_number >= MAX_MSGPACK_COMMANDS){
 			//TODO:
 //			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
 //			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 			return false;
 		}
-		map4BCP.elements[element_number] = element;
-		element_number++;
+		map4BCP.elements[element4BCP_number] = element4BCP_main;
+		element4BCP_number++;
 		map_elements_size--;
 	} // END of WHILE 4BCP MAP tuples
 

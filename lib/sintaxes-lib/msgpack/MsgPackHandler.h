@@ -74,6 +74,19 @@ private:
 
 	_4BCPMap map4BCP;
 
+	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
+	uint8_t element4BCP_number = 0;
+	_4BCPMapElement element4BCP_main;
+	_4BCPMapElement element4BCP_1;
+	_4BCPMapElement element4BCP_2;
+	_4BCPMapElement element4BCP_3;
+	_4BCPMapElement element4BCP_4;
+	_4BCPMapElement element4BCP_5;
+	_4BCPMapElement element4BCP_6;
+	_4BCPMapElement element4BCP_7;
+	_4BCPMapElement element4BCP_8;
+
+
 	//4Bytes Command Protocol buffers
 	unsigned long ext_command;
 	unsigned long ext_command_args1;
