@@ -14,6 +14,7 @@
 class MsgpackValue {
 public:
 	MsgpackValue();
+	virtual ~MsgpackValue();
 	virtual uint8_t getValueUINT8() = 0;
 	virtual uint8_t getValueUINT16() = 0;
 	virtual uint8_t getValueUINT32() = 0;

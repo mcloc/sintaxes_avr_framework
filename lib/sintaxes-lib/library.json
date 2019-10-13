@@ -27,10 +27,6 @@
     "homepage": null, 
     "export": {
         "include": [
-        "lib/sintaxes-lib/defines/*",
-        "lib/sintaxes-lib/4BCProtocol/*",
-        "lib/sintaxes-lib/msgpack/*",
-        "lib/sintaxes-lib/msgpack/type_values/*"
     	], 
         "exclude": [
             "extras", 
