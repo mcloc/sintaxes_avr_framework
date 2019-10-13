@@ -557,8 +557,10 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 		}
 
 		case MSGPACK_UINT8: {
-			uint8_t *ptr = (uint8_t *) next();
-			memcpy(element->value, &ptr, sizeof(uint8_t));
+			uint8_t _byte = next();
+			uint8_t *ptr = &_byte;
+			memcpy(element->value, (uint8_t *)&ptr, sizeof(uint8_t));
+//			memcpy(element->value, (uint8_t *)ptr, sizeof(uint8_t));//TODO: check this
 			return true;
 		}
 
@@ -567,7 +569,10 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			uint16_t i = ((uint16_t) _byte)<<8;
 			_byte = next();
 			i += (uint16_t) _byte;
-			element->value = (uint16_t *) i;
+			uint16_t *ptr = &i;
+			memcpy(element->value, (uint16_t *)&ptr, sizeof(uint16_t));
+//			memcpy(element->value, (uint16_t *)ptr, sizeof(uint16_t)); // TODO: check this
+
 			return true;
 		}
 
@@ -575,8 +580,9 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			if(!assemble_uint32_Byte(element->value_type))
 				return false;
 
-			uint32_t * ptr = (uint32_t *) _32bitword;
-			memcpy(element->value, &ptr, sizeof(_32bitword));
+			uint32_t * ptr = &_32bitword;
+			memcpy(element->value, (uint32_t *)&ptr, sizeof(_32bitword));
+//			memcpy(element->value, (uint32_t *)ptr, sizeof(_32bitword));// TODO: check this
 			return true;
 		}
 
@@ -588,8 +594,10 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 		}
 
 		case MSGPACK_INT8: {
-			int8_t *ptr = (int8_t *) next();
-			memcpy(element->value, &ptr, sizeof(int8_t));
+			int8_t _byte = next();
+			int8_t *ptr = &_byte;
+			memcpy(element->value, (int8_t *)&ptr, sizeof(int8_t));
+
 			return true;
 		}
 
@@ -598,7 +606,9 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 			int16_t i = ((int16_t) _byte)<<8;
 			_byte = next();
 			i += (int16_t) _byte;
-			element->value = (int16_t *) i;
+
+			int16_t *ptr = &i;
+			memcpy(element->value, (int16_t *) &ptr, sizeof(int16_t));
 			return true;
 		}
 
@@ -629,8 +639,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 					}
 				}
 
-			int32_t *ptr = (int32_t *) int32bitword;
-			memcpy(element->value, &ptr, sizeof(int32_t));
+			int32_t *ptr = &int32bitword;
+			memcpy(element->value, (int32_t *) &ptr, sizeof(int32_t));
 
 			return true;
 		}
@@ -678,8 +688,11 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 		}
 
 		case MSGPACK_STR8: {
-			char *ptr = (char *) next();
-			memcpy(element->value, &ptr, sizeof(char));
+			char _byte = next();
+			char *ptr = &_byte;
+			memcpy(element->value, (char *)&ptr, sizeof(char));
+//			memcpy(element->value, (char *)ptr, sizeof(char)); //TODO: check this
+
 			return true;
 		}
 
