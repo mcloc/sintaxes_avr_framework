@@ -100,8 +100,6 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer, size);
 	buffer_bytes_remaining = buffer_lenght;
 
-	map = MsgPack4BCPMap();
-
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
 	response->initJsonResponse();
@@ -332,12 +330,13 @@ bool MsgPackHandler::processStream() {
  * Be aware that we still have to process the msgpack protocol for arguments values which can be any of msgpack types.
  *
  */
-bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
+bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 	uint8_t element_number = 0;
+	uint8_t nested_element_number = 0;
 
 	//size of the first msgpack map which is our base for 4BCP processing
-	map.setSize(map_elements_size);
+	map4BCP.size = map_elements_size;
 
 
 	//While there're tuples to process
@@ -354,7 +353,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
 		//p.e. device MODULE_ACTUATOR_DN20_1_1 is a element which contains for example 2 nested elements, one for status (ON/OFF)
 		//and other for time period of the state. Each loop in this while can be considered a device that will be set or read.
-		MsgPack4BCPMapElement element;
+		_4BCPMapElement element;
 
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
 		if(status == MSGPACK_STATE_COMMAND_SET) {
@@ -368,7 +367,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 			//Check if word if mapped by this module
 			if(checkModulesMap()){
 				//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
-				element.setKey(_32bitword);
+				element.key = _32bitword;
 				//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
 				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
 					return false;
@@ -392,7 +391,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 
 					_byte = getNextType();
 					//this is the nested tuple with arguments value of the outside tuple which is the UUID of device to be set.
-					MsgPack4BCPMapElement element_1;
+					_4BCPMapElement nested_element;
 
 					//get key uint32_t
 					if(!assemble32bitByte(_byte))
@@ -400,22 +399,24 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 
 					//Check if the UUID key of the argument exists
 					if(checkModulesMap()){
-						element_1.setKey(_32bitword);
+						nested_element.key = _32bitword;
 
 						//this is the msgpack data type of the argument value
 						_byte = getNextType();
-						element_1.setType(_byte);
+						nested_element.value_type = _byte;
 
 						//set value based on switch() case statement for each kind of msgpack data type
-						setElementValue(&element_1, _byte);
+						setElementValue(&nested_element);
 
-						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
-						if(!element.setElement(element_1)){
+						if(nested_element_number >= MAX_MSGPACK_NESTED_ELEMENTS){
 							//TODO:
-	//						error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-	//						response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+				//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+				//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 							return false;
 						}
+						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
+						memcpy(element.nested_elements[nested_element_number], &nested_element, sizeof(_4BCPMapElement));
+						nested_element_number++;
 					}
 					map_size--;
 					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
@@ -424,10 +425,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 			else { //process msgpack value that is not a MAP
 				//this is the msgpack data type of the argument value
 				_byte = getNextType();
-				element.setType(_byte);
-
+				element.value_type = _byte;
 				//set value based on switch() case statement for each kind of msgpack data type
-				setElementValue(&element, _byte);
+				setElementValue(&element);
 			}
 			//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
 			//back status to MSGPACK_STATE_COMMAND_SET so the loop can roll again for other devices that must be set.
@@ -442,7 +442,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 //			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 			return false;
 		}
-		map.elements[element_number] = element;
+		map4BCP.elements[element_number] = element;
 		element_number++;
 		map_elements_size--;
 	} // END of WHILE 4BCP MAP tuples
@@ -455,7 +455,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
 }
 
 bool MsgPackHandler::processMap(){
-	if(! map.haveElements()){
+	if(! map4BCP.size > 0){
 		//TODO:
 //		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
 //		response->writeMsgPackUnknownType(_byte);
@@ -465,23 +465,22 @@ bool MsgPackHandler::processMap(){
 	return true;
 }
 
-bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte){
-	element->value_type = _byte;
+bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 	//! yes this, will be a loop within a struct * or [&]
-	switch(_byte){
+	switch(element->value_type){
 		case MSGPACK_NIL: {
-			element->value_bool = false;
+			element->value = (bool *) false;
 			return true;
 		}
 
 		case MSGPACK_FALSE: {
-			element->value_bool = false;
+			element->value = (bool *) false;
 			return true;
 		}
 
 		case MSGPACK_TRUE: {
-			element->value_bool = true;
+			element->value = (bool *) true;
 			return true;
 		}
 
@@ -521,7 +520,7 @@ bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _by
 		}
 
 		case MSGPACK_UINT8: {
-			element->value_uint8 = next();
+			element->value = (uint8_t *) next();
 			return true;
 		}
 
@@ -530,9 +529,9 @@ bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _by
 		}
 
 		case MSGPACK_UINT32: {
-			if(!assemble32bitByte(_byte))
+			if(!assemble32bitByte(element->value_type))
 				return false;
-			element->value_uint32 = _32bitword;
+			element->value = (uint32_t *) _32bitword;
 			return true;
 		}
 
@@ -541,7 +540,7 @@ bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _by
 		}
 
 		case MSGPACK_INT8: {
-			element->value_int8 = next();
+			element->value = (int8_t *) next();
 			return true;
 		}
 
@@ -581,7 +580,7 @@ bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _by
 //		}
 
 		case MSGPACK_STR8: {
-//			element->value_fixstring = next();
+			element->value = (char *) next();
 			return true;
 		}
 
@@ -681,7 +680,7 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte){
 }
 
 
-bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
+bool MsgPackHandler::processArray(uint8_t _word, uint8_t array_size) {
 	//TODO
 //	error_code = ERROR_MSGPACK_NOT_IMPLEMENTED;
 //	response->writeMsgPackUnknownType(_byte);

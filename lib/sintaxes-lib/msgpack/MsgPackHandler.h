@@ -57,14 +57,17 @@ private:
 //	MsgPack4BCPMap map;
 	//old_c_structs
 	typedef struct _4BCPMapElement {
+		uint8_t key;
+		uint8_t value_type;
 		void *value;
-
+		_4BCPMapElement *nested_elements[];
 	} _4BCPMapElement;
 	typedef struct _4BCPMap {
-		uint8_t value_type;
-		_4BCPMapElement value;
+		uint8_t size;
+		_4BCPMapElement elements[];
 	} _4BCPMap;
 
+	_4BCPMap map4BCP;
 
 	//4Bytes Command Protocol buffers
 	unsigned long ext_command;
@@ -91,13 +94,13 @@ private:
 
 	uint8_t whatNext();
 	uint8_t next();
-	bool processArray(uint8_t _byte, int array_size);
-	bool assembleMap(uint8_t _byte, int map_elements_size);
+	bool processArray(uint8_t _byte, uint8_t array_size);
+	bool assembleMap(uint8_t _byte, uint8_t map_elements_size);
 	bool processMap();
 	bool processCommandHeader(uint8_t _word);
 	bool checkModulesMap();
 	uint8_t getNextType();
-	bool setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte);
+	bool setElementValue(_4BCPMapElement *element);
 
 	bool check4BCPProcesFlow(const uint8_t *flow_array_ptr, uint8_t array_size);
 	bool checkFlow();
