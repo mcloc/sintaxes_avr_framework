@@ -84,8 +84,6 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
 	 element4BCP_8.value = &value_8;
 
 
-
-
 	setStatus(MSGPACK_STATE_IDLE);
 }
 
@@ -169,8 +167,8 @@ bool MsgPackHandler::processStream() {
 		array_size = isArray(_byte);
 		if( array_size > 0){
 			//TODO: not implemented
-//			error_code = ERROR_MSGPACK_4BCP_NOT_IMPLEMENTED;
-//			response->writeErrorMsgPackHasFinishedWithBytes();
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(_byte);
 			response->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
@@ -200,7 +198,7 @@ bool MsgPackHandler::processStream() {
 
 		} else {
 			error_code = ERROR_MAL_FORMED_MSGPCK;
-//			response->writeError
+			response->write4BCPMalFormedRequest(_byte, status);
 			response->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
@@ -346,14 +344,16 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 	//size of the first msgpack map which is our base for 4BCP processing
 	map4BCP.size = map_elements_size;
 
-
 	//While there're tuples to process
 	while(map_elements_size > 0) {
 
 		//SET Command with first element of MAP which is mandatory to be COMMAND_FLAG WITH VALUE AS COMMAND_TO_EXECUTE
 		if(status == MSGPACK_STATE_BEGIN) {
 			//process the first tuple (COMMAND SET)
-			processCommandHeader(_byte);
+			_byte = next();
+			if(!processCommandHeader(_byte))
+				return false;
+
 			map_elements_size--;
 			continue;
 		}
@@ -399,8 +399,8 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 					if(element4BCP_main.total_nested_elemtns >= MAX_MSGPACK_NESTED_ELEMENTS){
 						//TODO:
-			//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-			//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+						error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+						response->write4BCPNestedElementsOutOfBound();
 						return false;
 					}
 
@@ -459,9 +459,8 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 								break;
 							}
 							default:{
-								//TODO:
-//								error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-//								response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+								error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+								response->write4BCPNestedElementsOutOfBound();
 								return false;
 							}
 						}
@@ -495,9 +494,8 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 		//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
 		if(element4BCP_number >= MAX_MSGPACK_COMMAND_LOOP){
-			//TODO:
-//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+			response->write4BCPNestedElementsOutOfBound();
 			return false;
 		}
 		map4BCP.elements[element4BCP_number] = element4BCP_main;
@@ -547,7 +545,6 @@ bool MsgPackHandler::processMap(){
 
 bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
-	//! yes this, will be a loop within a struct * or [&]
 	switch(element->value_type){
 		case MSGPACK_NIL: {
 			element->value->bool_value = false;
@@ -566,55 +563,56 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_BIN8: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_BIN16: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_BIN32: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_EXT8: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_EXT16: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_EXT32: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_FLOAT32: {
-//			if(!assemble32bitFloat(_byte))
-//				return false;
-//			element->value_float = _32bitword;
-			return true;
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
+			return false;
 		}
 
 		case MSGPACK_FLOAT64: {
-			return true;
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
+			return false;
 		}
 
 		case MSGPACK_UINT8: {
@@ -645,8 +643,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_UINT64: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
@@ -700,43 +698,43 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_INT64: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_FIXEXT1: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_FIXEXT2: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_FIXEXT4: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_FIXEXT8: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_FIXEXT16: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
@@ -752,61 +750,59 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
 
 		case MSGPACK_STR16: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_STR32: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_ARRAY16: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_ARRAY32: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_MAP16: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		case MSGPACK_MAP32: {
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			response->writeMsgPackUnimplemented(element->value_type);
 			return false;
 		}
 
 		default:{
-
 			//MAP nested element
 			if(element->value_type > 0x80 && element->value_type <= 0x8f)
 				return true;
 			//TODO:
-//			error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-//			response->writeMsgPackUnknownType(_byte);
+			error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+			response->writeMsgPackUnknownType(element->value_type);
 			return false;
 		}
 	}
 
-	//TODO:
-//	error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-//	response->writeMsgPackUnknownType(_byte);
+	error_code = ERROR_MSGPACK_UNKNOW;
+	response->writeMsgPackUnknowError();
 	return false;
 }
 
@@ -849,8 +845,8 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte){
 
 	if(_32bitword != MODULE_COMMMAND_FLAG){
 		//TODO:
-//		error_code = ERROR_32BIT_PROCESSING;
-//		response->writeProcess32bitwordERROR();
+		error_code = ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG;
+		response->writeErrorMsgPack4BCPHasNoCommandFlag();
 		return false;
 	}
 
@@ -883,9 +879,9 @@ uint8_t MsgPackHandler::whatNext() {
 }
 uint8_t MsgPackHandler::next(){
 	buffer_bytes_remaining--;
-	buffer_position++;
 	//FIXME: last_byte has no function
 	last_byte = LocalBuffers::client_request_buffer[buffer_position];
+	buffer_position++;
 	return last_byte;
 }
 
@@ -956,22 +952,6 @@ bool MsgPackHandler::reset_32bit_processing() {
 	return true;
 }
 
-//bool MsgPackHandler::assemble_uint16_Byte(uint8_t _byte){
-//	if(_byte != MSGPACK_UINT16) {
-//		//TODO:
-////		error_code = ERROR_16BIT_PROCESSING;
-////		response->writeProcess16bitwordERROR();
-//		return false;
-//	}
-//
-//	uint8_t actual_status = status;
-//	status = MSGPACK_STATE_WORKING_16BIT;
-//
-//
-//
-//	uint16_t i = ((uint16_t) c)<<8;
-//
-//}
 
 /**
  * HELPER METHODS
@@ -998,7 +978,7 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 //			response->writeRaw(F("NEXT STATUS:"));
 //			response->writeByte(next_status); //DEBUG
 
-			//LOOP for setting argument and wating arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
+			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
 			if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
 				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
 				return true;
@@ -1011,8 +991,6 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 				response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 				return false;
 			}
-
-
 			break;
 		}
 

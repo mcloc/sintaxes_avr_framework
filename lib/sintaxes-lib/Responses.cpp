@@ -77,6 +77,16 @@ void Responses::writeMsgPackUnknowError(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeMsgPackUnimplemented(uint8_t _byte){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error_msgpack_unimplemented), ERROR_MSGPACK_UNIMPLEMENTED, _byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
 void Responses::writeMsgPackProcessingFlowError(){
 	if(response_json_initiated)
 		client->print(FSH(json_module_comma_separator));
@@ -140,6 +150,15 @@ void Responses::writeErrorMsgPack4BCPElementKeyProcessing(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeErrorMsgPack4BCPHasNoCommandFlag(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG,  ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 
 void Responses::writeErrorMsgPackHasFinishedWithBytes(){
 	if(response_json_initiated)
@@ -177,6 +196,27 @@ void Responses::write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next)
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::write4BCPMalFormedRequest(uint8_t byte,uint8_t status){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_4BCP_malformed_request_error), ERROR_MAL_FORMED_MSGPCK,  byte, status);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
+void Responses::write4BCPNestedElementsOutOfBound(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_4BCP_nested_elements_out_of_bounds), ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS,  MAX_MSGPACK_NESTED_ELEMENTS);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
+
 //void Responses::writeDEBUG_INT(unsigned long byte){
 //	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(DEBUG_INT), byte);
 //	client->println(LocalBuffers::string_cpy_buffer);
@@ -196,7 +236,7 @@ void Responses::writeError_MAX_SIZE_REQUEST(){
 }
 
 void Responses::writeError_MAL_FORMED_REQUEST(){
-	writeModule500DataHeaders();
+//	writeModule500DataHeaders();
 	initJsonResponse();
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MAL_FORMED_REQUEST,  ERROR_MAL_FORMED_REQUEST_STR);
 	client->print(LocalBuffers::string_cpy_buffer);

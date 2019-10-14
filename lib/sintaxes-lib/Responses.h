@@ -30,10 +30,15 @@ class Responses{
         void writeErrorMsgPack4BCPElementHasNoKey(uint8_t byte);
         void writeErrorMsgPack4BCPElementKeyProcessing();
         void writeErrorMsgPack4BCPExecuteFlagError();
+        void writeErrorMsgPack4BCPHasNoCommandFlag();
+        void write4BCPMalFormedRequest(uint8_t byte,uint8_t status);
+        void write4BCPNestedElementsOutOfBound();
+
         void write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next);
         void writeErrorMsgPackHasNotFinishedStatus();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
+        void writeMsgPackUnimplemented(uint8_t _byte);
         void writeMsgPackUnknownType(uint8_t type);
         void writeMsgPackProcessingFlowError();
         void writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev);
