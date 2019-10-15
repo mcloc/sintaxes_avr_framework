@@ -479,14 +479,19 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
 						element4BCP_main.nested_elements[element4BCP_number] = nested_element;
 
-						if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-							return false;
+						if((map_size - 1) > 0)
+							if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+								return false;
 					}
 					map_size--;
 					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
 				} // END of WHILE arguments MAP of a device key
+//				if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+//					return false;
 			} // END of IF MAP
 			else { //process msgpack value that is not a MAP
+//				if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+//					return false;
 				//this is the msgpack data type of the argument value
 				_byte = getNextType();
 				element4BCP_main.value_type = _byte;
@@ -494,7 +499,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				setElementValue(&element4BCP_main);
 			}
 
-			response->writeRaw(F("BBBBBBBBBBBBBBBBBBBBBBB"));
 			//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
 			//back status to MSGPACK_STATE_COMMAND_ARGS_READY so the loop can roll again for other devices that must be set.
 			if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY)) //now the status should be execute command
@@ -534,11 +538,12 @@ bool MsgPackHandler::processMap(){
 		return false;
 	}
 
-	response->writeRaw(F("AAAAAAAAAAAAAAAAA"));
 	if(!setStatus(MSGPACK_STATE_COMMAND_ASSEMBLY))
 		return false;
 
 
+	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
+	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
 	for(uint8_t i = 0; i < map4BCP.size;i++){
 		_4BCPMapElement element = map4BCP.elements[i];
@@ -547,8 +552,13 @@ bool MsgPackHandler::processMap(){
 		if(isMap(element.value_type)){
 			for(uint8_t j = 0; j < element.total_nested_elemtns; j++){
 				_4BCPMapElement *nested_element = element.nested_elements[j];
+				response->write32bitByte(nested_element->key);
+				response->writeByte(nested_element->value_type);
 			}
 //			_4BCPMapElement nested_element = element.;
+		} else {
+			response->write32bitByte(element.key);
+			response->writeByte(element.value_type);
 		}
 	}
 
@@ -983,14 +993,14 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 //		response->writeByte(prev_status);
 
 		if(status == actual_process) {
-			//DEBUG
-			response->writeRaw(F("IDENTIFIED STATUS:"));
-			response->writeByte(actual_process);
-			response->writeRaw(F("PREV STATUS:"));
-			response->writeByte(prev_status);
 			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1); //next position
-			response->writeRaw(F("NEXT STATUS:"));
-			response->writeByte(next_status); //DEBUG
+			//DEBUG
+//			response->writeRaw(F("IDENTIFIED STATUS:"));
+//			response->writeByte(actual_process);
+//			response->writeRaw(F("PREV STATUS:"));
+//			response->writeByte(prev_status);
+//			response->writeRaw(F("NEXT STATUS:"));
+//			response->writeByte(next_status); //DEBUG
 
 			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
 			if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
@@ -1001,12 +1011,12 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
 				return true;
 
-			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
-				next_status = MSGPACK_STATE_COMMAND_ARGS_READY;
+//			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
+//				next_status = MSGPACK_STATE_COMMAND_ARGS_READY;
 
 
-			response->writeRaw(F("NEXT STATUS:"));
-			response->writeByte(next_status); //DEBUG
+//			response->writeRaw(F("NEXT STATUS:"));
+//			response->writeByte(next_status); //DEBUG
 
 			if(last_process != NULL && last_process != prev_status){
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;

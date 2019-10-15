@@ -53,7 +53,7 @@ void setup() {
 	//Set machine state
 //	machine_state.init();
 
-	//Set all actuators
+	//Set all actuators MAX_ACTUATORS define in sintaxes-framwork.h
 	if(!machine_state.addActuator(&dn20_1)){
 		while(true) {
 			sintaxes_lib.buzz(400, 500, 5);
