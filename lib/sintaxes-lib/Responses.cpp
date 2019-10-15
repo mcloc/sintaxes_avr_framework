@@ -2,7 +2,11 @@
 #define __MODULE_COMMANDS_H_
 #include <UIPEthernet.h>
 #include <Arduino.h>
+
+#ifndef FSH
 typedef const __FlashStringHelper* FSH;
+#endif
+
 #include <Responses.h>
 #include <LocalBuffers.h>
 #include <defines/module_string.h>
@@ -158,6 +162,17 @@ void Responses::writeErrorMsgPack4BCPHasNoCommandFlag(){
 	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG,  ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
+
+
+void Responses::writeErrorMsgPack4BCPZeroElementMap(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS,  ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 
 
 void Responses::writeErrorMsgPackHasFinishedWithBytes(){

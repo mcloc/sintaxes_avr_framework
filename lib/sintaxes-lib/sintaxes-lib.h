@@ -2,6 +2,11 @@
 #define __SINTAXES_H_
 
 #include <Arduino.h>
+
+#ifndef FSH
+typedef const __FlashStringHelper* FSH;
+#endif
+
 #include <defines/commands_map.h>
 #include <defines/devices.h>
 #include <defines/errors_code.h>

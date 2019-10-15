@@ -14,7 +14,10 @@
 #include <sintaxes-lib.h>
 #include <LocalBuffers.h>
 #include <Commands.h>
+#include <MachineState.h>
+#include <devices/SintaxesActuator.hpp>
 #include <msgpack/MsgPackHandler.h>
+#include <devices/types/DN20.h>
 
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);
@@ -29,6 +32,12 @@ static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 
+//INITIALIZATION OF DEVICES
+static SintaxesActuator<DN20> dn20_1 = SintaxesActuator<DN20>(MODULE_ACTUATOR_DN20_1_1);
+static SintaxesActuator<DN20> dn20_2 = SintaxesActuator<DN20>(MODULE_ACTUATOR_DN20_1_2);
+static SintaxesActuator<DN20> dn20_3 = SintaxesActuator<DN20>(MODULE_ACTUATOR_DN20_1_3);
+
+MachineState machine_state;
 
 void setup() {
 	pinMode(RED_LED, OUTPUT);

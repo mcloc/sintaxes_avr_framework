@@ -36,6 +36,7 @@ class Responses{
 
         void write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next);
         void writeErrorMsgPackHasNotFinishedStatus();
+        void writeErrorMsgPack4BCPZeroElementMap();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeMsgPackUnimplemented(uint8_t _byte);

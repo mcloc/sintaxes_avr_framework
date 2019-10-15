@@ -111,11 +111,11 @@ private:
 
 
 	//4Bytes Command Protocol buffers
-	unsigned long ext_command;
-	unsigned long ext_command_args1;
-	unsigned long ext_command_args2;
-	unsigned long ext_command_args3;
-	unsigned long ext_command_args4;
+//	unsigned long ext_command;
+//	unsigned long ext_command_args1;
+//	unsigned long ext_command_args2;
+//	unsigned long ext_command_args3;
+//	unsigned long ext_command_args4;
 
 
 
@@ -123,7 +123,7 @@ private:
 	 static const uint8_t MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE];
 	 static const uint8_t MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE];
 //	 static const uint8_t MSGPACK4BCPProcessFlow3[];
-	 static const uint8_t MSGPACKTYPES[MSGPACK4BCPProcessFlow2_SIZE];
+//	 static const uint8_t MSGPACKTYPES[MSGPACK4BCPProcessFlow2_SIZE];
 
 //
 //	uint8_t length = sizeof(some_array) / sizeof(some_array[0]);

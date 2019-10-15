@@ -29,6 +29,11 @@ Commands::Commands(LocalBuffers *_localBuffers, Responses *_response){
 	response = _response;
 }
 
+
+//void Commands::setActuator(uint32_t actuator_id, bool state, uint16_t duration){
+//
+//}
+
 bool Commands::get_data(){
 	char sensor1_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
 	char sensor2_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];

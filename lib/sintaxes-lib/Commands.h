@@ -3,10 +3,10 @@
 #ifndef __MODULE_COMMANDS_H_
 #define __MODULE_COMMANDS_H_
 
+#include <devices/SintaxesActuator.hpp>
 #include <DHT.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
-
 
 class Commands;
 
@@ -50,6 +50,10 @@ public:
     DHT *dht2;
     void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
     void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
+//    void setActuator(uint32_t actuator_id, bool state, uint16_t duration);
+//    void setActuator(SintaxesActuator[]);
+
+
     char *  getSensor1();
     char *  getSensor2();
     bool execute();

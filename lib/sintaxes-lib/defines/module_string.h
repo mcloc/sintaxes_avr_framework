@@ -68,6 +68,6 @@
     const char ERROR_MSGPACK_4BCP_EXECUTE_FLAG_STR[] PROGMEM = "EXECUTE_COMMAND_FLAG (0xFFFF0013) is supposed to have a msgPack TRUE (0xc3) on next byte.";
     const char ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING_STR[] PROGMEM ="Unknown error on processing key map.";
     const char ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG_STR[] PROGMEM = "4BCP error, missing COMMAND_FLAG (0xFFFF0001)";
-
+    const char ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS_STR[] PROGMEM = "4BCP error: No elements found in arguments map";
 
 #endif

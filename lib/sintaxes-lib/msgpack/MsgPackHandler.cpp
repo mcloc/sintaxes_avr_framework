@@ -52,7 +52,7 @@ static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFl
 		MSGPACK_STATE_COMMAND_SETTING_ARGS,
 		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
 		MSGPACK_STATE_COMMAND_ARGS_READY,
-		MSGPACK_STATE_COMMAND_EXECUTING,
+		MSGPACK_STATE_COMMAND_ASSEMBLY,
 		MSGPACK_STATE_COMMAND_EXECUTED,
 		MSGPACK_STATE_COMMAND_FINISHED
 	};
@@ -61,7 +61,7 @@ static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessF
 		MSGPACK_STATE_IDLE,
 		MSGPACK_STATE_BEGIN,
 		MSGPACK_STATE_COMMAND_SET,
-		MSGPACK_STATE_COMMAND_EXECUTING,
+		MSGPACK_STATE_COMMAND_ASSEMBLY,
 		MSGPACK_STATE_COMMAND_EXECUTED,
 		MSGPACK_STATE_COMMAND_FINISHED
 	};
@@ -231,8 +231,10 @@ bool MsgPackHandler::processStream() {
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
+			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED)) {
+				response->closeJsonResponse();
 				return false;
+			}
 			break;
 		}
 	}
@@ -474,6 +476,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
 						element4BCP_main.nested_elements[element4BCP_number] = nested_element;
+
+						if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+							return false;
 					}
 					map_size--;
 					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
@@ -486,9 +491,11 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				//set value based on switch() case statement for each kind of msgpack data type
 				setElementValue(&element4BCP_main);
 			}
+
+			response->writeRaw(F("BBBBBBBBBBBBBBBBBBBBBBB"));
 			//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
-			//back status to MSGPACK_STATE_COMMAND_SET so the loop can roll again for other devices that must be set.
-			if(!setStatus(MSGPACK_STATE_COMMAND_SET))
+			//back status to MSGPACK_STATE_COMMAND_ARGS_READY so the loop can roll again for other devices that must be set.
+			if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY)) //now the status should be execute command
 				return false;
 		}
 
@@ -504,8 +511,8 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 	} // END of WHILE 4BCP MAP tuples
 
 	//now the status should be execute command
-	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
-		return false;
+//	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+//		return false;
 
 	return true;
 }
@@ -514,16 +521,20 @@ bool MsgPackHandler::processMap(){
 	//check both MSGPACK4BCPProcessFlow with arguments without arguments
 	if(status != MSGPACK_STATE_COMMAND_ARGS_READY && status != MSGPACK_STATE_COMMAND_SET ){
 		//TODO:
-//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+		error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
+		response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 		return false;
 	}
 	if(!(map4BCP.size > 0)){
 		//TODO:
-//		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-//		response->writeMsgPackUnknownType(_byte);
+		error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
+		response->writeErrorMsgPack4BCPZeroElementMap();
 		return false;
 	}
+
+	response->writeRaw(F("AAAAAAAAAAAAAAAAA"));
+	if(!setStatus(MSGPACK_STATE_COMMAND_ASSEMBLY))
+		return false;
 
 
 	//TODO: set Command object and execute it
@@ -544,7 +555,8 @@ bool MsgPackHandler::processMap(){
 }
 
 bool MsgPackHandler::setElementValue(_4BCPMapElement *element){
-
+	//Change to function template each case can be a Template Specialization
+	//https://www.geeksforgeeks.org/template-specialization-c/
 	switch(element->value_type){
 		case MSGPACK_NIL: {
 			element->value->bool_value = false;
@@ -970,21 +982,29 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 
 		if(status == actual_process) {
 			//DEBUG
-//			response->writeRaw(F("IDENTIFIED STATUS:"));
-//			response->writeByte(actual_process);
-//			response->writeRaw(F("PREV STATUS:"));
-//			response->writeByte(prev_status);
-//			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1);
-//			response->writeRaw(F("NEXT STATUS:"));
-//			response->writeByte(next_status); //DEBUG
+			response->writeRaw(F("IDENTIFIED STATUS:"));
+			response->writeByte(actual_process);
+			response->writeRaw(F("PREV STATUS:"));
+			response->writeByte(prev_status);
+			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1); //next position
+			response->writeRaw(F("NEXT STATUS:"));
+			response->writeByte(next_status); //DEBUG
 
 			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
 			if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
 				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
 				return true;
 
+			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
+				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
+				return true;
+
 			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
-				next_status = MSGPACK_STATE_COMMAND_EXECUTING;
+				next_status = MSGPACK_STATE_COMMAND_ARGS_READY;
+
+
+			response->writeRaw(F("NEXT STATUS:"));
+			response->writeByte(next_status); //DEBUG
 
 			if(last_process != NULL && last_process != prev_status){
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
