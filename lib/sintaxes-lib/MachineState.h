@@ -24,14 +24,14 @@ public:
 	bool command_set = false;
 	bool processing_command = false;
 	uint8_t total_execution_of_command = 0;
-	bool addActuatorList(ActuatorBase actuator);
+	bool addActuator(ActuatorBase *actuator);
 	uint8_t getActuatorListSize();
 
 
 
 private:
 	uint8_t actuator_list_index = 0;
-	ActuatorBase actuator_list[];
+	ActuatorBase* actuator_list[];
 
 
 

@@ -12,7 +12,7 @@ MachineState::MachineState() {
 	// TODO Auto-generated constructor stub
 
 }
-bool MachineState::addActuatorList(ActuatorBase actuator){
+bool MachineState::addActuator(ActuatorBase *actuator){
 
 	if(actuator_list_index > MAX_ACTUATORS){
 		return false;

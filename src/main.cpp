@@ -33,9 +33,9 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 
 //INITIALIZATION OF DEVICES
-ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1);
-ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2);
-ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3);
+static ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1);
+static ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2);
+static ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3);
 
 MachineState machine_state;
 
@@ -48,6 +48,10 @@ void setup() {
 	sintaxes_lib.setLed(LED_BUILTIN, LOW);
 	sintaxes_lib._BUZZPIN = BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
+
+	machine_state.addActuator(&dn20_1);
+	machine_state.addActuator(&dn20_2);
+	machine_state.addActuator(&dn20_3);
 
 	//Set all commands devices objects that will be need to execute commands
 	//like Reading DHT, and other Arduino Objects
