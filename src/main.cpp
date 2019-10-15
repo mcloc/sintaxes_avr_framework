@@ -33,11 +33,12 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 
 //INITIALIZATION OF DEVICES
-static SintaxesActuator<DN20> dn20_1 = SintaxesActuator<DN20>(MODULE_ACTUATOR_DN20_1_1);
-static SintaxesActuator<DN20> dn20_2 = SintaxesActuator<DN20>(MODULE_ACTUATOR_DN20_1_2);
-static SintaxesActuator<DN20> dn20_3 = SintaxesActuator<DN20>(MODULE_ACTUATOR_DN20_1_3);
+ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1);
+ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2);
+ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3);
 
 MachineState machine_state;
+
 
 void setup() {
 	pinMode(RED_LED, OUTPUT);

@@ -9,9 +9,11 @@
 #define LIB_SINTAXES_LIB_DEVICES_TYPES_DN20_H_
 //#include <devices/SintaxesActuator.h>
 #include <Arduino.h>
+#include <devices/ActuatorBase.h>
 
-class DN20 {
+class DN20 : public ActuatorBase {
 public:
+	DN20(uint32_t uuid) : ActuatorBase(uuid){}
 
 protected:
 	const char name[] PROGMEM = "Solenoid HydroValve DN20";
