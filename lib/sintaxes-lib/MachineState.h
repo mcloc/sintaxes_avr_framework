@@ -17,7 +17,7 @@ class MachineState {
 public:
 	MachineState();
 	uint32_t runtime_hash;
-	uint32_t uptime;
+	uint32_t start_time;
 	uint8_t last_error_code;
 	uint8_t status;
 	uint8_t prev_status;
@@ -26,12 +26,16 @@ public:
 	uint8_t total_execution_of_command = 0;
 	bool addActuator(ActuatorBase *actuator);
 	uint8_t getActuatorListSize();
+	bool init();
+	void setStateTime();
+	uint32_t getUptime();
 
 
 
 private:
 	uint8_t actuator_list_index = 0;
 	ActuatorBase* actuator_list[];
+	uint32_t state_time;
 
 
 

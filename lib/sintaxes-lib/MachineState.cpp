@@ -9,9 +9,22 @@
 #include <sintaxes-framework-defines.h>
 
 MachineState::MachineState() {
-	// TODO Auto-generated constructor stub
 
 }
+
+uint32_t MachineState::getUptime(){
+	return millis()/1000; //seconds
+}
+
+bool MachineState::init(){
+	//TODO: set all field and start time
+
+}
+
+void MachineState::setStateTime(){
+	//TODO: millis
+}
+
 bool MachineState::addActuator(ActuatorBase *actuator){
 
 	if(actuator_list_index > MAX_ACTUATORS){

@@ -7,6 +7,7 @@
 #include <Arduino.h>
 #include <defines/msgpack_defines.h>
 #include <defines/sintaxes-framework-defines.h>
+#include <MachineState.h>
 
 #define MSGPACK4BCPProcessFlow_SIZE 	9
 #define MSGPACK4BCPProcessFlow2_SIZE 	7
@@ -17,7 +18,7 @@ class MsgPackHandler {
 public:
 	MsgPackHandler();
 	MsgPackHandler(Responses *_response, Commands *commands, SintaxesLib *sintax_lib);
-	bool init(Stream * _stream, int size);
+	bool init(Stream * _stream, int size, MachineState * machine_state);
 	bool processStream();
 
 private:
@@ -25,6 +26,7 @@ private:
 	Responses *response;
 	Commands *commands;
 	SintaxesLib *sintaxesLib;
+	MachineState *machine_state;
 
 	uint8_t status;
 	uint8_t prev_status;

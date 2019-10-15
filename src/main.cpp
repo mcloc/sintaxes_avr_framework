@@ -37,7 +37,7 @@ static ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1);
 static ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2);
 static ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3);
 
-MachineState machine_state;
+static MachineState machine_state;
 
 
 void setup() {
@@ -49,9 +49,30 @@ void setup() {
 	sintaxes_lib._BUZZPIN = BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
 
-	machine_state.addActuator(&dn20_1);
-	machine_state.addActuator(&dn20_2);
-	machine_state.addActuator(&dn20_3);
+
+	//Set machine state
+//	machine_state.init();
+
+	//Set all actuators
+	if(!machine_state.addActuator(&dn20_1)){
+		while(true) {
+			sintaxes_lib.buzz(400, 500, 5);
+			delay(2000);
+		}
+	}
+	if(!machine_state.addActuator(&dn20_2)){
+		while(true) {
+			sintaxes_lib.buzz(400, 500, 5);
+			delay(2000);
+		}
+	}
+
+	if(!machine_state.addActuator(&dn20_3)){
+		while(true) {
+			sintaxes_lib.buzz(400, 500, 5);
+			delay(2000);
+		}
+	}
 
 	//Set all commands devices objects that will be need to execute commands
 	//like Reading DHT, and other Arduino Objects
@@ -89,7 +110,7 @@ void loop() {
 
 			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
-			msgpck.init((Stream *) &client, size);
+			msgpck.init((Stream *) &client, size, &machine_state);
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpck.processStream()){
 				//TODO:save the new state on SD Card and log executions, and a break;

@@ -35,7 +35,7 @@
 #include <defines/msgpack_defines.h>
 #include <msgpack/MsgPackDataTypes.h>
 #include <msgpack/MsgPackHandler.h>
-
+#include <MachineState.h>
 
 //TODO: sintax-framework namespace
 //namespace sintax-iot-framework{
@@ -95,7 +95,7 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
  * if using bigger RAM you can increase the size of the request buffer
  * in sintaxes-framework-defines.h
  */
-bool MsgPackHandler::init(Stream *_stream, int size) {
+bool MsgPackHandler::init(Stream *_stream, int size, MachineState * _machine_state) {
 	if(!setStatus(MSGPACK_STATE_BEGIN)) {
 		response->writeError_on_INIT();
 		response_headers_already_sent = true;
@@ -108,6 +108,8 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 	stream = _stream;
 	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer, size);
 	buffer_bytes_remaining = buffer_lenght;
+
+	machine_state = _machine_state;
 
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
