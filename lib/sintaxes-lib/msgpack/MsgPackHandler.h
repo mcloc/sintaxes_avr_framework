@@ -78,18 +78,19 @@ private:
 		uint8_t value_type;
 		uint8_t total_nested_elements = 0;
 		_4BCPElementValue *value;
-		_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
+		_4BCPMapElement **nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
 	} _4BCPMapElement;
 
 	typedef struct _4BCPMap {
 		uint8_t size;
-		_4BCPMapElement elements[MAX_MSGPACK_COMMAND_LOOP];
+		_4BCPMapElement *elements[MAX_MSGPACK_COMMAND_LOOP];
 	} _4BCPMap;
 
 	_4BCPMap map4BCP;
 
 	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
 	uint8_t element4BCP_number = 0;
+	uint8_t nested_element4BCP = 0;
 	_4BCPMapElement element4BCP_main;
 	_4BCPMapElement element4BCP_1;
 	_4BCPMapElement element4BCP_2;
