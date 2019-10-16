@@ -8,7 +8,7 @@
 #ifndef LIB_SINTAXES_LIB_DEFINES_SINTAXES_FRAMEWORK_DEFINES_H_
 #define LIB_SINTAXES_LIB_DEFINES_SINTAXES_FRAMEWORK_DEFINES_H_
 
-#define MAX_ACTUATORS 4
+#define MAX_ACTUATORS 8
 
 // 180 bytes allowed in post get incomming requests
 #define MAX_SIZE_ALLOWED_REQUEST 220
@@ -25,7 +25,7 @@
 //If you increase this you must change the Commands class to support more or less arguments
 #define MAX_MSGPACK_COMMAND_LOOP 8
 #define MAX_MSGPACK_ARGS 4
-#define MAX_MSGPACK_NESTED_ELEMENTS 8
+#define MAX_MSGPACK_NESTED_ELEMENTS 18
 
 
 #endif /* LIB_SINTAXES_LIB_DEFINES_SINTAXES_FRAMEWORK_DEFINES_H_ */

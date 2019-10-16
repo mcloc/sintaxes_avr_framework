@@ -74,9 +74,9 @@ private:
 	} _4BCPElementValue;
 
 	typedef struct _4BCPMapElement {
-		uint8_t key;
+		uint32_t key;
 		uint8_t value_type;
-		uint8_t total_nested_elemtns = 0;
+		uint8_t total_nested_elements = 0;
 		_4BCPElementValue *value;
 		_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
 	} _4BCPMapElement;
@@ -156,6 +156,8 @@ private:
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();
+
+	bool setNestedElement(_4BCPMapElement *nested_element);
 
 	/**
 	 * we wont use pointer to another pointer (at least minimal when talking to other classes due to scope)
