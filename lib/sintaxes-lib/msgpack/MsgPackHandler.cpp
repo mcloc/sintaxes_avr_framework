@@ -74,14 +74,27 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
 	commands = _commands;
 	sintaxesLib = _sintaxes_lib;
 
-	 element4BCP_1.value = &value_1;
-	 element4BCP_2.value = &value_2;
-	 element4BCP_3.value = &value_3;
-	 element4BCP_4.value = &value_4;
-	 element4BCP_5.value = &value_5;
-	 element4BCP_6.value = &value_6;
-	 element4BCP_7.value = &value_7;
-	 element4BCP_8.value = &value_8;
+	//TODO: move to main.cpp in put it in Machinetate
+	_4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	_4BCPMapElement *element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+
+
+	_4BCPElementValue *value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_7 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	_4BCPElementValue *value_8 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+
+
 
 
 	setStatus(MSGPACK_STATE_IDLE);
@@ -398,6 +411,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				setNestedElement(element);
 
 				//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
+//				memcpy(&element->key, &_32bitword, sizeof(uint32_t));
 				element->key = _32bitword;
 
 				response->writeRaw(F("Command:"));
@@ -407,8 +421,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				response->writeRaw(F("MAIN ELEMENT KEY:"));
 				response->write32bitByte(element->key);
 
-				//ACTUATORS KEY MAP inside it will have a pointer to another struct same type for arguments
 				map4BCP.elements[element4BCP_number] = element;
+				//ACTUATORS KEY MAP inside it will have a pointer to another struct same type for arguments
+//				memcpy(map4BCP.elements[element4BCP_number], element, sizeof(_4BCPMapElement));
 //				memcpy(map4BCP.elements[element4BCP_number].nested_elements[nested_element4BCP], &element, sizeof(_4BCPMapElement));
 				map4BCP.size++;
 			} else {
@@ -536,9 +551,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					response->write4BCPNestedElementsOutOfBound();
 					return false;
 				}
-				element->nested_elements[element4BCP_number] = &nested_element;
-				element4BCP_number++;
-				element4BCP_main.total_nested_elements++;
+//				element->nested_elements[element4BCP_number] = &nested_element;
+//				element4BCP_number++;
+//				element4BCP_main.total_nested_elements++;
 
 				//Check if next element is a Map
 				if (!(whatNext() > MSGPACK_MAP_INITIAL && whatNext() <= MSGPACK_MAP_FINAL)){

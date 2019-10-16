@@ -78,7 +78,7 @@ private:
 		uint8_t value_type;
 		uint8_t total_nested_elements = 0;
 		_4BCPElementValue *value;
-		_4BCPMapElement **nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
+		_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
 	} _4BCPMapElement;
 
 	typedef struct _4BCPMap {
