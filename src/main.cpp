@@ -16,8 +16,35 @@
 #include <Commands.h>
 #include <MachineState.h>
 #include <devices/SintaxesActuator.hpp>
-#include <msgpack/MsgPackHandler.h>
 #include <devices/types/DN20.h>
+#include <MsgPackHandler.h>
+
+
+
+
+/****************************  PRE ALLOCATE 4BCP DATA STRUCT **********************/
+//static _4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//static _4BCPMapElement *element4BCP_9 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//
+//static _4BCPElementValue *value4BCP_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//static _4BCPElementValue *value4BCP_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//static _4BCPElementValue *value4BCP_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//static _4BCPElementValue *value4BCP_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//static _4BCPElementValue *value4BCP_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//static _4BCPElementValue *value4BCP_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+
+// this define the max number of elements that can be sent to commands request in 4BCP
+
+/************************************************************************************/
+
+
 
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);

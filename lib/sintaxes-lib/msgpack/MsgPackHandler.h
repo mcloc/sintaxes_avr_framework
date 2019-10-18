@@ -8,6 +8,7 @@
 #include <defines/msgpack_defines.h>
 #include <defines/sintaxes-framework-defines.h>
 #include <MachineState.h>
+#include <4BCProtocol/4BCPElement.h>
 
 #define MSGPACK4BCPProcessFlow_SIZE 	9
 #define MSGPACK4BCPProcessFlow2_SIZE 	7
@@ -58,55 +59,27 @@ private:
 	bool response_headers_already_sent = false;
 
 
-
-//	//4Bytes Command Protocol map
-	//old_c_structs
-	typedef struct _4BCPElementValue {
-		uint8_t uint8_value;
-		uint16_t uint16_value;
-		uint32_t uint32_value;
-		int8_t int8_value;
-		int16_t int16_value;
-		int32_t int32_value;
-		float float_value;
-		bool bool_value;
-		char char_value;
-	} _4BCPElementValue;
-
-	typedef struct _4BCPMapElement {
-		uint32_t key;
-		uint8_t value_type;
-		uint8_t total_nested_elements = 0;
-		_4BCPElementValue *value;
-		_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
-	} _4BCPMapElement;
-
-	typedef struct _4BCPMap {
-		uint8_t size;
-		_4BCPMapElement *elements[MAX_MSGPACK_COMMAND_LOOP];
-	} _4BCPMap;
-
-	_4BCPMap map4BCP;
-
 	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
 	uint8_t element4BCP_number = 0;
 	uint8_t nested_element4BCP = 0;
-	static _4BCPMapElement *element4BCP_1;
-	static _4BCPMapElement *element4BCP_2;
-	static _4BCPMapElement *element4BCP_3;
-	static _4BCPMapElement *element4BCP_4;
-	static _4BCPMapElement *element4BCP_5;
-	static _4BCPMapElement *element4BCP_6;
-	static _4BCPMapElement *element4BCP_7;
-	static _4BCPMapElement *element4BCP_8;
-	static _4BCPMapElement *element4BCP_9;
-
-	static _4BCPElementValue *value_1;
-	static _4BCPElementValue *value_2;
-	static _4BCPElementValue *value_3;
-	static _4BCPElementValue *value_4;
-	static _4BCPElementValue *value_5;
-	static _4BCPElementValue *value_6;
+	uint8_t total_element4BCP = 0;
+//
+//	static _4BCPMapElement *element4BCP_1;
+//	static _4BCPMapElement *element4BCP_2;
+//	static _4BCPMapElement *element4BCP_3;
+//	static _4BCPMapElement *element4BCP_4;
+//	static _4BCPMapElement *element4BCP_5;
+//	static _4BCPMapElement *element4BCP_6;
+//	static _4BCPMapElement *element4BCP_7;
+//	static _4BCPMapElement *element4BCP_8;
+//	static _4BCPMapElement *element4BCP_9;
+//
+//	static _4BCPElementValue *value_1;
+//	static _4BCPElementValue *value_2;
+//	static _4BCPElementValue *value_3;
+//	static _4BCPElementValue *value_4;
+//	static _4BCPElementValue *value_5;
+//	static _4BCPElementValue *value_6;
 
 
 
@@ -156,7 +129,7 @@ private:
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();
 
-	bool setNestedElement(_4BCPMapElement *nested_element);
+	bool setElementPointer(_4BCPMapElement *nested_element);
 
 	/**
 	 * we wont use pointer to another pointer (at least minimal when talking to other classes due to scope)
@@ -166,6 +139,24 @@ private:
 
 
 };
+
+
+//static _4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//
+//
+//	value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
 
 
 

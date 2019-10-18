@@ -34,14 +34,14 @@
 #include <defines/module_string.h>
 #include <defines/msgpack_defines.h>
 #include <msgpack/MsgPackDataTypes.h>
-#include <msgpack/MsgPackHandler.h>
+#include <4BCProtocol/4BCPElement.h>
 #include <MachineState.h>
-
+#include <MsgPackHandler.h>
+#include <stdlib.h>
 //TODO: sintax-framework namespace
 //namespace sintax-iot-framework{
 //
 //}
-
 
 
 //static class members must be declared also in cpp.
@@ -66,6 +66,9 @@ static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessF
 		MSGPACK_STATE_COMMAND_FINISHED
 	};
 
+
+
+
 /**
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
@@ -74,23 +77,22 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
 	commands = _commands;
 	sintaxesLib = _sintaxes_lib;
 
-	//TODO: move to main.cpp in put it in Machinetate
-	static _4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	static _4BCPMapElement *element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-
-
-	static _4BCPElementValue *value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	static _4BCPElementValue *value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	static _4BCPElementValue *value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	static _4BCPElementValue *value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	static _4BCPElementValue *value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	static _4BCPElementValue *value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//	element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+//
+//
+//	value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+//	value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
 
 
 
@@ -406,24 +408,25 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					return false;
 
 				//THIS SET THE CORRENT POINTER TO ELEMENT OF THE ALREADY INSTATIATED STRUCTS, FOR NOW WE HAVE MAXIMUM OF 8 ELEMENTS
-				setNestedElement(element);
+				setElementPointer(element);
 
 				//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
 //				memcpy(&element->key, &_32bitword, sizeof(uint32_t));
 				element->key = _32bitword;
+				element->value_type = MSGPACK_UINT32;
 
 				response->writeRaw(F("Command:"));
 				response->write32bitByte(commands->command_executing);
 				response->writeRaw(F("TOTAL NESTED ELEMENTS:"));
 				response->writeByte(element->total_nested_elements);
-				response->writeRaw(F("MAIN ELEMENT KEY:"));
+				response->writeRaw(F("ELEMENT KEY:"));
 				response->write32bitByte(element->key);
 
-				map4BCP.elements[element4BCP_number] = element;
+				 _4BCPElement::map4BCP.elements[element4BCP_number] = element;
 				//ACTUATORS KEY MAP inside it will have a pointer to another struct same type for arguments
 //				memcpy(map4BCP.elements[element4BCP_number], element, sizeof(_4BCPMapElement));
 //				memcpy(map4BCP.elements[element4BCP_number].nested_elements[nested_element4BCP], &element, sizeof(_4BCPMapElement));
-				map4BCP.size++;
+				 _4BCPElement::map4BCP.size++;
 			} else {
 				//TODO: error
 //				error_code = ERROR_MSGPACK_4BCP_NOT_MAPPED;
@@ -441,9 +444,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		}
 
 		response->writeRaw(F("Antes do segundo IF, verifique o key do element:"));
-		response->write32bitByte(map4BCP.elements[element4BCP_number]->key);
-		response->writeRaw(F("M, memcpy feito, verifique o key do element:"));
-		response->write32bitByte(map4BCP.size);
+		response->write32bitByte(_4BCPElement::map4BCP.elements[element4BCP_number]->key);
+		response->writeRaw(F("Map size"));
+		response->write32bitByte(_4BCPElement::map4BCP.size);
 
 		//DEBUG
 		return false;
@@ -589,7 +592,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 	response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 	response->writeRaw(F("map4BCP size:"));
-	response->writeByte(map4BCP.size);
+	response->writeByte(_4BCPElement::map4BCP.size);
 	response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 
 	//now the status should be execute command
@@ -607,7 +610,7 @@ bool MsgPackHandler::processMap(){
 		response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 		return false;
 	}
-	if(!(map4BCP.size > 0)){
+	if(!(_4BCPElement::map4BCP.size > 0)){
 		//TODO:
 		error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
 		response->writeErrorMsgPack4BCPZeroElementMap();
@@ -650,50 +653,50 @@ bool MsgPackHandler::processMap(){
 	return true;
 }
 
-bool MsgPackHandler::setNestedElement(_4BCPMapElement *nested_element){
+bool MsgPackHandler::setElementPointer(_4BCPMapElement *nested_element){
 	switch (element4BCP_number) {
 	case 0: {
-		nested_element = element4BCP_1;
+		nested_element = _4BCPElement::element4BCP_1;
 //		element4BCP_number++;
 		break;
 	}
 	case 1: {
-		nested_element = element4BCP_2;
+		nested_element = _4BCPElement::element4BCP_2;
 //		element4BCP_number++;
 		break;
 	}
 	case 2: {
-		nested_element = element4BCP_3;
+		nested_element =  _4BCPElement::element4BCP_3;
 //		element4BCP_number++;
 		break;
 	}
 	case 3: {
-		nested_element = element4BCP_4;
+		nested_element =  _4BCPElement::element4BCP_4;
 //		element4BCP_number++;
 		break;
 	}
 	case 4: {
-		nested_element = element4BCP_5;
+		nested_element =  _4BCPElement::element4BCP_5;
 //		element4BCP_number++;
 		break;
 	}
 	case 5: {
-		nested_element = element4BCP_6;
+		nested_element =  _4BCPElement::element4BCP_6;
 //		element4BCP_number++;
 		break;
 	}
 	case 6: {
-		nested_element = element4BCP_7;
+		nested_element =  _4BCPElement::element4BCP_7;
 //		element4BCP_number++;
 		break;
 	}
 	case 7: {
-		nested_element = element4BCP_8;
+		nested_element =  _4BCPElement::element4BCP_8;
 //		element4BCP_number++;
 		break;
 	}
 	case 8: {
-		nested_element = element4BCP_9;
+		nested_element =  _4BCPElement::element4BCP_9;
 //		element4BCP_number++;
 		break;
 		}

@@ -40,7 +40,6 @@
     "build": {
 	    "flags": [
 	        "-I defines",
-        	"-I 4BCProtocol",
         	"-I msgpack",
         	"-I msgpack/type_value"
 	    ],
