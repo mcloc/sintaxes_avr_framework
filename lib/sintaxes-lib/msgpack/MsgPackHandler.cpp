@@ -75,24 +75,22 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
 	sintaxesLib = _sintaxes_lib;
 
 	//TODO: move to main.cpp in put it in Machinetate
-	_4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-	_4BCPMapElement *element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
+	static _4BCPMapElement *element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
 
 
-	_4BCPElementValue *value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_7 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-	_4BCPElementValue *value_8 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	static _4BCPElementValue *value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	static _4BCPElementValue *value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	static _4BCPElementValue *value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	static _4BCPElementValue *value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	static _4BCPElementValue *value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
+	static _4BCPElementValue *value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
 
 
 
@@ -592,8 +590,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 	response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 	response->writeRaw(F("map4BCP size:"));
 	response->writeByte(map4BCP.size);
-	response->writeRaw(F("nested in main_element :"));
-	response->writeByte(element4BCP_main.total_nested_elements);
 	response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 
 	//now the status should be execute command
@@ -657,45 +653,50 @@ bool MsgPackHandler::processMap(){
 bool MsgPackHandler::setNestedElement(_4BCPMapElement *nested_element){
 	switch (element4BCP_number) {
 	case 0: {
-		nested_element = &element4BCP_1;
+		nested_element = element4BCP_1;
 //		element4BCP_number++;
 		break;
 	}
 	case 1: {
-		nested_element = &element4BCP_2;
+		nested_element = element4BCP_2;
 //		element4BCP_number++;
 		break;
 	}
 	case 2: {
-		nested_element = &element4BCP_3;
+		nested_element = element4BCP_3;
 //		element4BCP_number++;
 		break;
 	}
 	case 3: {
-		nested_element = &element4BCP_4;
+		nested_element = element4BCP_4;
 //		element4BCP_number++;
 		break;
 	}
 	case 4: {
-		nested_element = &element4BCP_5;
+		nested_element = element4BCP_5;
 //		element4BCP_number++;
 		break;
 	}
 	case 5: {
-		nested_element = &element4BCP_6;
+		nested_element = element4BCP_6;
 //		element4BCP_number++;
 		break;
 	}
 	case 6: {
-		nested_element = &element4BCP_7;
+		nested_element = element4BCP_7;
 //		element4BCP_number++;
 		break;
 	}
 	case 7: {
-		nested_element = &element4BCP_8;
+		nested_element = element4BCP_8;
 //		element4BCP_number++;
 		break;
 	}
+	case 8: {
+		nested_element = element4BCP_9;
+//		element4BCP_number++;
+		break;
+		}
 	default: {
 		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
 		response->write4BCPNestedElementsOutOfBound();

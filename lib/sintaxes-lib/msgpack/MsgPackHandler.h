@@ -91,24 +91,22 @@ private:
 	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
 	uint8_t element4BCP_number = 0;
 	uint8_t nested_element4BCP = 0;
-	_4BCPMapElement element4BCP_main;
-	_4BCPMapElement element4BCP_1;
-	_4BCPMapElement element4BCP_2;
-	_4BCPMapElement element4BCP_3;
-	_4BCPMapElement element4BCP_4;
-	_4BCPMapElement element4BCP_5;
-	_4BCPMapElement element4BCP_6;
-	_4BCPMapElement element4BCP_7;
-	_4BCPMapElement element4BCP_8;
+	static _4BCPMapElement *element4BCP_1;
+	static _4BCPMapElement *element4BCP_2;
+	static _4BCPMapElement *element4BCP_3;
+	static _4BCPMapElement *element4BCP_4;
+	static _4BCPMapElement *element4BCP_5;
+	static _4BCPMapElement *element4BCP_6;
+	static _4BCPMapElement *element4BCP_7;
+	static _4BCPMapElement *element4BCP_8;
+	static _4BCPMapElement *element4BCP_9;
 
-	_4BCPElementValue value_1;
-	_4BCPElementValue value_2;
-	_4BCPElementValue value_3;
-	_4BCPElementValue value_4;
-	_4BCPElementValue value_5;
-	_4BCPElementValue value_6;
-	_4BCPElementValue value_7;
-	_4BCPElementValue value_8;
+	static _4BCPElementValue *value_1;
+	static _4BCPElementValue *value_2;
+	static _4BCPElementValue *value_3;
+	static _4BCPElementValue *value_4;
+	static _4BCPElementValue *value_5;
+	static _4BCPElementValue *value_6;
 
 
 
