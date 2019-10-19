@@ -347,11 +347,14 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 	//While there're tuples to process
 	while (status != MSGPACK_STATE_COMMAND_ARGS_READY
 			|| counter > MAX_MSGPACK_NESTED_ELEMENTS) {
-		response->writeRaw(F("-----------------------"));
-		response->writeRaw(F("first map_elements_size"));
-		response->writeByte(map_elements_size);
 
-		/**
+
+
+//		response->writeRaw(F("-----------------------"));
+//		response->writeRaw(F("first map_elements_size"));
+//		response->writeByte(map_elements_size);
+
+		/******************************************************************************
 		 * status  MSGPACK_STATE_BEGIN time to set command
 		 */
 		//SET Command with first element of MAP which is mandatory to be COMMAND_FLAG WITH VALUE AS COMMAND_TO_EXECUTE
@@ -363,13 +366,18 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			map_elements_size--;
 			continue;
 		}
+		/*****************************************************************************/
+
+
+
+
 
 		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
 		//p.e. device MODULE_ACTUATOR_DN20_1_1 is a element which contains for example 2 nested elements, one for status (ON/OFF)
 		//and other for time period of the state. Each loop in this while can be considered a device that will be set or read.
 //		_4BCPMapElement *element;
 
-		/**
+		/******************************************************************************
 		 * status  MSGPACK_STATE_COMMAND_SET time to set arguments and it's values
 		 */
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
@@ -379,64 +387,166 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			response->writeRaw(F("element key before putting in MainMAP"));
 			response->write32bitByte((*e)->key);
 
+			//FIRST DEICE ARGUMENT KEY
 			_4BCPElement::map4BCP.elements[element4BCP_number] = (*e);
+			//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
+			if (!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+				return false;
 
 			//				memcpy(_4BCPElement::map4BCP.elements[element4BCP_number], element, sizeof(_4BCPMapElement *));
 			//ACTUATORS KEY MAP inside it will have a pointer to another struct same type for arguments
 			//				memcpy(map4BCP.elements[element4BCP_number], element, sizeof(_4BCPMapElement));
 			//				memcpy(map4BCP.elements[element4BCP_number].nested_elements[nested_element4BCP], &element, sizeof(_4BCPMapElement));
 			_4BCPElement::map4BCP.size++;
+
+			// ELEMENT is READY to RECEVICE ARGS status = MSGPACK_STATE_COMMAND_SETTING_ARGS
 			continue;
 			//we can't continue we are setting the element and we must set the element values
 		}
+		/*****************************************************************************/
+
+
+
+
+
+
+
 
 		response->writeRaw(
-				F("Antes do segundo IF, verifique o key do element:"));
+				F("depois MSGPACK_STATE_COMMAND_SET, key do element:"));
 		response->write32bitByte(
 				_4BCPElement::map4BCP.elements[element4BCP_number]->key);
-		response->writeRaw(F("Map size"));
-		response->write32bitByte(_4BCPElement::map4BCP.size);
+		response->writeRaw(F("total_elements4BCP"));
+		response->writeByte(total_element4BCP);
 
 //		DEBUG
-		return false;
+//		return false;
 
-		/**
+		/******************************************************************************
 		 * status  MSGPACK_STATE_COMMAND_SETTING_ARGS must hae while status different commands args ready
+		 *
+		 *
+		 * must get the key of device (actuator) and dispach to WAITING ARGS to set nested elements
+		 *
 		 */
-		//We already have the key on tuple for executing the command
-		// MAP     MAP_ELEMTNS					NESTED ELEMENT 					VALUE
-		//map4BCP.elements[element4BCP_number].nested_elements[nested_element4BCP].value
-		// MAP		DN20_1						ARGUMENT1						VALUE
-		//map4BCP.elements[element4BCP_number].nested_elements[nested_element4BCP++].value
-		// MAP		DN20_1						ARGUMENT2						VALUE
-		// AFTER ALL ARGUMENTS OF THE element4BCP_number INCRESE THE map4BCP.elements[element4BCP_number++] FOR THE NEXT DEVICE
-		// FOR EXAMPLE DN20_2
-		//So a MAP have a list of DEVICES elements to SET. And Devices elements have a list of ARGUMENTS_MAPPED and it's value
-		while ((status == MSGPACK_STATE_COMMAND_SETTING_ARGS)
-				|| (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)) {
-
-			// 1- ITŚ A MAP, 2 - IT'S ANOTHER CE KEY FOR ARGUMENT, 3 - IT'S ANOTHER DEVICE ELEMENT KEY _32bitword
-			//get next msgpack data type which should the key of a MAP of arguments value
+		if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS){
 			_byte = getNextType();
 			response->writeRaw(
-					F("NEXT IN MSGPACK_STATE_COMMAND_SETTING_ARGS (2o. if):"));
+				F("next byte in MSGPACK_STATE_COMMAND_SETTING_ARGS:"));
+			response->writeByte(_byte);
+			if(_byte != MSGPACK_UINT32){
+				//TODO: error
+		//		error_code = ERROR_MSGPACK_MAL_FORMED_4BCP;
+		//		response->writeErrorMsgPackHasFinishedWithBytes();
+		//		response->closeJsonResponse();
+				return false;
+			}
+
+			//KEY for NEXT ACTUATOR
+			_byte = getNextType();
+			if (!assemble_uint32_Byte(_byte))
+				return false;
+
+			//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
+			if( total_element4BCP >= MAX_MSGPACK_NESTED_ELEMENTS) {
+				error_code =ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+				response->write4BCPNestedElementsOutOfBound();
+				return false;
+			}
+
+			_4BCPMapElement **nested_element;
+			nested_element = setElementPointer(true);
+			//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS in this case 8 elements maximum
+			(*nested_element)->key = _32bitword;
+			_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] = (*nested_element);
+			_4BCPElement::map4BCP.elements[element4BCP_number]->total_nested_elements++;
+
+			// NOW WE HAVE TO PUT VARIAVLES VALUES on the nested element
+			if (!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
+				return false;
+
+			response->writeRaw(F("key of device element to set values"));
+			response->write32bitByte(
+					_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->key);
+
+
+		}
+		/*****************************************************************************/
+
+
+
+
+
+
+
+		/******************************************************************************
+		 * status  MSGPACK_STATE_COMMAND_SETTING_ARGS time to set command
+		 */
+		// it's awaiting the arg MAP
+		if (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE) {
+
+			response->writeRaw(
+					F("depois MSGPACK_STATE_COMMAND_SET, key do element:"));
+			response->write32bitByte(
+					_4BCPElement::map4BCP.elements[element4BCP_number]->key);
+			response->writeRaw(F("total_elements4BCP"));
+			response->writeByte(total_element4BCP);
+
+
+
+
+			_byte = getNextType();
+			response->writeRaw(
+				F("next byte in MSGPACK_STATE_COMMAND_SETTING_ARGS:"));
 			response->writeByte(_byte);
 
 			uint8_t map_size = isMap(_byte);
+			if(!(map_size > 0) ){
+				//TODO: error
+		//		error_code = ERROR_MSGPACK_MAL_FORMED_4BCP;
+		//		response->writeErrorMsgPackHasFinishedWithBytes();
+		//		response->closeJsonResponse();
+				return false;
+			}
 
-			//NOT MAP  this is the nested tuple with arguments value of the outside tuple which is the UUID of device to be set.
-			if (!(map_size > 0)) {
+			bool first_iteration = true;
+			while(map_size > 0 ){
 
-				//				get argument key uint32_t
+
 				_byte = getNextType();
+
+				if(first_iteration) {
+					_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type = _byte;
+					_4BCPMapElement ** ptr_element = &_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP];
+					if(!setElementValue(&(*ptr_element))){
+						//TODO: error
+				//		error_code = ERROR_MSGPACK_4BCP_SETTING_VALUE
+				//		response->writeErrorMsgPackHasFinishedWithBytes();
+				//		response->closeJsonResponse();
+						return false;
+					}
+
+					nested_element4BCP++;
+					map_size--;
+					first_iteration = false;
+					continue;
+				}
+
+				//if not first iteration we need to create more nested_elements
+				if (_byte != MSGPACK_UINT32) {
+					//TODO: error
+					//		error_code = ERROR_MSGPACK_MAL_FORMED_4BCP;
+					//		response->writeErrorMsgPackHasFinishedWithBytes();
+					//		response->closeJsonResponse();
+					return false;
+				}
+
+				//KEY for NEXT ACTUATOR
 				if (!assemble_uint32_Byte(_byte))
 					return false;
-				//
-				//				response->writeRaw(F("nextByte _32bitword:"));
-				//				response->write32bitByte(_32bitword);
+
 				//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
-				if (nested_element4BCP
-						+ element4BCP_number>= MAX_MSGPACK_NESTED_ELEMENTS) {
+				if ( total_element4BCP >= MAX_MSGPACK_NESTED_ELEMENTS) {
 					error_code =
 					ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
 					response->write4BCPNestedElementsOutOfBound();
@@ -445,146 +555,53 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 				_4BCPMapElement **nested_element;
 				nested_element = setElementPointer(true);
+
 				//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS in this case 8 elements maximum
-				_byte = getNextType();
-				(*nested_element)->value_type = _byte;
-				setElementValue(&(*nested_element));
-
-
-
+				(*nested_element)->key = _32bitword;
 				_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] = (*nested_element);
 				_4BCPElement::map4BCP.elements[element4BCP_number]->total_nested_elements++;
 
-				response->writeRaw(F("NESTED key element:"));
-				response->write32bitByte(
-						_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->key);
-				response->writeRaw(F("Total Nested Element for this element:"));
-				response->write32bitByte(
-						_4BCPElement::map4BCP.elements[element4BCP_number]->total_nested_elements);
-
+				_byte = getNextType();
+				_4BCPMapElement ** ptr_element = &_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP];
+				if (!setElementValue(&(*ptr_element))) {
+					//TODO: error
+					//		error_code = ERROR_MSGPACK_4BCP_SETTING_VALUE
+					//		response->writeErrorMsgPackHasFinishedWithBytes();
+					//		response->closeJsonResponse();
+					return false;
+				}
 				nested_element4BCP++;
 
-				//HERE THE NESTED_ELEMENT IF FULLY SET. TIME TO INCREMENT nested_element
-
-				//Now it's supposed to come the arguments of this device
-				//				_byte = getNextType();
-				//				map_size = isMap(_byte);
-				//				response->writeRaw(F("NEXT IN MSGPACK_STATE_COMMAND_SETTING_ARGS (2o. if) after setting element value, get next():"));
-				//				response->writeByte(_byte);
-
-				//				if(map_size > 0)
-				//					map_elements_size = map_size;
-
-				//				element->nested_elements[element4BCP_number] = nested_element;
-				//				memcpy((_4BCPMapElement *)_4BCPMap  nested_elements[element4BCP_number], &nested_element, sizeof(_4BCPMapElement));
-				//				map4BCP.elements[element4BCP_number].nested_elements = nested_element;
-				//				memcpy(&map4BCP.elements[element4BCP_number].nested_elements, &element, sizeof(_4BCPMapElement));
-				//				element4BCP_number++;
-				continue;
+				map_size--;
+				//LAST ITERATION MUST HAVE THE KEY FOR THE NEXT MAP
+				if(! (map_size > 0)){
+					element4BCP_number++;
+					nested_element4BCP = 0;
+				}
 			}
 
-			//This is each new arguments map() on the msgpack generally 0x81 0x82 0x83 this are the values for SETTING Actuators p.e.
-			while (map_size > 0) {
-				_4BCPMapElement **nested_element;
+			// NOW WE HAVE TO PUT VARIAVLES VALUES on the nested element
+			if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+				return false;
 
-				if (!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
-					return false;
-
-				response->writeRaw(F("----------SSSSSSS---------"));
-				response->writeRaw(F("TOTAL ELEMENTS AND NESTED :"));
-				response->writeByte(element4BCP_number);
-				response->writeByte(nested_element4BCP);
-				response->writeRaw(F("ELEMENT pointer:"));
-				response->writeByte(total_element4BCP);
-				response->writeRaw(F("----------SSSSSSS---------"));
-
-				//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
-				if (nested_element4BCP
-						+ element4BCP_number>= MAX_MSGPACK_NESTED_ELEMENTS) {
-					error_code =
-					ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-					response->write4BCPNestedElementsOutOfBound();
-					return false;
-				}
-
-				nested_element = setElementPointer(true);
-//				_4BCPMapElement value_element;
-				_byte = getNextType();
-
-				response->writeRaw(F("nextByte:"));
-				response->writeByte(_byte);
-
-//				if(_byte == MSGPACK_UINT32){
-//					if(!assemble_uint32_Byte(_byte))
-//						return false;
-//				}
-
-				(*nested_element)->value_type = _byte;
-				setElementValue(nested_element);
-
-				//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
-				if (element4BCP_number >= MAX_MSGPACK_NESTED_ELEMENTS) {
-					error_code =
-					ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-					response->write4BCPNestedElementsOutOfBound();
-					return false;
-				}
-//				element->nested_elements[element4BCP_number] = &nested_element;
-				_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] =(*nested_element);
-						;
-				_4BCPElement::map4BCP.elements[element4BCP_number]->total_nested_elements++;
-
-				response->writeRaw(F("NESTED key element:"));
-				response->write32bitByte(
-						_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->key);
-				response->writeRaw(F("NESTED value_type element:"));
-				response->write32bitByte(
-						_4BCPElement::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type);
-				response->writeRaw(F("Total Nested Element for this element:"));
-				response->write32bitByte(
-						_4BCPElement::map4BCP.elements[element4BCP_number]->total_nested_elements);
-
-				//Check if next element is a Map
-				if (!(whatNext() > MSGPACK_MAP_INITIAL
-						&& whatNext() <= MSGPACK_MAP_FINAL)) {
-					if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-						return false;
-				} else {
-					//NOT MAP
-//					_byte = next();
-////					map_size = isMap(_byte);
-//					continue;
-				}
-
-				map_size--;
-				response->writeRaw(F("######################"));
-			} // END of WHILE arguments MAP of a device key
-
-			//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
-			element4BCP_number++;
-		} // END if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS )
+			continue;
+		} // END OF  MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
+		/******************************************************************************/
 
 
-//		map4BCP.elements[element4BCP_number] = element4BCP_main;
-//		response->writeRaw(F("element4BCP_number:"));
-//		response->writeByte(element4BCP_number);
+
 		counter++;
 
-		// it's awaiting the arg MAP
-		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS) {
-
-		} // END of WHILE arguments MAP of a device key
 
 		//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
 		//back status to MSGPACK_STATE_COMMAND_ARGS_READY so the loop can roll again for other devices that must be set.
-		if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY)) //now the status should be execute command
-			return false;
+//		if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY)) //now the status should be execute command
+//			return false;
 
 //	element4BCP_number++;
 //	map_elements_size--;
 
 		response->writeRaw(F("+++++++++++++++++++++++"));
-
 		response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 		response->writeRaw(F("map4BCP size:"));
 		response->writeByte(_4BCPElement::map4BCP.size);
@@ -594,8 +611,8 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 //	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
 //		return false;
 
-		return true;
 	}
+	return true;
 }
 
 bool MsgPackHandler::processStatusMSGPACK_STATE_BEGIN() {
@@ -609,6 +626,10 @@ bool MsgPackHandler::processStatusMSGPACK_STATE_BEGIN() {
 
 _4BCPMapElement** MsgPackHandler::processStatusMSGPACK_STATE_COMMAND_SET() {
 
+	response->writeRaw(F("COMMAND:"));
+	response->write32bitByte(commands->command_executing);
+
+
 	_4BCPMapElement **element;
 
 	//GET FIRST DEVICE KEY (ACTUATOR) TO ASSEMBLE THE FIRST ELEMENT;
@@ -616,15 +637,15 @@ _4BCPMapElement** MsgPackHandler::processStatusMSGPACK_STATE_COMMAND_SET() {
 	uint8_t _byte = getNextType();
 	response->writeRaw(F("NEXT IN MSGPACK_STATE_COMMAND_SET (1o. if)"));
 	response->writeByte(_byte);
-	//get uint32_t key for this element
+
+	//KEY for NEXT ACTUATOR
 	if (!assemble_uint32_Byte(_byte))
 		return false;
 
+
+
 	//Check if word if mapped by this module
 	if (checkModulesMap()) {
-		//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
-		if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-			return false;
 
 		//THIS SET THE CORRENT POINTER TO ELEMENT OF THE ALREADY INSTATIATED STRUCTS, FOR NOW WE HAVE MAXIMUM OF 8 ELEMENTS
 		element = setElementPointer();
@@ -634,10 +655,6 @@ _4BCPMapElement** MsgPackHandler::processStatusMSGPACK_STATE_COMMAND_SET() {
 		(*element)->key = _32bitword;
 		(*element)->value_type = MSGPACK_UINT32;
 
-//		response->writeRaw(F("Command:"));
-//		response->write32bitByte(commands->command_executing);
-//		response->writeRaw(F("ELEMENT KEY:"));
-//		response->write32bitByte(element->key);
 
 	} else {
 		//TODO: error
@@ -703,6 +720,10 @@ bool MsgPackHandler::processMap() {
 }
 
 _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value = false) {
+
+//	if(nested_element4BCP > 1)
+//		nested_element4BCP = 0;
+
 	_4BCPElementValue **element_value;
 	switch (total_element4BCP) {
 	case 0: {
@@ -1182,6 +1203,11 @@ bool MsgPackHandler::processArray(uint8_t _word, uint8_t array_size) {
 uint8_t MsgPackHandler::whatNext() {
 	return LocalBuffers::client_request_buffer[buffer_position + 1];
 }
+
+uint8_t MsgPackHandler::actualBufferByte() {
+	return LocalBuffers::client_request_buffer[buffer_position];
+}
+
 uint8_t MsgPackHandler::next() {
 	buffer_bytes_remaining--;
 	//FIXME: last_byte has no function
@@ -1284,6 +1310,11 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow,
 //			response->writeByte(next_status); //DEBUG
 
 			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
+			if (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
+					&& prev_status == MSGPACK_STATE_COMMAND_SET)
+				return true;
+
+
 			if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS
 					&& prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
 					&& next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)

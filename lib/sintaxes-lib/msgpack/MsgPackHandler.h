@@ -125,7 +125,7 @@ private:
 	bool assemble_uint32_Byte(uint8_t _byte);
 	bool assemble_uint16_Byte(uint8_t _byte);
 	bool reset_32bit_processing();
-
+	uint8_t MsgPackHandler::actualBufferByte();
 
 
 
