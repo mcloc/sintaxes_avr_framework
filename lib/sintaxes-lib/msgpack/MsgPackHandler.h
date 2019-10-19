@@ -129,7 +129,7 @@ private:
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();
 
-	bool setElementPointer(_4BCPMapElement *nested_element);
+	_4BCPMapElement *setElementPointer();
 
 	/**
 	 * we wont use pointer to another pointer (at least minimal when talking to other classes due to scope)
