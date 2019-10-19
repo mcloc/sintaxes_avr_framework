@@ -63,6 +63,7 @@ private:
 	uint8_t element4BCP_number = 0;
 	uint8_t nested_element4BCP = 0;
 	uint8_t total_element4BCP = 0;
+	uint8_t total_elementValue4BCP = 0;
 //
 //	static _4BCPMapElement *element4BCP_1;
 //	static _4BCPMapElement *element4BCP_2;
@@ -115,7 +116,8 @@ private:
 	bool processCommandHeader(uint8_t _word);
 	bool checkModulesMap();
 	uint8_t getNextType();
-	bool setElementValue(_4BCPMapElement *element);
+	bool setElementValue(_4BCPMapElement **element);
+
 
 	bool check4BCPProcesFlow(const uint8_t *flow_array_ptr, uint8_t array_size);
 	bool checkFlow();
@@ -124,12 +126,21 @@ private:
 	bool assemble_uint16_Byte(uint8_t _byte);
 	bool reset_32bit_processing();
 
+
+
+
+
 	bool setStatus(uint8_t _status);
 	unsigned int isArray(uint8_t _byte);
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();
 
-	_4BCPMapElement *setElementPointer();
+	_4BCPMapElement **processStatusMSGPACK_STATE_COMMAND_SET();
+	bool processStatusMSGPACK_STATE_BEGIN();
+
+
+	_4BCPMapElement **setElementPointer(bool add_vlue = false);
+	_4BCPElementValue **setStructElementValue();
 
 	/**
 	 * we wont use pointer to another pointer (at least minimal when talking to other classes due to scope)

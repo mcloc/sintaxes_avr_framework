@@ -29,6 +29,8 @@ static _4BCPElementValue *_4BCPElement::value_5 = (_4BCPElementValue*) malloc(si
 static _4BCPElementValue *_4BCPElement::value_6 = (_4BCPElementValue*) malloc(sizeof(_4BCPElementValue));
 
 _4BCPElement::_4BCPElement() {
+//	element4BCP_1->value = &value_1;
+
 
 }
 

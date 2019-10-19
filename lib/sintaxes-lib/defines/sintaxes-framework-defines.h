@@ -25,7 +25,7 @@
 //If you increase this you must change the Commands class to support more or less arguments
 #define MAX_MSGPACK_COMMAND_LOOP 4
 #define MAX_MSGPACK_ARGS 4
-#define MAX_MSGPACK_NESTED_ELEMENTS 8
+#define MAX_MSGPACK_NESTED_ELEMENTS 9
 
 
 #endif /* LIB_SINTAXES_LIB_DEFINES_SINTAXES_FRAMEWORK_DEFINES_H_ */
