@@ -49,6 +49,7 @@
 // **** ETHERNET SETTING ****
 EthernetServer server = EthernetServer(LISTENPORT);
 const uint8_t mac[6] = { MACADDRESS };
+IPAddress ip(192,168,1,16);
 
 static SintaxesLib sintaxes_lib;
 static LocalBuffers localBuffers;
@@ -109,10 +110,14 @@ void setup() {
 
 	sintaxes_lib.blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying
-	while (Ethernet.begin(mac) == 0) {
-		sintaxes_lib.buzz( 8000, 400, 2);
-		delay(500);
-	}
+//	while (Ethernet.begin(mac) == 0) {
+//		sintaxes_lib.buzz( 8000, 400, 2);
+//		delay(500);
+//	}
+
+	Ethernet.begin(mac,ip);
+
+
 	server.begin();
 	sintaxes_lib.buzz( 5000, 300, 4);
 //	sintaxes_lib.blink(BOARD_LED, 200, 4);
