@@ -23,8 +23,8 @@ protected:
 	uint32_t uuid;
 	bool active = false;
 	uint32_t state_period;
-	const __FlashStringHelper * name;
-	const __FlashStringHelper * model;
+	static const __FlashStringHelper * name;
+	static const __FlashStringHelper * model;
 };
 
 #endif /* LIB_SINTAXES_LIB_DEVICES_ACTUATORBASE_H_ */

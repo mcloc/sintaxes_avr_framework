@@ -5,8 +5,8 @@
  *      Author: mcloc
  */
 
-#ifndef LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPELEMENT_H_
-#define LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPELEMENT_H_
+#ifndef LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPCONTAINER_H_
+#define LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPCONTAINER_H_
 #include <Arduino.h>
 #include <defines/sintaxes-framework-defines.h>
 
@@ -30,19 +30,19 @@ typedef struct _4BCPMapElement {
 	uint8_t value_type;
 	uint8_t total_nested_elements = 0;
 	_4BCPElementValue *value;
-	_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS];
+	_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS * sizeof(int *)];
 } _4BCPMapElement;
 
 typedef struct _4BCPMap {
 	uint8_t size = 0;
-	_4BCPMapElement *elements[MAX_MSGPACK_COMMAND_LOOP];
+	_4BCPMapElement *elements[MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)];
 } _4BCPMap;
 
 
 
-class _4BCPElement {
+class _4BCPContainer {
 public:
-	_4BCPElement();
+	_4BCPContainer();
 	static _4BCPMap map4BCP;
 	static _4BCPMapElement *element4BCP_1;
 	static _4BCPMapElement *element4BCP_2;
@@ -62,4 +62,4 @@ public:
 	static _4BCPElementValue *value_6;
 };
 
-#endif /* LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPELEMENT_H_ */
+#endif /* LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPCONTAINER_H_ */

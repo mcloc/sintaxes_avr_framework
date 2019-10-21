@@ -1,6 +1,7 @@
 #ifndef __SINTAXES_MSGPACK_HANDLER_H_
 #define __SINTAXES_MSGPACK_HANDLER_H_
 
+#include <4BCProtocol/4BCPContainer.h>
 #include <sintaxes-lib.h>
 #include <Stream.h>
 #include <Commands.h>
@@ -8,7 +9,6 @@
 #include <defines/msgpack_defines.h>
 #include <defines/sintaxes-framework-defines.h>
 #include <MachineState.h>
-#include <4BCProtocol/4BCPElement.h>
 
 #define MSGPACK4BCPProcessFlow_SIZE 	9
 #define MSGPACK4BCPProcessFlow2_SIZE 	7
@@ -125,7 +125,7 @@ private:
 	bool assemble_uint32_Byte(uint8_t _byte);
 	bool assemble_uint16_Byte(uint8_t _byte);
 	bool reset_32bit_processing();
-	uint8_t MsgPackHandler::actualBufferByte();
+	uint8_t actualBufferByte();
 
 
 
