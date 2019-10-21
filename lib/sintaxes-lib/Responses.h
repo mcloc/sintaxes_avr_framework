@@ -26,6 +26,8 @@ class Responses{
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
         void write4BCPWordNotMappedERROR();
+        void write4BCPCommandExecutionErrorERROR();
+        void write4BCPCommandArgsMissing();
         void write4BCPUnknowCommand();
         void writeErrorMsgPack4BCPElementHasNoKey(uint8_t byte);
         void writeErrorMsgPack4BCPElementKeyProcessing();

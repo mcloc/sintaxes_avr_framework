@@ -4,8 +4,8 @@
 #include <4BCProtocol/4BCPContainer.h>
 #include <sintaxes-lib.h>
 #include <Stream.h>
-#include <Commands.h>
 #include <Arduino.h>
+#include <commands/CommandsHandler.h>
 #include <defines/msgpack_defines.h>
 #include <defines/sintaxes-framework-defines.h>
 #include <MachineState.h>
@@ -18,14 +18,14 @@ class MsgPackHandler;
 class MsgPackHandler {
 public:
 	MsgPackHandler();
-	MsgPackHandler(Responses *_response, Commands *commands, SintaxesLib *sintax_lib);
+	MsgPackHandler(Responses *_response, CommandsHandler *commands, SintaxesLib *sintax_lib);
 	bool init(Stream * _stream, int size, MachineState * machine_state);
 	bool processStream();
 
 private:
 	Stream *stream;
 	Responses *response;
-	Commands *commands;
+	CommandsHandler *commands;
 	SintaxesLib *sintaxesLib;
 	MachineState *machine_state;
 
@@ -64,6 +64,7 @@ private:
 	uint8_t nested_element4BCP = 0;
 	uint8_t total_element4BCP = 0;
 	uint8_t total_elementValue4BCP = 0;
+	uint8_t elements_remaining = MAX_MSGPACK_4BCP_ELEMENTS;
 //
 //	static _4BCPMapElement *element4BCP_1;
 //	static _4BCPMapElement *element4BCP_2;

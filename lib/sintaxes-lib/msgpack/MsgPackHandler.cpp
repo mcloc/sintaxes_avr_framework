@@ -67,7 +67,7 @@ MSGPACK_STATE_COMMAND_FINISHED };
 /**
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
-MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands,
+MsgPackHandler::MsgPackHandler(Responses *_responses, CommandsHandler *_commands,
 		SintaxesLib *_sintaxes_lib) {
 	response = _responses;
 	commands = _commands;
@@ -334,10 +334,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 
 
-//		response->writeRaw(F("-----------------------"));
-//		response->writeRaw(F("first map_elements_size"));
-//		response->writeByte(map_elements_size);
-
 		/******************************************************************************
 		 * status  MSGPACK_STATE_BEGIN time to set command
 		 */
@@ -392,15 +388,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 
 
-//		response->writeRaw(
-//				F("depois MSGPACK_STATE_COMMAND_SET, key do element pai actuator:"));
-//		response->write32bitByte(
-//				_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
-//		response->writeRaw(F("total_elements4BCP"));
-//		response->writeByte(total_element4BCP);
 
-//		DEBUG
-//		return false;
+
+
 
 		/******************************************************************************
 		 * status  MSGPACK_STATE_COMMAND_SETTING_ARGS must hae while status different commands args ready
@@ -411,10 +401,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		 */
 		if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS){
 			_byte = getNextType();
-//			response->writeRaw(
-//				F("next byte in MSGPACK_STATE_COMMAND_SETTING_ARGS:"));
-//			response->writeByte(_byte);
-
 
 			// Check always if it's a map to allocate the nested elements
 			uint8_t map_size = isMap(_byte);
@@ -467,28 +453,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] =
 						(*nested_element);
 				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements = nested_element4BCP+1;
-
-
-//				response->writeRaw(F("key of device"));
-//				response->write32bitByte(
-//						_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
-//				response->writeRaw(F("key of nested args"));
-//				response->write32bitByte(
-//						_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->key);
-//				response->writeRaw(F("value type of device nested elemen args"));
-//				response->writeByte(
-//						_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type);
-
-//				if(_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type == MSGPACK_TRUE ||
-//					_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type == MSGPACK_FALSE){
-//					response->writeRaw(F("value bool of ARG-X"));
-//					response->writeByte(
-//							_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value->bool_value);
-//				} else {
-//					response->writeRaw(F("value uint32_t of ARG-X"));
-//					response->write32bitByte(
-//							_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value->uint32_value);
-//				}
 
 				nested_element4BCP++;
 				map_size--;
@@ -702,6 +666,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	switch (total_element4BCP) {
 	case 0: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_1->value = (*element_value);
@@ -713,6 +678,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 1: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_2->value   = (*element_value);
@@ -723,6 +689,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 2: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_3->value  = (*element_value);
@@ -733,6 +700,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 3: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_4->value  = (*element_value);
@@ -743,6 +711,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 4: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_5->value  = (*element_value);
@@ -753,6 +722,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 5: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_6->value  = (*element_value);
@@ -763,6 +733,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 6: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_7->value  = (*element_value);
@@ -773,6 +744,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 7: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_8->value  = (*element_value);
@@ -783,6 +755,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 8: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_9->value  = (*element_value);
@@ -792,6 +765,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 9: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_10->value  = (*element_value);
@@ -801,6 +775,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 10: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_11->value  = (*element_value);
@@ -810,6 +785,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 11: {
 		total_element4BCP++;
+		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
 			_4BCPContainer::element4BCP_12->value  = (*element_value);
@@ -819,6 +795,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 	}
 	case 12: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_13->value  = (*element_value);
@@ -828,6 +805,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 13: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_14->value  = (*element_value);
@@ -837,6 +815,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 14: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_15->value  = (*element_value);
@@ -846,6 +825,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 15: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_16->value  = (*element_value);
@@ -855,6 +835,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 16: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_17->value  = (*element_value);
@@ -864,6 +845,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 17: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_18->value  = (*element_value);
@@ -873,6 +855,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 18: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_19->value  = (*element_value);
@@ -882,6 +865,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		}
 	case 19: {
 			total_element4BCP++;
+			elements_remaining--;
 			if (add_value) {
 				element_value = setStructElementValue();
 				_4BCPContainer::element4BCP_20->value  = (*element_value);

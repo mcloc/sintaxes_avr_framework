@@ -13,12 +13,11 @@
 #include "main.h"
 #include <sintaxes-lib.h>
 #include <LocalBuffers.h>
-#include <Commands.h>
 #include <MachineState.h>
-#include <devices/SintaxesActuator.hpp>
 #include <devices/types/DN20.h>
 #include <MsgPackHandler.h>
 #include <4BCProtocol/4BCPContainer.h>
+#include <commands/CommandsHandler.h>
 
 
 
@@ -54,7 +53,7 @@ const uint8_t mac[6] = { MACADDRESS };
 static SintaxesLib sintaxes_lib;
 static LocalBuffers localBuffers;
 static Responses response(&localBuffers);
-static Commands commands(&localBuffers, &response);
+static CommandsHandler commands(&localBuffers, &response);
 static MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);

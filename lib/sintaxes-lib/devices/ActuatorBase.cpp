@@ -6,6 +6,7 @@
  */
 
 #include <devices/ActuatorBase.h>
+#include <sintaxes-lib.h>
 
 ActuatorBase::ActuatorBase(uint32_t _uuid){
 	uuid = _uuid;
@@ -21,13 +22,13 @@ bool ActuatorBase::isActive(){
 }
 
 const __FlashStringHelper * ActuatorBase::getName(){
-	return name;
+	return FSH(name);
 }
 
 const __FlashStringHelper * ActuatorBase::getModel(){
-	return model;
+	return FSH(model);
 }
 
-uint32_t ActuatorBase::getStatePeriod(){
-	return state_period;
+uint32_t ActuatorBase::getStateDuration(){
+	return state_duration;
 }

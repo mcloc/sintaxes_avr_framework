@@ -9,7 +9,6 @@
 #define LIB_SINTAXES_LIB_MACHINESTATE_H_
 
 #include <Arduino.h>
-#include <devices/SintaxesActuator.hpp>
 #include <devices/SintaxesSensors.h>
 #include <devices/types/DN20.h>
 

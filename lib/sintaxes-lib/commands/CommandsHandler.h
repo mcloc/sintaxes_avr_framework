@@ -3,15 +3,14 @@
 #ifndef __MODULE_COMMANDS_H_
 #define __MODULE_COMMANDS_H_
 
-#include <devices/SintaxesActuator.hpp>
 #include <DHT.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
 
-class Commands;
+//class Commands;
 
 
-class Commands {
+class CommandsHandler {
 
 public: 
     
@@ -24,26 +23,27 @@ public:
     /**
      * command to execute / in execution
      */
-    static uint32_t command_executing;
+     static uint32_t command_executing;
 
     /**
      * uint32_t 8 bytes arguments for commands to be called
      */
-    static uint32_t command_argument1;
-    static uint32_t command_argument2;
-    static uint32_t command_argument3;
-    static uint32_t command_argument4;
-    static uint32_t command_argument5;
-    static uint32_t command_argument6;
-    static uint32_t command_argument7;
-    static uint32_t command_argument8;
+//     uint32_t command_argument1;
+//     uint32_t command_argument2;
+//     uint32_t command_argument3;
+//     uint32_t command_argument4;
+//     uint32_t command_argument5;
+//     uint32_t command_argument6;
+//     uint32_t command_argument7;
+//     uint32_t command_argument8;
 
-    Commands();
-    Commands(LocalBuffers *localBuffers, Responses *_response);
+    CommandsHandler();
+    CommandsHandler(LocalBuffers *localBuffers, Responses *_response);
 
 
     bool get_data();
     void initSensors();
+    bool set_actuator(bool state, uint32_t duration);
 
 
     DHT *dht1;
