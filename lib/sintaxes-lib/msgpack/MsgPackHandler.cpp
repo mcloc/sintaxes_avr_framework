@@ -466,7 +466,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 				_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] =
 						(*nested_element);
-				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements++;
+				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements = nested_element4BCP+1;
 
 
 //				response->writeRaw(F("key of device"));
@@ -658,7 +658,16 @@ bool MsgPackHandler::processMap() {
 		response->writeRaw(F("TOTAL DEVICE NESTED ELEMENTs:"));
 		response->write32bitByte(element->total_nested_elements);
 
+		for(uint8_t j = 0; j < element->total_nested_elements; j++){
+			_4BCPMapElement *nested_element = _4BCPContainer::map4BCP.elements[i]->nested_elements[j];
+			response->writeRaw(F("ARGUMENT NESTED ELEMENT KEY:"));
+			response->write32bitByte(nested_element->key);
+			response->writeRaw(F("NESTED ELEMENT VALUE_TYPE:"));
+			response->writeByte(nested_element->value_type);
 
+		}
+
+		response->writeRaw(F("----------------------------------------------------------------"));
 		//nested elements
 //		if(isMap(element.value_type)){
 //			for(uint8_t j = 0; j < element.total_nested_elements; j++){
