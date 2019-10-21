@@ -18,6 +18,7 @@
 #include <devices/SintaxesActuator.hpp>
 #include <devices/types/DN20.h>
 #include <MsgPackHandler.h>
+#include <4BCProtocol/4BCPContainer.h>
 
 
 
@@ -57,6 +58,7 @@ static Commands commands(&localBuffers, &response);
 static MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
 static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
 static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
+static _4BCPContainer container_4BCP;
 
 
 //INITIALIZATION OF DEVICES

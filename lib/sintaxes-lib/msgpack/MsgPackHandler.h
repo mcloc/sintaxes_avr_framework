@@ -135,7 +135,7 @@ private:
 	unsigned int isMap(uint8_t _byte);
 	unsigned long isMapped();
 
-	_4BCPMapElement **processStatusMSGPACK_STATE_COMMAND_SET();
+	_4BCPMapElement **processStatusNextElement();
 	bool processStatusMSGPACK_STATE_BEGIN();
 
 

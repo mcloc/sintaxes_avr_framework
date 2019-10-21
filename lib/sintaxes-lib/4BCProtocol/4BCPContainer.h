@@ -30,7 +30,7 @@ typedef struct _4BCPMapElement {
 	uint8_t value_type;
 	uint8_t total_nested_elements = 0;
 	_4BCPElementValue *value;
-	_4BCPMapElement *nested_elements[MAX_MSGPACK_NESTED_ELEMENTS * sizeof(int *)];
+	_4BCPMapElement *nested_elements[MAX_MSGPACK_4BCP_ELEMENTS * sizeof(int *)];
 } _4BCPMapElement;
 
 typedef struct _4BCPMap {
@@ -53,6 +53,18 @@ public:
 	static _4BCPMapElement *element4BCP_7;
 	static _4BCPMapElement *element4BCP_8;
 	static _4BCPMapElement *element4BCP_9;
+	static _4BCPMapElement *element4BCP_10;
+	static _4BCPMapElement *element4BCP_11;
+	static _4BCPMapElement *element4BCP_12;
+	static _4BCPMapElement *element4BCP_13;
+	static _4BCPMapElement *element4BCP_14;
+	static _4BCPMapElement *element4BCP_15;
+	static _4BCPMapElement *element4BCP_16;
+	static _4BCPMapElement *element4BCP_17;
+	static _4BCPMapElement *element4BCP_18;
+	static _4BCPMapElement *element4BCP_19;
+	static _4BCPMapElement *element4BCP_20;
+
 
 	static _4BCPElementValue *value_1;
 	static _4BCPElementValue *value_2;
@@ -60,6 +72,21 @@ public:
 	static _4BCPElementValue *value_4;
 	static _4BCPElementValue *value_5;
 	static _4BCPElementValue *value_6;
+	static _4BCPElementValue *value_7;
+	static _4BCPElementValue *value_8;
+	static _4BCPElementValue *value_9;
+	static _4BCPElementValue *value_10;
+	static _4BCPElementValue *value_11;
+	static _4BCPElementValue *value_12;
+	static _4BCPElementValue *value_13;
+	static _4BCPElementValue *value_14;
+	static _4BCPElementValue *value_15;
+	static _4BCPElementValue *value_16;
+	static _4BCPElementValue *value_17;
+	static _4BCPElementValue *value_18;
+	static _4BCPElementValue *value_19;
+	static _4BCPElementValue *value_20;
+
 };
 
 #endif /* LIB_SINTAXES_LIB_4BCPROTOCOL_4BCPCONTAINER_H_ */
