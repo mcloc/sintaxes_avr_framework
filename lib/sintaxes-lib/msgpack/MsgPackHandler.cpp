@@ -140,7 +140,7 @@ bool MsgPackHandler::init(Stream *_stream, int size,
  */
 
 bool MsgPackHandler::processStream() {
-	while (buffer_bytes_remaining > 0) {
+	while (buffer_bytes_remaining > 0 || status != MSGPACK_STATE_COMMAND_FINISHED) {
 		//Get next byte on buffer
 		uint8_t _byte = next();
 //		response->writeByte(_byte);
@@ -176,12 +176,12 @@ bool MsgPackHandler::processStream() {
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-//
-//			if (!processMap()) {
-//				response->closeJsonResponse();
-//				setStatus(MSGPACK_STATE_IDLE);
-//				return false;
-//			}
+		} else if(status == MSGPACK_STATE_COMMAND_ARGS_READY) {
+			if (!processMap()) {
+				response->closeJsonResponse();
+				setStatus(MSGPACK_STATE_IDLE);
+				return false;
+			}
 
 		} else {
 			error_code = ERROR_MAL_FORMED_MSGPCK;
@@ -469,27 +469,26 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements++;
 
 
-				response->writeRaw(F("key of device"));
-				response->write32bitByte(
-						_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
-				response->writeRaw(F("key of nested args"));
-				response->write32bitByte(
-						_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->key);
-				response->writeRaw(F("value type of device nested elemen args"));
-				response->writeByte(
-						_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type);
+//				response->writeRaw(F("key of device"));
+//				response->write32bitByte(
+//						_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
+//				response->writeRaw(F("key of nested args"));
+//				response->write32bitByte(
+//						_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->key);
+//				response->writeRaw(F("value type of device nested elemen args"));
+//				response->writeByte(
+//						_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type);
 
-
-				if(_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type == MSGPACK_TRUE ||
-					_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type == MSGPACK_FALSE){
-					response->writeRaw(F("value bool of ARG-X"));
-					response->writeByte(
-							_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value->bool_value);
-				} else {
-					response->writeRaw(F("value uint32_t of ARG-X"));
-					response->write32bitByte(
-							_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value->uint32_value);
-				}
+//				if(_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type == MSGPACK_TRUE ||
+//					_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value_type == MSGPACK_FALSE){
+//					response->writeRaw(F("value bool of ARG-X"));
+//					response->writeByte(
+//							_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value->bool_value);
+//				} else {
+//					response->writeRaw(F("value uint32_t of ARG-X"));
+//					response->write32bitByte(
+//							_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP]->value->uint32_value);
+//				}
 
 				nested_element4BCP++;
 				map_size--;
@@ -498,11 +497,21 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 			element4BCP_number++;
 			nested_element4BCP = 0;
+
 			_4BCPMapElement **e =  processStatusNextElement();
 
 			if((*e)->key == MODULE_COMMMAND_EXECUTE_FLAG){
+				_byte = getNextType();
+				if(_byte != MSGPACK_TRUE){
+					error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
+					response->writeErrorMsgPack4BCPExecuteFlagError();
+					return false;
+				}
+
 				if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
 					return false;
+
+				//DONE ALL DEVICES AND ARGS ARE SET
 				break;
 			}
 
@@ -604,6 +613,15 @@ _4BCPMapElement** MsgPackHandler::processStatusNextElement() {
 }
 
 bool MsgPackHandler::processMap() {
+	response->writeRaw(F("Total BCP  elements instatiated"));
+	response->write32bitByte(total_element4BCP);
+
+	response->writeRaw(F("How many elements in the array"));
+	response->write32bitByte(element4BCP_number);
+
+
+
+
 	//check both MSGPACK4BCPProcessFlow with arguments without arguments
 	if (status != MSGPACK_STATE_COMMAND_ARGS_READY
 			&& status != MSGPACK_STATE_COMMAND_SET) {
@@ -620,16 +638,28 @@ bool MsgPackHandler::processMap() {
 		return false;
 	}
 
+
 	if (!setStatus(MSGPACK_STATE_COMMAND_ASSEMBLY))
 		return false;
+
+
+	response->writeRaw(F("BYTES REMAINING:"));
+	response->writeByte(buffer_bytes_remaining);
 
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
-//	for(uint8_t i = 0; i < map4BCP.size;i++){
-////		_4BCPMapElement element = map4BCP.elements[i];
-//
-//		//nested elements
+	for(uint8_t i = 0; i < _4BCPContainer::map4BCP.size;i++){
+		_4BCPMapElement *element = _4BCPContainer::map4BCP.elements[i];
+
+
+		response->writeRaw(F("DEVICE ELEMENT KEY:"));
+		response->write32bitByte(element->key);
+		response->writeRaw(F("TOTAL DEVICE NESTED ELEMENTs:"));
+		response->write32bitByte(element->total_nested_elements);
+
+
+		//nested elements
 //		if(isMap(element.value_type)){
 //			for(uint8_t j = 0; j < element.total_nested_elements; j++){
 //				_4BCPMapElement *nested_element = element.nested_elements[j];
@@ -649,7 +679,7 @@ bool MsgPackHandler::processMap() {
 ////			response->writeRaw(F("total nested elements:"));
 ////			response->writeByte(element.total_nested_elements);
 //		}
-//	}
+	}
 
 	return true;
 }
@@ -908,9 +938,9 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 	//Change to function template each case can be a Template Specialization
 	//https://www.geeksforgeeks.org/template-specialization-c/
 
-	response->writeRaw(
-		F(" value type of nested element inside seElementValue()::"));
-	response->writeByte((*element)->value_type);
+//	response->writeRaw(
+//		F(" value type of nested element inside seElementValue()::"));
+//	response->writeByte((*element)->value_type);
 
 
 	switch ((*element)->value_type) {
