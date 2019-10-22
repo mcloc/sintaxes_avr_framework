@@ -25,7 +25,7 @@ public:
 private:
 	Stream *stream;
 	Responses *response;
-	CommandsHandler *commands;
+	CommandsHandler *commands_handler;
 	SintaxesLib *sintaxesLib;
 	MachineState **machine_state;
 

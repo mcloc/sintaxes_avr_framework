@@ -71,7 +71,7 @@ MSGPACK_STATE_COMMAND_FINISHED };
 MsgPackHandler::MsgPackHandler(Responses *_responses, CommandsHandler *_commands,
 		SintaxesLib *_sintaxes_lib) {
 	response = _responses;
-	commands = _commands;
+	commands_handler = _commands;
 	sintaxesLib = _sintaxes_lib;
 
 	setStatus(MSGPACK_STATE_IDLE);
@@ -611,6 +611,8 @@ bool MsgPackHandler::processMap() {
 	response->writeRaw(F("BYTES REMAINING:"));
 	response->writeByte(buffer_bytes_remaining);
 
+//	commands_handler->assembleCommand();
+
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
@@ -630,11 +632,12 @@ bool MsgPackHandler::processMap() {
 			response->writeRaw(F("NESTED ELEMENT VALUE_TYPE:"));
 			response->writeByte(nested_element->value_type);
 
-			CommandBase command_base = CommandBase::CommandBase(response, element->key, nested_element->key);
-			CommandBase ** cmd_execute = command_base.getCommandObj();
-			if((* cmd_execute)->execute()){
-				return false;
-			}
+			commands_handler->assembleCommand(element->key, nested_element->key)
+
+//			comm(response, machine_state, element->key, nested_element->key);
+//			if(command_base.execute()){
+//				return false;
+//			}
 
 		}
 
@@ -1254,10 +1257,10 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 	if (!assemble_uint32_Byte(_byte))
 		return false;
 
-	commands->command_executing = _32bitword;
+	commands_handler->command_executing = _32bitword;
 
 	response->writeRaw(F("COMMAND TO EXECUTE:"));
-	response->write32bitByte(commands->command_executing);
+	response->write32bitByte(commands_handler->command_executing);
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_SET))
 		return false;

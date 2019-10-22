@@ -11,21 +11,21 @@
 #include <commands/SetActuator.h>
 #include <Responses.h>
 
-uint32_t command;
 
 CommandBase::CommandBase(){
 
 }
 
-CommandBase::CommandBase(Responses *_response, uint32_t _command, uint32_t _device_key) {
+CommandBase::CommandBase(Responses *_response, MachineState **_machine_state,  uint32_t _command, uint32_t _device_key) {
 	// TODO Auto-generated constructor stub
+	machine_state  = _machine_state;
 	command = _command;
 	response = _response;
 	device_key = _device_key;
 
 }
 
-CommandBase ** CommandBase::getCommandObj(){
+bool CommandBase::setCommandObj(){
 	switch(command){
 	case MODULE_COMMMAND_GET_STATE: {
 		response->writeMsgPack4BCPMethodUnimplemented(command);
@@ -40,8 +40,9 @@ CommandBase ** CommandBase::getCommandObj(){
 		return '\0';
 	}
 	case MODULE_COMMMAND_SET_ACTUATOR: {
-		SetActuator actuator_command = SetActuator(response, device_key);
 		SetActuator * cmd_ptr = (SetActuator*) malloc(sizeof(SetActuator));
+		cmd_ptr = &SetActuator(response, device_key);
+
 		return &cmd_ptr;
 	}
 	default: {

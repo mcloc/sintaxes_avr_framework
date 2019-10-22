@@ -17,14 +17,16 @@ class CommandBase {
 
 public:
 	CommandBase();
-	CommandBase(Responses *reponse, uint32_t command, uint32_t device_key);
-	CommandBase **getCommandObj();
+	CommandBase(Responses *reponse, MachineState **_machine_state, uint32_t command, uint32_t device_key);
+	bool setCommandObj();
 	virtual bool execute();
 	virtual bool checkArguments();
+	virtual ~CommandBase();
 
-	static  uint32_t command;
+	uint32_t command;
 	Responses *response;
-
+	MachineState **machine_state;
+	CommandBase ** cmd_ptr;
 
 };
 

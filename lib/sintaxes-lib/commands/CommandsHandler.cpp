@@ -99,18 +99,25 @@ char *  CommandsHandler::getSensor2(){
 }
 
 bool CommandsHandler::set_actuator(bool state, uint32_t duration){
-	SetActuator command = SetActuator(response);
-	command.state = state;
-	command.state_duration = duration;
+//	CommandBase command_base = CommandBase::CommandBase(response, element->key, nested_element->key);
+//	CommandBase ** cmd_execute = command_base.getCommandObj();
+//	if((* cmd_execute)->execute()){
+//		return false;
+//	}
 
-	machineState->getActuator()
-
-
-	if (!command.execute()) {
-//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
-		response->write4BCPCommandExecutionERROR();
-		return false;
-	}
+//
+//	SetActuator command = SetActuator(response);
+//	command.state = state;
+//	command.state_duration = duration;
+//
+//	machineState->getActuator()
+//
+//
+//	if (!command.execute()) {
+////		error_code = ERROR_COMMAND_EXECUTION_FAILED;
+//		response->write4BCPCommandExecutionERROR();
+//		return false;
+//	}
 
 	return true;
 }
