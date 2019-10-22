@@ -20,12 +20,13 @@ public:
 	SetActuator(Responses *reponse, uint32_t device_key);
 	bool execute();
 	bool checkArguments();
+	bool state;
+	uint32_t state_duration; //in seconds overflow in 231 MAX days approximately
 
 protected:
 	static const uint32_t command = MODULE_COMMMAND_SET_ACTUATOR;
 	uint32_t device_key;
-	bool state;
-	uint32_t state_duration; //in seconds overflow in 231 MAX days approximately
+
 
 };
 

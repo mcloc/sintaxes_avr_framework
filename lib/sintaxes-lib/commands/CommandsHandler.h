@@ -15,7 +15,7 @@
 typedef struct CommandStruct {
 	uint32_t command;
 	_4BCPMapElement *devices_element_list[MAX_MSGPACK_COMMAND_LOOP];
-	uint8_t total_devices2execute = 0; // mapSize
+	uint8_t total_devices_executed = 0; // mapSize
 } CommandStruct;
 
 class CommandsHandler {
@@ -38,11 +38,11 @@ public:
 	void setMachineState(MachineState **_machine_state);
 	bool get_data();
 	void initSensors();
-	bool set_actuator(bool state, uint32_t duration);
+	bool set_actuator();
 
+	bool assembleCommand();
 	bool assembleCommand(uint32_t command_key);
-	bool assembleCommand(uint32_t device_key,
-			_4BCPMapElement *nested_element_list[]);
+	bool assembleCommand(_4BCPMapElement *nested_element_list[MAX_MSGPACK_COMMAND_LOOP]);
 
 	DHT *dht1;
 	DHT *dht2;
@@ -62,7 +62,6 @@ private:
 	MachineState **machineState;
 	CommandStruct command_struct;
 	_4BCPMapElement *args_list[];
-	uint32 device_key;
 
 };
 

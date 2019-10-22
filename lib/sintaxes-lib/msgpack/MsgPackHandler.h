@@ -65,33 +65,6 @@ private:
 	uint8_t total_element4BCP = 0;
 	uint8_t total_elementValue4BCP = 0;
 	uint8_t elements_remaining = MAX_MSGPACK_4BCP_ELEMENTS;
-//
-//	static _4BCPMapElement *element4BCP_1;
-//	static _4BCPMapElement *element4BCP_2;
-//	static _4BCPMapElement *element4BCP_3;
-//	static _4BCPMapElement *element4BCP_4;
-//	static _4BCPMapElement *element4BCP_5;
-//	static _4BCPMapElement *element4BCP_6;
-//	static _4BCPMapElement *element4BCP_7;
-//	static _4BCPMapElement *element4BCP_8;
-//	static _4BCPMapElement *element4BCP_9;
-//
-//	static _4BCPElementValue *value_1;
-//	static _4BCPElementValue *value_2;
-//	static _4BCPElementValue *value_3;
-//	static _4BCPElementValue *value_4;
-//	static _4BCPElementValue *value_5;
-//	static _4BCPElementValue *value_6;
-
-
-
-
-	//4Bytes Command Protocol buffers
-//	unsigned long ext_command;
-//	unsigned long ext_command_args1;
-//	unsigned long ext_command_args2;
-//	unsigned long ext_command_args3;
-//	unsigned long ext_command_args4;
 
 
 
@@ -101,12 +74,6 @@ private:
 //	 static const uint8_t MSGPACK4BCPProcessFlow3[];
 //	 static const uint8_t MSGPACKTYPES[MSGPACK4BCPProcessFlow2_SIZE];
 
-//
-//	uint8_t length = sizeof(some_array) / sizeof(some_array[0]);
-//
-//	for (uint8_t i = 0; i < length; i++) {
-//		Process(pgm_read_byte(&some_array[i]));
-//	}
 
 
 	uint8_t whatNext();
@@ -148,27 +115,23 @@ private:
 	 * just for standards [&](){ cout << F(x)} ...
 	 */
 	//unsigned long get32bitByte();
-
+	//Tiny and Tight that's the deal. This code will be refactored dozen times until it's tinier and tighter as possible. We wont have much problem with coupling code case this is a firmware
+	// We just need the procedures divided by true scope and human maintenance agile. This framework template is intended to to be s initial base for creation of unique and well defined end.
+	//It just gives a certain way to achieve your goals based on best practice and agile human interference...
+	//This is a creation of a new Design Pattern. Agile, relative tiny and very tight, rough, but with agile human interface
+	//This is a long road (20191022 16:14 -3 UTC), I (for now) will mark all end points of the goal achievement.
+	//Our main platform will be 8 bits Atmel's AVR. Eclipse a tool spread on the market with platformIO as project administration, dependency control and etc
+	//Besides msgpack-rpc, I don't think RPC should be as Designed to be on embedded applications. There's a lack in RPC with real little RAM memory (2KB, 8KB) for processing strings.
+	//MsgPack was taken for base communication and data transmitter.
+	//But we are developing an above layer on msgpack, the 4BytesCommandProtocol(4BCP) which is a uint32_t hex map of commands and devices uuid, so we will only use 4bytes to transmit
+	//up to 4.294.967.295 packets of 4byte information, symbols. See more on 4BCP Documentation.
+	//And yeah we will use :
+	//	- static class members;
+	//	- and startup initialization for important data.
+	//
+	// This new pattern for embedded application will paradox with some other patterns. In the grace of robust, efficient and agile development for embedded.
 
 };
-
-
-//static _4BCPMapElement *element4BCP_1 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_2 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_3 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_4 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_5 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_6 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_7 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//	element4BCP_8 = (_4BCPMapElement *)malloc(sizeof(_4BCPMapElement));
-//
-//
-//	value_1 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-//	value_2 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-//	value_3 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-//	value_4 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-//	value_5 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
-//	value_6 = (_4BCPElementValue *)malloc(sizeof(_4BCPElementValue));
 
 
 

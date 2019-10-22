@@ -616,53 +616,76 @@ bool MsgPackHandler::processMap() {
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
-	for(uint8_t i = 0; i < _4BCPContainer::map4BCP.size;i++){
-		_4BCPMapElement *element = _4BCPContainer::map4BCP.elements[i];
+	commands_handler->assembleCommand();
+	commands_handler->assembleCommand(_4BCPContainer::map4BCP.elements);
+	commands_handler->execute();
 
 
-		response->writeRaw(F("DEVICE ELEMENT KEY:"));
-		response->write32bitByte(element->key);
-		response->writeRaw(F("TOTAL DEVICE NESTED ELEMENTs:"));
-		response->write32bitByte(element->total_nested_elements);
 
-		for(uint8_t j = 0; j < element->total_nested_elements; j++){
-			_4BCPMapElement *nested_element = _4BCPContainer::map4BCP.elements[i]->nested_elements[j];
-			response->writeRaw(F("ARGUMENT NESTED ELEMENT KEY:"));
-			response->write32bitByte(nested_element->key);
-			response->writeRaw(F("NESTED ELEMENT VALUE_TYPE:"));
-			response->writeByte(nested_element->value_type);
 
-			commands_handler->assembleCommand(element->key, nested_element->key)
 
-//			comm(response, machine_state, element->key, nested_element->key);
-//			if(command_base.execute()){
-//				return false;
-//			}
 
-		}
 
-		response->writeRaw(F("----------------------------------------------------------------"));
-		//nested elements
-//		if(isMap(element.value_type)){
-//			for(uint8_t j = 0; j < element.total_nested_elements; j++){
-//				_4BCPMapElement *nested_element = element.nested_elements[j];
-////				response->writeRaw(F("nested_element key:"));
-////				response->write32bitByte(nested_element->key);
-////				response->writeRaw(F("element type:"));
-////				response->writeByte(nested_element->value_type);
-////				response->writeRaw(F("total nested elements:"));
-////				response->writeByte(nested_element->total_nested_elements);
-//			}
-////			_4BCPMapElement nested_element = element.;
-//		} else {
-////			response->writeRaw(F("element key:"));
-////			response->write32bitByte(element.key);
-////			response->writeRaw(F("element type:"));
-////			response->writeByte(element.value_type);
-////			response->writeRaw(F("total nested elements:"));
-////			response->writeByte(element.total_nested_elements);
-//		}
-	}
+
+
+
+
+
+
+
+//	for(uint8_t i = 0; i < _4BCPContainer::map4BCP.size;i++){
+//		_4BCPMapElement *element[] = _4BCPContainer::map4BCP.elements[i];
+//
+//
+////		response->writeRaw(F("DEVICE ELEMENT KEY:"));
+////		response->write32bitByte(element->key);
+////		response->writeRaw(F("TOTAL DEVICE NESTED ELEMENTs:"));
+////		response->write32bitByte(element->total_nested_elements);
+//
+//
+//
+//		commands_handler->execute();
+//
+//
+//
+////		for(uint8_t j = 0; j < element->total_nested_elements; j++){
+////			_4BCPMapElement *nested_element = _4BCPContainer::map4BCP.elements[i]->nested_elements[j];
+////			response->writeRaw(F("ARGUMENT NESTED ELEMENT KEY:"));
+////			response->write32bitByte(nested_element->key);
+////			response->writeRaw(F("NESTED ELEMENT VALUE_TYPE:"));
+////			response->writeByte(nested_element->value_type);
+////
+////
+////
+//////			comm(response, machine_state, element->key, nested_element->key);
+//////			if(command_base.execute()){
+//////				return false;
+//////			}
+////
+////		}
+//
+//		response->writeRaw(F("----------------------------------------------------------------"));
+//		//nested elements
+////		if(isMap(element.value_type)){
+////			for(uint8_t j = 0; j < element.total_nested_elements; j++){
+////				_4BCPMapElement *nested_element = element.nested_elements[j];
+//////				response->writeRaw(F("nested_element key:"));
+//////				response->write32bitByte(nested_element->key);
+//////				response->writeRaw(F("element type:"));
+//////				response->writeByte(nested_element->value_type);
+//////				response->writeRaw(F("total nested elements:"));
+//////				response->writeByte(nested_element->total_nested_elements);
+////			}
+//////			_4BCPMapElement nested_element = element.;
+////		} else {
+//////			response->writeRaw(F("element key:"));
+//////			response->write32bitByte(element.key);
+//////			response->writeRaw(F("element type:"));
+//////			response->writeByte(element.value_type);
+//////			response->writeRaw(F("total nested elements:"));
+//////			response->writeByte(element.total_nested_elements);
+////		}
+//	}
 
 	return true;
 }

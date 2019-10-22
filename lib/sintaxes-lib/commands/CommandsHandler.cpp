@@ -6,36 +6,55 @@
 #include <LocalBuffers.h>
 #include <Responses.h>
 #include <commands/SetActuator.h>
-//#include <StandardCplusplus.h>
-//#include <sintaxes-lib.h>
+#include <defines/sintaxes-framework-defines.h>
+
+
+
+
+
+
 /**
  * command to execute / in execution
  */
  uint32_t CommandsHandler::command_executing;
 
-/**
- * uint32_t 8 bytes arguments for commands to be called
- */
-// uint32_t CommandsHandler::command_argument1;
-// uint32_t CommandsHandler::command_argument2;
-// uint32_t CommandsHandler::command_argument3;
-// uint32_t CommandsHandler::command_argument4;
-// uint32_t CommandsHandler::command_argument5;
-// uint32_t CommandsHandler::command_argument6;
-// uint32_t CommandsHandler::command_argument7;
-// uint32_t CommandsHandler::command_argument8;
 
 CommandsHandler::CommandsHandler(LocalBuffers *_localBuffers, Responses *_response){
 	localBuffers = _localBuffers;
 	response = _response;
 //	machineState = &_machine_state;
+	command_struct = CommandStruct();
 }
 
 
 void CommandsHandler::setMachineState(MachineState ** _machine_state){
 	machineState = _machine_state;
-
 }
+
+
+bool CommandsHandler::assembleCommand(){
+	command_struct.command = command_executing;
+	command_struct.devices_element_list[0] = '\0';
+	command_struct.total_devices_executed = 0;
+}
+
+
+bool CommandsHandler::assembleCommand(_4BCPMapElement *nested_element_list[MAX_MSGPACK_COMMAND_LOOP]){
+
+//	command_struct.devices_element_list = nested_element_list;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //void Commands::setActuator(uint32_t actuator_id, bool state, uint16_t duration){
@@ -98,26 +117,32 @@ char *  CommandsHandler::getSensor2(){
     return LocalBuffers::string_cpy_buffer;
 }
 
-bool CommandsHandler::set_actuator(bool state, uint32_t duration){
+bool CommandsHandler::set_actuator(){
+
 //	CommandBase command_base = CommandBase::CommandBase(response, element->key, nested_element->key);
 //	CommandBase ** cmd_execute = command_base.getCommandObj();
 //	if((* cmd_execute)->execute()){
 //		return false;
 //	}
+	uint8_t counter = 0;
+	uint8_t device_key;
+	SetActuator command = SetActuator(response,device_key);
 
-//
-//	SetActuator command = SetActuator(response);
-//	command.state = state;
-//	command.state_duration = duration;
-//
-//	machineState->getActuator()
-//
-//
-//	if (!command.execute()) {
-////		error_code = ERROR_COMMAND_EXECUTION_FAILED;
-//		response->write4BCPCommandExecutionERROR();
-//		return false;
-//	}
+	while(true){
+		_4BCPMapElement *element = command_struct.devices_element_list[counter];
+		device_key = element->key;
+		for(uint8_t i =0; i < element->total_nested_elements; i++){
+			command.state = element->value->bool_value;
+			command.state_duration = element->value->uint32_value;
+			command.execute(); // machineState->getActuator(); and set actuator digital real values
+		}
+	}
+
+	if (!command.execute()) {
+//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
+		response->write4BCPCommandExecutionERROR();
+		return false;
+	}
 
 	return true;
 }
@@ -132,12 +157,12 @@ bool CommandsHandler::execute(){
 			return true;
 		}
 
-//		case MODULE_COMMMAND_SET_ACTUATOR: {
-//			if(!set_actuator())
-//				return false;
-//
-//			return true;
-//		}
+		case MODULE_COMMMAND_SET_ACTUATOR: {
+			if(!set_actuator())
+				return false;
+
+			return true;
+		}
 
 		default:{
 //			error_code = ERROR_MSGPACK_4BCP_UNKNOW_COMMAND;
