@@ -28,6 +28,7 @@ public:
 	bool init();
 	void setStateTime();
 	uint32_t getUptime();
+	ActuatorBase * getActuator(uint32_t device_key);
 
 
 

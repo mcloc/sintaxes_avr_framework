@@ -6,6 +6,7 @@
 #include <DHT.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
+#include <MachineState.h>
 
 //class Commands;
 
@@ -40,7 +41,7 @@ public:
     CommandsHandler();
     CommandsHandler(LocalBuffers *localBuffers, Responses *_response);
 
-
+    void setMachineState(MachineState ** _machine_state);
     bool get_data();
     void initSensors();
     bool set_actuator(bool state, uint32_t duration);
@@ -64,6 +65,7 @@ private:
     Responses *response;
     DHT getDHT1();
     DHT getDHT2();
+    MachineState **machineState;
     
 
 };

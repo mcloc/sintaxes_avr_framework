@@ -28,6 +28,13 @@
 CommandsHandler::CommandsHandler(LocalBuffers *_localBuffers, Responses *_response){
 	localBuffers = _localBuffers;
 	response = _response;
+//	machineState = &_machine_state;
+}
+
+
+void CommandsHandler::setMachineState(MachineState ** _machine_state){
+	machineState = _machine_state;
+
 }
 
 
@@ -95,9 +102,13 @@ bool CommandsHandler::set_actuator(bool state, uint32_t duration){
 	SetActuator command = SetActuator(response);
 	command.state = state;
 	command.state_duration = duration;
+
+	machineState->getActuator()
+
+
 	if (!command.execute()) {
 //		error_code = ERROR_COMMAND_EXECUTION_FAILED;
-		response->write4BCPUnknowCommand();
+		response->write4BCPCommandExecutionERROR();
 		return false;
 	}
 

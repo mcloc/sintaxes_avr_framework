@@ -37,6 +37,7 @@
 #include <msgpack/MsgPackDataTypes.h>
 #include <MachineState.h>
 #include <MsgPackHandler.h>
+#include <commands/CommandBase.h>
 #include <stdlib.h>
 //TODO: sintax-framework namespace
 //namespace sintax-iot-framework{
@@ -84,7 +85,7 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, CommandsHandler *_commands
  * in sintaxes-framework-defines.h
  */
 bool MsgPackHandler::init(Stream *_stream, int size,
-		MachineState *_machine_state) {
+		MachineState **_machine_state) {
 	if (!setStatus(MSGPACK_STATE_BEGIN)) {
 		response->writeError_on_INIT();
 		response_headers_already_sent = true;
@@ -628,6 +629,12 @@ bool MsgPackHandler::processMap() {
 			response->write32bitByte(nested_element->key);
 			response->writeRaw(F("NESTED ELEMENT VALUE_TYPE:"));
 			response->writeByte(nested_element->value_type);
+
+			CommandBase command_base = CommandBase::CommandBase(response, element->key, nested_element->key);
+			CommandBase ** cmd_execute = command_base.getCommandObj();
+			if((* cmd_execute)->execute()){
+				return false;
+			}
 
 		}
 

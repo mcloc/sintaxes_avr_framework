@@ -54,12 +54,12 @@ void Responses::write4BCPWordNotMappedERROR(){
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
-void Responses::write4BCPCommandExecutionErrorERROR(){
+void Responses::write4BCPCommandExecutionERROR(){
 	if(response_json_initiated)
 		client->print(FSH(json_module_comma_separator));
 	else
 		response_json_initiated = true;
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_COMMAND_EXECUTION_FAILED,  ERROR_COMMAND_EXECUTION_FAILED);
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_COMMAND_EXECUTION_FAILED,  ERROR_COMMAND_EXECUTION_FAILED_STR);
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
@@ -100,6 +100,16 @@ void Responses::writeMsgPackUnknowError(){
 }
 
 void Responses::writeMsgPackUnimplemented(uint8_t _byte){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error_msgpack_unimplemented), ERROR_MSGPACK_UNIMPLEMENTED, _byte);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
+
+void Responses::writeMsgPack4BCPMethodUnimplemented(uint32_t _byte){
 	if(response_json_initiated)
 		client->print(FSH(json_module_comma_separator));
 	else

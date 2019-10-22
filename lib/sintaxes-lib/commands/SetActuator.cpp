@@ -7,8 +7,9 @@
 
 #include <commands/SetActuator.h>
 
-SetActuator::SetActuator(Responses *_reponse) {
+SetActuator::SetActuator(Responses *_reponse, uint32_t _device_key) {
 	response = _reponse;
+	device_key = _device_key;
 }
 
 bool SetActuator::execute(){

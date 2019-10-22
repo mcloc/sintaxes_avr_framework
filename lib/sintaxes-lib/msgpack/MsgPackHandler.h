@@ -19,7 +19,7 @@ class MsgPackHandler {
 public:
 	MsgPackHandler();
 	MsgPackHandler(Responses *_response, CommandsHandler *commands, SintaxesLib *sintax_lib);
-	bool init(Stream * _stream, int size, MachineState * machine_state);
+	bool init(Stream * _stream, int size, MachineState ** machine_state);
 	bool processStream();
 
 private:
@@ -27,7 +27,7 @@ private:
 	Responses *response;
 	CommandsHandler *commands;
 	SintaxesLib *sintaxesLib;
-	MachineState *machine_state;
+	MachineState **machine_state;
 
 	uint8_t status;
 	uint8_t prev_status;

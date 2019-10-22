@@ -26,7 +26,7 @@ class Responses{
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
         void write4BCPWordNotMappedERROR();
-        void write4BCPCommandExecutionErrorERROR();
+        void write4BCPCommandExecutionERROR();
         void write4BCPCommandArgsMissing();
         void write4BCPUnknowCommand();
         void writeErrorMsgPack4BCPElementHasNoKey(uint8_t byte);
@@ -42,6 +42,7 @@ class Responses{
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
         void writeMsgPackUnimplemented(uint8_t _byte);
+        void writeMsgPack4BCPMethodUnimplemented(uint32_t _byte);
         void writeMsgPackUnknownType(uint8_t type);
         void writeMsgPackProcessingFlowError();
         void writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev);
