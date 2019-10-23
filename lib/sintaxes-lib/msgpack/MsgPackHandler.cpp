@@ -53,7 +53,7 @@ MSGPACK_STATE_COMMAND_SET,
 MSGPACK_STATE_COMMAND_SETTING_ARGS,
 MSGPACK_STATE_COMMAND_ARGS_READY,
 MSGPACK_STATE_COMMAND_ASSEMBLY,
-MSGPACK_STATE_COMMAND_EXECUTED,
+MSGPACK_STATE_COMMAND_EXECUTING,
 MSGPACK_STATE_COMMAND_FINISHED };
 
 static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE] PROGMEM
@@ -62,7 +62,7 @@ MSGPACK_STATE_IDLE,
 MSGPACK_STATE_BEGIN,
 MSGPACK_STATE_COMMAND_SET,
 MSGPACK_STATE_COMMAND_ASSEMBLY,
-MSGPACK_STATE_COMMAND_EXECUTED,
+MSGPACK_STATE_COMMAND_EXECUTING,
 MSGPACK_STATE_COMMAND_FINISHED };
 
 /**
@@ -177,7 +177,7 @@ bool MsgPackHandler::processStream() {
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-		} else if(status == MSGPACK_STATE_COMMAND_ARGS_READY) {
+		} else if(_byte == '\0' || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
 			if (!processMap()) {
 				response->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
@@ -209,7 +209,7 @@ bool MsgPackHandler::processStream() {
 //			response->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
 //			return false;
 //		}
-		if (status == MSGPACK_STATE_COMMAND_EXECUTED) {
+		if (status == MSGPACK_STATE_COMMAND_EXECUTING) {
 			if (buffer_bytes_remaining > 0) {
 				error_code =
 				ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
@@ -589,7 +589,8 @@ bool MsgPackHandler::processMap() {
 
 	//check both MSGPACK4BCPProcessFlow with arguments without arguments
 	if (status != MSGPACK_STATE_COMMAND_ARGS_READY
-			&& status != MSGPACK_STATE_COMMAND_SET) {
+			&& status != MSGPACK_STATE_COMMAND_SET
+			&& status != MSGPACK_STATE_COMMAND_ASSEMBLY) {
 		//TODO:
 		error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
 		response->writeMsgPackProcessingFlowError(status, next_status,
@@ -609,83 +610,24 @@ bool MsgPackHandler::processMap() {
 
 
 	response->writeRaw(F("BYTES REMAINING:"));
-	response->writeByte(buffer_bytes_remaining);
+	response->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
 
 //	commands_handler->assembleCommand();
 
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
+
+	//process all devices for this command;
 	commands_handler->assembleCommand();
-	commands_handler->assembleCommand(_4BCPContainer::map4BCP.elements);
-	commands_handler->execute();
+	commands_handler->assembleCommand(_4BCPContainer::map4BCP.elements, _4BCPContainer::map4BCP.size);
+	if (!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
+		return false;
 
+	commands_handler->execute(); // execute one by one in a loop
 
-
-
-
-
-
-
-
-
-
-
-
-
-//	for(uint8_t i = 0; i < _4BCPContainer::map4BCP.size;i++){
-//		_4BCPMapElement *element[] = _4BCPContainer::map4BCP.elements[i];
-//
-//
-////		response->writeRaw(F("DEVICE ELEMENT KEY:"));
-////		response->write32bitByte(element->key);
-////		response->writeRaw(F("TOTAL DEVICE NESTED ELEMENTs:"));
-////		response->write32bitByte(element->total_nested_elements);
-//
-//
-//
-//		commands_handler->execute();
-//
-//
-//
-////		for(uint8_t j = 0; j < element->total_nested_elements; j++){
-////			_4BCPMapElement *nested_element = _4BCPContainer::map4BCP.elements[i]->nested_elements[j];
-////			response->writeRaw(F("ARGUMENT NESTED ELEMENT KEY:"));
-////			response->write32bitByte(nested_element->key);
-////			response->writeRaw(F("NESTED ELEMENT VALUE_TYPE:"));
-////			response->writeByte(nested_element->value_type);
-////
-////
-////
-//////			comm(response, machine_state, element->key, nested_element->key);
-//////			if(command_base.execute()){
-//////				return false;
-//////			}
-////
-////		}
-//
-//		response->writeRaw(F("----------------------------------------------------------------"));
-//		//nested elements
-////		if(isMap(element.value_type)){
-////			for(uint8_t j = 0; j < element.total_nested_elements; j++){
-////				_4BCPMapElement *nested_element = element.nested_elements[j];
-//////				response->writeRaw(F("nested_element key:"));
-//////				response->write32bitByte(nested_element->key);
-//////				response->writeRaw(F("element type:"));
-//////				response->writeByte(nested_element->value_type);
-//////				response->writeRaw(F("total nested elements:"));
-//////				response->writeByte(nested_element->total_nested_elements);
-////			}
-//////			_4BCPMapElement nested_element = element.;
-////		} else {
-//////			response->writeRaw(F("element key:"));
-//////			response->write32bitByte(element.key);
-//////			response->writeRaw(F("element type:"));
-//////			response->writeByte(element.value_type);
-//////			response->writeRaw(F("total nested elements:"));
-//////			response->writeByte(element.total_nested_elements);
-////		}
-//	}
+	if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
+		return false;
 
 	return true;
 }
@@ -1311,6 +1253,13 @@ uint8_t MsgPackHandler::actualBufferByte() {
 
 uint8_t MsgPackHandler::next() {
 	buffer_bytes_remaining--;
+	if(buffer_bytes_remaining < 0) {
+		buffer_bytes_remaining = 0;
+		response->writeRaw(F("There is no bytes left on buffer to processs."));
+		return '\0';;
+	}
+
+
 	//FIXME: last_byte has no function
 	last_byte = LocalBuffers::client_request_buffer[buffer_position];
 	buffer_position++;

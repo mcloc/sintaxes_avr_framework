@@ -21,8 +21,7 @@ public:
 	bool setCommandObj();
 	virtual bool execute();
 	virtual bool checkArguments();
-	virtual ~CommandBase();
-
+	virtual ~CommandBase()=0;
 	uint32_t command;
 	Responses *response;
 	MachineState **machine_state;

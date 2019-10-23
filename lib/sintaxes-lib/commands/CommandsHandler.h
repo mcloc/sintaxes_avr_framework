@@ -14,7 +14,7 @@
 
 typedef struct CommandStruct {
 	uint32_t command;
-	_4BCPMapElement *devices_element_list[MAX_MSGPACK_COMMAND_LOOP];
+	_4BCPMapElement *devices_element_list[MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)];
 	uint8_t total_devices_executed = 0; // mapSize
 } CommandStruct;
 
@@ -42,7 +42,7 @@ public:
 
 	bool assembleCommand();
 	bool assembleCommand(uint32_t command_key);
-	bool assembleCommand(_4BCPMapElement *nested_element_list[MAX_MSGPACK_COMMAND_LOOP]);
+	bool assembleCommand(_4BCPMapElement *nested_element_list[MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)], uint8_t size_devices);
 
 	DHT *dht1;
 	DHT *dht2;

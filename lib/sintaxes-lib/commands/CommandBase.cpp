@@ -25,6 +25,10 @@ CommandBase::CommandBase(Responses *_response, MachineState **_machine_state,  u
 
 }
 
+CommandBase::~CommandBase(){
+
+}
+
 bool CommandBase::setCommandObj(){
 	switch(command){
 	case MODULE_COMMMAND_GET_STATE: {

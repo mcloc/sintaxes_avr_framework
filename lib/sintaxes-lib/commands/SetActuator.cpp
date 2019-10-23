@@ -16,6 +16,18 @@ bool SetActuator::execute(){
 	if(!checkArguments()){
 		return false;
 	}
+
+	response->writeRaw(F("command to exeute:"));
+	response->write32bitByte(command);
+	response->writeRaw(F("command devuce_key::"));
+	response->write32bitByte(device_key);
+	response->writeRaw(F("command state:"));
+	response->writeByte(state);
+	response->writeRaw(F("command duration:"));
+	response->write32bitByte(state_duration);
+	response->writeRaw(F("CALL COMMMAND SET ACTUATOR AND MACHINE STATUS:"));
+
+
 }
 
 bool SetActuator::checkArguments(){
@@ -27,4 +39,8 @@ bool SetActuator::checkArguments(){
 
 
 	return true;
+}
+
+SetActuator::~SetActuator(){
+
 }

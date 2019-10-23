@@ -32,6 +32,7 @@ IPAddress ip(192,168,1,16);
 
 static SintaxesLib sintaxes_lib;
 static LocalBuffers localBuffers;
+static MachineState *machine_state_ref;
 static MachineState **machine_state_ptr;
 static MachineState machine_state = MachineState();
 static Responses response(&localBuffers);
@@ -59,31 +60,31 @@ void setup() {
 	sintaxes_lib._BUZZPIN = BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
 
-	(*machine_state_ptr) = &machine_state;
-
+	machine_state_ref = &machine_state;
+	machine_state_ptr = &machine_state_ref;
 	//Set machine state
-//	machine_state.init();
+	(*machine_state_ptr)->init();
 
 	//Set all actuators MAX_ACTUATORS define in sintaxes-framwork.h
-	if(!(*machine_state_ptr)->addActuator(&dn20_1)){
-		while(true) {
-			sintaxes_lib.buzz(400, 500, 5);
-			delay(2000);
-		}
-	}
-	if(!(*machine_state_ptr)->addActuator(&dn20_2)){
-		while(true) {
-			sintaxes_lib.buzz(400, 500, 5);
-			delay(2000);
-		}
-	}
-
-	if(!(*machine_state_ptr)->addActuator(&dn20_3)){
-		while(true) {
-			sintaxes_lib.buzz(400, 500, 5);
-			delay(2000);
-		}
-	}
+//	if(!(*machine_state_ptr)->addActuator(&dn20_1)){
+//		while(true) {
+//			sintaxes_lib.buzz(400, 500, 5);
+//			delay(2000);
+//		}
+//	}
+//	if(!(*machine_state_ptr)->addActuator(&dn20_2)){
+//		while(true) {
+//			sintaxes_lib.buzz(400, 500, 5);
+//			delay(2000);
+//		}
+//	}
+//
+//	if(!(*machine_state_ptr)->addActuator(&dn20_3)){
+//		while(true) {
+//			sintaxes_lib.buzz(400, 500, 5);
+//			delay(2000);
+//		}
+//	}
 
 	//Set all commands devices objects that will be need to execute commands
 	//like Reading DHT, and other Arduino Objects
@@ -101,7 +102,7 @@ void setup() {
 
 	Ethernet.begin(mac,ip);
 
-
+//
 	server.begin();
 	sintaxes_lib.buzz( 5000, 300, 4);
 //	sintaxes_lib.blink(BOARD_LED, 200, 4);
