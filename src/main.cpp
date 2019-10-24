@@ -23,30 +23,32 @@
 
 
 // **** ETHERNET SETTING ****
-EthernetServer server = EthernetServer(LISTENPORT);
+static EthernetServer server = EthernetServer(LISTENPORT);
 const uint8_t mac[6] = { MACADDRESS };
 
 //DEBUG DHCPH is commented for debug proposes uncomment it for production
 IPAddress ip(192,168,1,16);
 
 
-static SintaxesLib sintaxes_lib;
+static  SintaxesLib sintaxes_lib;
 static LocalBuffers localBuffers;
-static MachineState *machine_state_ref;
-static MachineState **machine_state_ptr;
-static MachineState machine_state = MachineState();
-static Responses response(&localBuffers);
-static CommandsHandler commands(&localBuffers, &response);
-static MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
-static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
-static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
-static _4BCPContainer container_4BCP;
+static volatile MachineState machine_state = MachineState();
+static  Responses response(&localBuffers);
+static volatile CommandsHandler commands(&localBuffers, &response);
+static volatile MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
+static volatile DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
+static volatile DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
+static volatile _4BCPContainer container_4BCP;
 
 
 //INITIALIZATION OF DEVICES
-static ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
-static ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
-static ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
+//static ActuatorBase *dn20_1 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
+//static ActuatorBase *dn20_2 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
+//static ActuatorBase *dn20_3 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
+
+static volatile ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
+static volatile ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
+static volatile ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
 
 
 
@@ -60,13 +62,13 @@ void setup() {
 	sintaxes_lib._BUZZPIN = BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
 
-	machine_state_ref = &machine_state;
-	machine_state_ptr = &machine_state_ref;
+	dn20_1_ptr = &dn20_1;
+
 	//Set machine state
-	machine_state_ref->init();
+	machine_state.init();
 
 	//Set all actuators MAX_ACTUATORS define in sintaxes-framwork.h
-	if(!machine_state_ref->addActuator(&dn20_1)){
+	if(!machine_state.addActuator(&dn20_1_ptr)){
 		while(true) {
 			sintaxes_lib.buzz(400, 500, 5);
 			delay(2000);
@@ -91,7 +93,7 @@ void setup() {
 	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
 	commands.setDHT2(&dht2, DHT2PIN, DHTTYPE);
 
-	commands.setMachineState(machine_state_ref);
+	commands.setMachineState(&machine_state);
 
 	sintaxes_lib.blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying
@@ -128,7 +130,7 @@ void loop() {
 
 			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
-			msgpck.init((Stream *) &client, size, machine_state_ptr);
+			msgpck.init((Stream *) &client, size, &machine_state);
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpck.processStream()){
 				//TODO:save the new state on SD Card and log executions, and a break;

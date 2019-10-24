@@ -7,12 +7,15 @@
 
 #include <commands/SetActuator.h>
 
-SetActuator::SetActuator(Responses *_response, uint32_t _device_key, MachineState * _machine_state) {
+SetActuator::SetActuator(Responses *_response, uint32_t _device_key, MachineState ** _machine_state) {
 	response = _response;
 	device_key = _device_key;
 	machine_state = _machine_state;
 	state = '\0';
 	state_duration = '\0';
+
+	response->writeRaw(F("SetActuator()_constructor device_key"));
+	response->write32bitByte(device_key);
 }
 
 bool SetActuator::execute(){
@@ -20,14 +23,14 @@ bool SetActuator::execute(){
 		return false;
 	}
 
-	for(uint8_t i = 0; i < machine_state->actuator_list_total;i++){
-		ActuatorBase * actuator = machine_state->getActuator(i);
+	for(uint8_t i = 0; i < (*machine_state)->actuator_list_total;i++){
+		ActuatorBase ** actuator = (*machine_state)->getActuator(i);
 
 		response->writeRaw(F("actuator:"));
-		response->write32bitByte(actuator->getUUID());
+		response->write32bitByte((*actuator)->uuid);
 
-		if(actuator->getUUID() == device_key) {
-			actuator->setNewState(state, state_duration );
+		if((*actuator)->uuid == device_key) {
+			(*actuator)->setNewState(state, state_duration );
 			response->writeRaw(F("****************************** R E A L   E X E C U T I O N   V A L U E S *****************************"));
 				response->writeRaw(F("INSIDE SetActuatorExecute.... bring to here the set of real actuator in machine state:"));
 				response->writeRaw(F("command to execute:"));

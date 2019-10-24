@@ -23,19 +23,19 @@ public:
 	bool command_set = false;
 	bool processing_command = false;
 	uint8_t total_execution_of_command = 0;
-	bool addActuator(ActuatorBase *actuator);
+	bool addActuator(ActuatorBase **actuator);
 	uint8_t getActuatorListSize();
 	bool init();
 	void setStateTime();
 	uint32_t getUptime();
-	ActuatorBase * getActuator(uint8_t index);
+	ActuatorBase ** getActuator(uint8_t index);
 	uint8_t actuator_list_total = 0;
 
 
 private:
 	uint8_t actuator_list_index = 0;
 
-	ActuatorBase* actuator_list[];
+	ActuatorBase** actuator_list[];
 	uint32_t state_time;
 
 

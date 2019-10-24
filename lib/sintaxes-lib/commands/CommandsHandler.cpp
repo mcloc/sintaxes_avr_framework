@@ -21,7 +21,7 @@ CommandsHandler::CommandsHandler(LocalBuffers *_localBuffers,
 	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 }
 
-void CommandsHandler::setMachineState(MachineState *_machine_state) {
+void CommandsHandler::setMachineState(MachineState **_machine_state) {
 	machineState = _machine_state;
 }
 
@@ -131,28 +131,45 @@ bool CommandsHandler::set_actuator() {
 		response->writeRaw(F("DEVICE KEY TO SET::"));
 		response->write32bitByte(device_key);
 
-		SetActuator actuator_command = SetActuator(response, device_key, machineState);
-		actuator_command.state =
+		SetActuator *actuator_command  = (SetActuator *)malloc(sizeof(SetActuator));
+		actuator_command = &SetActuator(&(*response), device_key, machineState);
+
+
+		response->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
+		response->write32bitByte(actuator_command->device_key);
+
+
+		//The problem is in machoneState; //FIXME:
+
+		response->writeRaw(F("machineState Actuator"));
+		ActuatorBase **act_ptr;
+//		act_ptr = (*machineState)->actuator_list[0];
+
+		response->write32bitByte((*act_ptr)->uuid);
+		response->writeRaw(F("--------------------------------------------"));
+
+
+		actuator_command->state =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[0]->value->bool_value;
-		actuator_command.state_duration =
+		actuator_command->state_duration =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[1]->value->uint32_value;
 
 		response->writeRaw(F("DEVICE STATE::"));
-		response->writeByte(actuator_command.state);
+		response->writeByte(actuator_command->state);
 		response->writeRaw(F("DEVICE DURATION STATE::"));
-		response->write32bitByte(actuator_command.state_duration);
+		response->write32bitByte(actuator_command->state_duration);
 		response->writeRaw(
 				F("JUST BEFORE SetActuator::EXECUTE()"));
 
 
-		if (!actuator_command.execute()) { // machineState->getActuator(); and set actuator digital real values
+		if (!actuator_command->execute()) { // machineState->getActuator(); and set actuator digital real values
 			//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
 			response->write4BCPCommandExecutionERROR();
 			return false;
 		}
 
-//		delete actuator_command;
-		actuator_command.~SetActuator();
+		delete actuator_command;
+//		actuator_command.~SetActuator();
 
 		command_struct->total_devices_executed++;
 	}

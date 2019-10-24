@@ -35,7 +35,7 @@ public:
 	CommandsHandler();
 	CommandsHandler(LocalBuffers *localBuffers, Responses *_response);
 
-	void setMachineState(MachineState *_machine_state);
+	void setMachineState(MachineState **_machine_state);
 	bool get_data();
 	void initSensors();
 	bool set_actuator();
@@ -59,7 +59,7 @@ private:
 	Responses *response;
 	DHT getDHT1();
 	DHT getDHT2();
-	MachineState *machineState;
+	MachineState **machineState;
 	CommandStruct *command_struct;
 	_4BCPMapElement *args_list[];
 

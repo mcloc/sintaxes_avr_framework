@@ -17,18 +17,16 @@
 class SetActuator : public CommandBase{
 public:
 	SetActuator();
-	SetActuator(Responses *_response, uint32_t device_key, MachineState * _machine_state);
+	SetActuator(Responses *_response, uint32_t device_key, MachineState ** _machine_state);
 	bool execute();
 	bool checkArguments();
 	~SetActuator();
 	bool state;
 	uint32_t state_duration; //in seconds overflow in 231 MAX days approximately
+	uint32_t device_key;
 
 protected:
 	static const uint32_t command = MODULE_COMMMAND_SET_ACTUATOR;
-	uint32_t device_key;
-	Responses *responses;
-	MachineState *machine_state;
 
 
 };

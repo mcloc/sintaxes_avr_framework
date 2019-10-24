@@ -27,8 +27,9 @@ public:
 	uint32_t getStateDuration();
 	bool isActive();
 	bool setNewState(bool state, uint32_t state_duration);
-protected:
 	uint32_t uuid;
+protected:
+
 	uint8_t PIN_NUMBER;
 	bool active = false;
 	uint32_t state_duration; // seconds ~ 255 days to overflow

@@ -85,7 +85,7 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, CommandsHandler *_commands
  * in sintaxes-framework-defines.h
  */
 bool MsgPackHandler::init(Stream *_stream, int size,
-		MachineState **_machine_state) {
+		MachineState *_machine_state) {
 	if (!setStatus(MSGPACK_STATE_BEGIN)) {
 		response->writeError_on_INIT();
 		response_headers_already_sent = true;
