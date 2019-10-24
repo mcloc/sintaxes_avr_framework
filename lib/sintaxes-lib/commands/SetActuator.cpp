@@ -37,8 +37,10 @@ bool SetActuator::execute(){
 }
 
 bool SetActuator::checkArguments(){
-	if(state == '\0'|| state_duration == '\0') {
+	if((state == '\0' && state_duration == '\0') || state_duration == '\0') {
 //		error_code = ERROR_COMMAND_EXECUTION_FAILED;
+		response->writeRaw(F("ERRO AO EXECUTAR DEVICE:"));
+		response->write32bitByte(device_key);
 		response->write4BCPCommandArgsMissing();
 		return false;
 	}
