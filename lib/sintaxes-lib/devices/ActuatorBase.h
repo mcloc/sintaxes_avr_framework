@@ -20,14 +20,16 @@
 
 class ActuatorBase {
 public:
-	ActuatorBase(uint32_t _uuid);
+	ActuatorBase(uint32_t _uuid, uint8_t PIN_NUMBER);
 	const __FlashStringHelper * getName();
 	const __FlashStringHelper * getModel();
-	uint8_t getUUID();
+	uint32_t getUUID();
 	uint32_t getStateDuration();
 	bool isActive();
+	bool setNewState(bool state, uint32_t state_duration);
 protected:
 	uint32_t uuid;
+	uint8_t PIN_NUMBER;
 	bool active = false;
 	uint32_t state_duration; // seconds ~ 255 days to overflow
 	uint32_t last_state_changed;

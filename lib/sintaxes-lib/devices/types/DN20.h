@@ -13,7 +13,7 @@
 
 class DN20 : public ActuatorBase {
 public:
-	DN20(uint32_t uuid) : ActuatorBase(uuid){}
+	DN20(uint32_t uuid, uint8_t PIN) : ActuatorBase(uuid, PIN){}
 
 protected:
 	const char name[] PROGMEM = "Solenoid HydroValve DN20";

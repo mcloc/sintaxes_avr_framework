@@ -16,7 +16,7 @@ CommandBase::CommandBase(){
 
 }
 
-CommandBase::CommandBase(Responses *_response, MachineState **_machine_state,  uint32_t _command, uint32_t _device_key) {
+CommandBase::CommandBase(Responses *_response, MachineState *_machine_state,  uint32_t _command, uint32_t _device_key) {
 	// TODO Auto-generated constructor stub
 	machine_state  = _machine_state;
 	command = _command;
@@ -45,7 +45,7 @@ bool CommandBase::setCommandObj(){
 	}
 	case MODULE_COMMMAND_SET_ACTUATOR: {
 		SetActuator * cmd_ptr = (SetActuator*) malloc(sizeof(SetActuator));
-		cmd_ptr = &SetActuator(response, device_key);
+		cmd_ptr = &SetActuator(response, device_key, machine_state);
 
 		return &cmd_ptr;
 	}

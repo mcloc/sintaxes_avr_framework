@@ -44,9 +44,9 @@ static _4BCPContainer container_4BCP;
 
 
 //INITIALIZATION OF DEVICES
-static ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1);
-static ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2);
-static ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3);
+static ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
+static ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
+static ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
 
 
 
@@ -63,15 +63,15 @@ void setup() {
 	machine_state_ref = &machine_state;
 	machine_state_ptr = &machine_state_ref;
 	//Set machine state
-	(*machine_state_ptr)->init();
+	machine_state_ref->init();
 
 	//Set all actuators MAX_ACTUATORS define in sintaxes-framwork.h
-//	if(!(*machine_state_ptr)->addActuator(&dn20_1)){
-//		while(true) {
-//			sintaxes_lib.buzz(400, 500, 5);
-//			delay(2000);
-//		}
-//	}
+	if(!machine_state_ref->addActuator(&dn20_1)){
+		while(true) {
+			sintaxes_lib.buzz(400, 500, 5);
+			delay(2000);
+		}
+	}
 //	if(!(*machine_state_ptr)->addActuator(&dn20_2)){
 //		while(true) {
 //			sintaxes_lib.buzz(400, 500, 5);
@@ -91,7 +91,7 @@ void setup() {
 	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
 	commands.setDHT2(&dht2, DHT2PIN, DHTTYPE);
 
-	commands.setMachineState(machine_state_ptr);
+	commands.setMachineState(machine_state_ref);
 
 	sintaxes_lib.blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying

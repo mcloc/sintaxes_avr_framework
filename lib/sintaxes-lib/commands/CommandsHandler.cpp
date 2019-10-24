@@ -21,7 +21,7 @@ CommandsHandler::CommandsHandler(LocalBuffers *_localBuffers,
 	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 }
 
-void CommandsHandler::setMachineState(MachineState **_machine_state) {
+void CommandsHandler::setMachineState(MachineState *_machine_state) {
 	machineState = _machine_state;
 }
 
@@ -131,7 +131,7 @@ bool CommandsHandler::set_actuator() {
 		response->writeRaw(F("DEVICE KEY TO SET::"));
 		response->write32bitByte(device_key);
 
-		SetActuator actuator_command = SetActuator(response, device_key);
+		SetActuator actuator_command = SetActuator(response, device_key, machineState);
 		actuator_command.state =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[0]->value->bool_value;
 		actuator_command.state_duration =

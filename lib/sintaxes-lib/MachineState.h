@@ -28,12 +28,13 @@ public:
 	bool init();
 	void setStateTime();
 	uint32_t getUptime();
-	ActuatorBase * getActuator(uint32_t device_key);
-
+	ActuatorBase * getActuator(uint8_t index);
+	uint8_t actuator_list_total = 0;
 
 
 private:
 	uint8_t actuator_list_index = 0;
+
 	ActuatorBase* actuator_list[];
 	uint32_t state_time;
 

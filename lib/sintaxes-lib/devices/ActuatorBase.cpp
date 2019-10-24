@@ -7,13 +7,35 @@
 
 #include <devices/ActuatorBase.h>
 #include <sintaxes-lib.h>
+#include <Arduino.h>
 
-ActuatorBase::ActuatorBase(uint32_t _uuid){
+ActuatorBase::ActuatorBase(uint32_t _uuid, uint8_t _PIN_NUMBER){
 	uuid = _uuid;
+	PIN_NUMBER = _PIN_NUMBER;
+}
+
+bool ActuatorBase::setNewState(bool state, uint32_t _state_duration){
+
+	pinMode(PIN_NUMBER, OUTPUT);
+	switch(state){
+		case true: {
+			digitalWrite(PIN_NUMBER, HIGH);
+			break;
+		}
+		case false: {
+			digitalWrite(PIN_NUMBER, LOW);
+			break;
+		}
+		default: {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
-uint8_t ActuatorBase::getUUID(){
+uint32_t ActuatorBase::getUUID(){
 	return uuid;
 }
 

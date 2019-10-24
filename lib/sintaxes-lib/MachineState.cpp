@@ -25,6 +25,7 @@ void MachineState::setStateTime(){
 	//TODO: millis
 }
 
+
 bool MachineState::addActuator(ActuatorBase *actuator){
 
 	if(actuator_list_index > MAX_ACTUATORS){
@@ -33,8 +34,13 @@ bool MachineState::addActuator(ActuatorBase *actuator){
 
 	actuator_list[actuator_list_index] = actuator;
 	actuator_list_index++;
+	actuator_list_total++;
 
 	return true;
+}
+
+ActuatorBase * MachineState::getActuator(uint8_t index){
+	return actuator_list[index];
 }
 
 uint8_t MachineState::getActuatorListSize(){

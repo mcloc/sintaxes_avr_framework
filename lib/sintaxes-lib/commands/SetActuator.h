@@ -17,7 +17,7 @@
 class SetActuator : public CommandBase{
 public:
 	SetActuator();
-	SetActuator(Responses *_response, uint32_t device_key);
+	SetActuator(Responses *_response, uint32_t device_key, MachineState * _machine_state);
 	bool execute();
 	bool checkArguments();
 	~SetActuator();
@@ -28,6 +28,7 @@ protected:
 	static const uint32_t command = MODULE_COMMMAND_SET_ACTUATOR;
 	uint32_t device_key;
 	Responses *responses;
+	MachineState *machine_state;
 
 
 };
