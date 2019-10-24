@@ -18,32 +18,32 @@ CommandsHandler::CommandsHandler(LocalBuffers *_localBuffers,
 	localBuffers = _localBuffers;
 	response = _response;
 //	machineState = &_machine_state;
-	command_struct = CommandStruct();
+	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 }
 
 void CommandsHandler::setMachineState(MachineState **_machine_state) {
 	machineState = _machine_state;
 }
 
-bool CommandsHandler::assembleCommand() {
-	command_struct.command = command_executing;
-	command_struct.devices_element_list[0] = '\0';
-	command_struct.total_devices_executed = 0;
+bool CommandsHandler::initCommand() {
+	command_struct->command = command_executing;
+	command_struct->devices_element_list[0] = '\0';
+	command_struct->total_devices_executed = 0;
 	response->writeRaw(F("assembleCommand() zeroing the command_struct"));
 }
 
-bool CommandsHandler::assembleCommand(
-		_4BCPMapElement *element_list[MAX_MSGPACK_COMMAND_LOOP * sizeof(int*)], uint8_t size_devices) {
-//	memmove(command_struct.devices_element_list, element_list,MAX_MSGPACK_COMMAND_LOOP);
-	command_struct.total_devices_executed = size_devices;
+bool CommandsHandler::assembleCommand() {
+	command_struct->total_devices_executed = _4BCPContainer::map4BCP.size;
 	response->writeRaw(F("assembleCommand() adding elements to command_struct"));
-	for (uint8_t i = 0; i < command_struct.total_devices_executed; i++) {
-		response->writeRaw(F("KEY ON assembleCommand()"));
-		response->write32bitByte(element_list[i]->key);
+	for (uint8_t i = 0; i < command_struct->total_devices_executed; i++) {
+		command_struct->devices_element_list[i] = _4BCPContainer::map4BCP.elements[i];
+		//TODO this for is jsut to copy element_list to command_struct->devices_element_list  which will be used on execute
+		response->writeRaw(F("KEY AND VALUES ON assembleCommand()"));
+		response->write32bitByte(command_struct->devices_element_list[i]->key);
 		response->write32bitByte(
-				element_list[i]->nested_elements[0]->value->bool_value);
+				command_struct->devices_element_list[i]->nested_elements[0]->value->bool_value);
 		response->write32bitByte(
-				element_list[i]->nested_elements[1]->value->uint32_value);
+				command_struct->devices_element_list[i]->nested_elements[1]->value->uint32_value);
 //		response->write32bitByte(command_struct.devices_element_list[i]->key);
 	}
 }
@@ -120,16 +120,27 @@ bool CommandsHandler::set_actuator() {
 //		return false;
 //	}
 	uint8_t counter = 0;
-	uint8_t device_key;
+	uint32_t device_key;
 
+	response->writeRaw(F("inside EXECUTE:"));
+	response->writeRaw(F("inside EXECUTE command:"));
+	response->write32bitByte(command_executing);
 	while (counter < MAX_MSGPACK_COMMAND_LOOP) {
-		_4BCPMapElement *element = command_struct.devices_element_list[counter];
+		_4BCPMapElement *element = command_struct->devices_element_list[counter];
 		device_key = element->key;
+		response->writeRaw(F("DEVICE KEY TO SET::"));
+		response->write32bitByte(device_key);
+
 		SetActuator command = SetActuator(response, device_key);
 		for (uint8_t i = 0; i < element->total_nested_elements; i++) {
 			command.state = element->value->bool_value;
 			command.state_duration = element->value->uint32_value;
 
+			response->writeRaw(F("DEVICE STATE::"));
+			response->writeByte(command.state);
+			response->writeRaw(F("DEVICE DURATION STATE::"));
+			response->writeByte(command.state_duration);
+			response->writeRaw(F("NOW SET THE REAL DEVICE STATUS IN MACHINE STATUS (there will be actuator 1 2 3 with the digitalWrite() command::"));
 			if (!command.execute()) { // machineState->getActuator(); and set actuator digital real values
 				//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
 				response->write4BCPCommandExecutionERROR();

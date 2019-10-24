@@ -17,7 +17,9 @@ bool SetActuator::execute(){
 		return false;
 	}
 
-	response->writeRaw(F("command to exeute:"));
+	response->writeRaw(F("***************************************"));
+	response->writeRaw(F("INSIDE SetActuatorExecute.... bring to here the set of real actuator in machine state:"));
+	response->writeRaw(F("command to execute:"));
 	response->write32bitByte(command);
 	response->writeRaw(F("command devuce_key::"));
 	response->write32bitByte(device_key);

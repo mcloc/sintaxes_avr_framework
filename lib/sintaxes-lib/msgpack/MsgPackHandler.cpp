@@ -612,19 +612,19 @@ bool MsgPackHandler::processMap() {
 	response->writeRaw(F("BYTES REMAINING:"));
 	response->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
 
-//	commands_handler->assembleCommand();
+	commands_handler->initCommand();
 
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
 
+//	_4BCPMapElement ** elements_ptr = & _4BCPContainer::map4BCP.elements;
 	//process all devices for this command;
 	commands_handler->assembleCommand();
-	commands_handler->assembleCommand(_4BCPContainer::map4BCP.elements, _4BCPContainer::map4BCP.size);
 	if (!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
 		return false;
 
-	commands_handler->execute(); // execute one by one in a loop
+//	commands_handler->execute(); // execute one by one in a loop
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
 		return false;

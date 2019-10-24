@@ -40,9 +40,9 @@ public:
 	void initSensors();
 	bool set_actuator();
 
+	bool initCommand();
+//	bool assembleCommand(uint32_t command_key);
 	bool assembleCommand();
-	bool assembleCommand(uint32_t command_key);
-	bool assembleCommand(_4BCPMapElement *nested_element_list[MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)], uint8_t size_devices);
 
 	DHT *dht1;
 	DHT *dht2;
@@ -60,7 +60,7 @@ private:
 	DHT getDHT1();
 	DHT getDHT2();
 	MachineState **machineState;
-	CommandStruct command_struct;
+	CommandStruct *command_struct;
 	_4BCPMapElement *args_list[];
 
 };
