@@ -624,7 +624,7 @@ bool MsgPackHandler::processMap() {
 	if (!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
 		return false;
 
-//	commands_handler->execute(); // execute one by one in a loop
+	commands_handler->execute(); // execute one by one in a loop
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
 		return false;

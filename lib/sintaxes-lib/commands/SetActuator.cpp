@@ -7,9 +7,11 @@
 
 #include <commands/SetActuator.h>
 
-SetActuator::SetActuator(Responses *_reponse, uint32_t _device_key) {
-	response = _reponse;
+SetActuator::SetActuator(Responses *_response, uint32_t _device_key) {
+	response = _response;
 	device_key = _device_key;
+	state = '\0';
+	state_duration = '\0';
 }
 
 bool SetActuator::execute(){
@@ -17,7 +19,7 @@ bool SetActuator::execute(){
 		return false;
 	}
 
-	response->writeRaw(F("***************************************"));
+	response->writeRaw(F("****************************** R E A L   E X E C U T I O N   V A L U E S *****************************"));
 	response->writeRaw(F("INSIDE SetActuatorExecute.... bring to here the set of real actuator in machine state:"));
 	response->writeRaw(F("command to execute:"));
 	response->write32bitByte(command);
@@ -28,7 +30,9 @@ bool SetActuator::execute(){
 	response->writeRaw(F("command duration:"));
 	response->write32bitByte(state_duration);
 	response->writeRaw(F("CALL COMMMAND SET ACTUATOR AND MACHINE STATUS:"));
+	response->writeRaw(F("******************************************************************************************************"));
 
+	return true;
 
 }
 
@@ -44,5 +48,8 @@ bool SetActuator::checkArguments(){
 }
 
 SetActuator::~SetActuator(){
-
+	response = '\0';
+	device_key = '\0';
+	state = '\0';
+	state_duration = '\0';
 }
