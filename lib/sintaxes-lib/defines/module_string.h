@@ -71,4 +71,5 @@
     const char ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS_STR[] PROGMEM = "4BCP error: No elements found in arguments map";
     const char ERROR_COMMAND_EXECUTION_FAILED_STR[] PROGMEM = "Execution 4BCP Command failed, backing to old state";
     const char ERROR_COMMAND_ARGS_MISSING_STR[] PROGMEM = "Arguments missing for execution command. Backing to old state";
+    const char ERROR_PROCESSING_STREAM_STR[] PROGMEM = "Error on processingStream(). Rollback to previous state";
 #endif

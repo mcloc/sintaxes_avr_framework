@@ -151,6 +151,15 @@ void Responses::writeMsgPackProcessingMap(uint8_t status, uint8_t next, uint8_t 
 	client->print(LocalBuffers::string_cpy_buffer);
 }
 
+void Responses::writeErrorProcessingStream(){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_PROCESSING_STREAM,  ERROR_PROCESSING_STREAM_STR);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
+
 
 void Responses::writeMsgPackUnknownType(uint8_t _byte){
 	if(response_json_initiated)

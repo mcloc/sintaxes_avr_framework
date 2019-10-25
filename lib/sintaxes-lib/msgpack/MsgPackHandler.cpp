@@ -86,24 +86,31 @@ MsgPackHandler::MsgPackHandler() {
  */
 bool MsgPackHandler::init(Stream *_stream, int size) {
 	if (!setStatus(MSGPACK_STATE_BEGIN)) {
-		response->writeError_on_INIT();
+		ApplianceMemmoryHandler::responses->writeError_on_INIT();
 		response_headers_already_sent = true;
 		response_headers_code = 500;
 		return false;
 	}
 
+
+
 	reset_32bit_processing();
+
+
 	buffer_position = 0;
 	stream = _stream;
+
+
+
 	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer,
 			size);
 	buffer_bytes_remaining = buffer_lenght;
 
 //	machine_state = ApplianceMemmoryHandler::machine_state;
 
-	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
-	response->writeModule200DataHeaders();
-	response->initJsonResponse();
+//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
+	ApplianceMemmoryHandler::responses->writeModule200DataHeaders();
+	ApplianceMemmoryHandler::responses->initJsonResponse();
 	response_headers_already_sent = true;
 	response_headers_code = 200;
 
@@ -140,10 +147,11 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 
 bool MsgPackHandler::processStream() {
-	while (buffer_bytes_remaining > 0 || status != MSGPACK_STATE_COMMAND_FINISHED) {
+	while (buffer_bytes_remaining > 0
+			|| status != MSGPACK_STATE_COMMAND_FINISHED) {
 		//Get next byte on buffer
 		uint8_t _byte = next();
-//		response->writeByte(_byte);
+//		 ApplianceMemmoryHandler::responses->writeByte(_byte);
 
 		uint8_t array_size = 0;
 		uint8_t map_elements_size = 0;
@@ -157,7 +165,8 @@ bool MsgPackHandler::processStream() {
 		if (array_size > 0) {
 			//TODO: not implemented
 			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-			response->writeMsgPackUnimplemented(_byte);
+			ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+					_byte);
 			response->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
@@ -172,20 +181,23 @@ bool MsgPackHandler::processStream() {
 		map_elements_size = isMap(_byte);
 		if (map_elements_size > 0) {
 			if (!assembleMap(_byte, map_elements_size)) {
-				response->closeJsonResponse();
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-		} else if(_byte == '\0' || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
-			if (!processMap()) {
-				response->closeJsonResponse();
-				setStatus(MSGPACK_STATE_IDLE);
-				return false;
-			}
+		} else if (_byte == '\0' || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
+			ApplianceMemmoryHandler::responses->writeRaw(F("Asemble ok"));
+			return false;
+//			if (!processMap()) {
+//				response->closeJsonResponse();
+//				setStatus(MSGPACK_STATE_IDLE);
+//				return false;
+//			}
 
 		} else {
 			error_code = ERROR_MAL_FORMED_MSGPCK;
-			response->write4BCPMalFormedRequest(_byte, status);
+			ApplianceMemmoryHandler::responses->write4BCPMalFormedRequest(_byte,
+					status);
 			response->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
@@ -205,14 +217,14 @@ bool MsgPackHandler::processStream() {
 		 * 		for the previous state guarded on SD card
 		 */
 //		if(!processByte(_byte)) {
-//			response->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
+//			 ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
 //			return false;
 //		}
 		if (status == MSGPACK_STATE_COMMAND_EXECUTING) {
 			if (buffer_bytes_remaining > 0) {
 				error_code =
 				ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
-				response->writeErrorMsgPackHasFinishedWithBytes();
+				ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
 				response->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
@@ -240,7 +252,7 @@ bool MsgPackHandler::processStream() {
 		return true;
 	} else {
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
-		response->writeErrorMsgPackHasNotFinishedStatus();
+		ApplianceMemmoryHandler::responses->writeErrorMsgPackHasNotFinishedStatus();
 		response->closeJsonResponse();
 		setStatus(MSGPACK_STATE_IDLE);
 		return false;
@@ -251,7 +263,7 @@ bool MsgPackHandler::processStream() {
 //			uint8_t _byte = next();
 //			if(!_byte == MSGPACK_TRUE){
 //				error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
-//				response->writeErrorMsgPack4BCPExecuteFlagError();
+//				 ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPExecuteFlagError();
 //				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
 //				return false;
 //			}
@@ -324,15 +336,16 @@ bool MsgPackHandler::processStream() {
  *
  */
 bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
-	response->writeRaw(F("Total BCP  elements 4instatiated"));
-	response->write32bitByte(total_element4BCP);
+	ApplianceMemmoryHandler::responses->writeRaw(
+			F("Total BCP  elements 4instatiated"));
+	ApplianceMemmoryHandler::responses->writeByte(total_element4BCP);
 
 	uint8_t counter = 0;
+
+	return false;
 	//While there're tuples to process
 	while (status != MSGPACK_STATE_COMMAND_ARGS_READY
 			|| counter > MAX_MSGPACK_4BCP_ELEMENTS) {
-
-
 
 		/******************************************************************************
 		 * status  MSGPACK_STATE_BEGIN time to set command
@@ -348,24 +361,19 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		}
 		/*****************************************************************************/
 
-
-
-
-
 		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
 		//p.e. device MODULE_ACTUATOR_DN20_1_1 is a element which contains for example 2 nested elements, one for status (ON/OFF)
 		//and other for time period of the state. Each loop in this while can be considered a device that will be set or read.
 //		_4BCPMapElement *element;
-
 		/******************************************************************************
 		 * status  MSGPACK_STATE_COMMAND_SET time to set arguments and it's values
 		 */
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
 		if (status == MSGPACK_STATE_COMMAND_SET) {
 
-			_4BCPMapElement **e =  processStatusNextElement();
-//			response->writeRaw(F("COMMAND_SET element key before putting in MainMAP"));
-//			response->write32bitByte((*e)->key);
+			_4BCPMapElement **e = processStatusNextElement();
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND_SET element key before putting in MainMAP"));
+//			 ApplianceMemmoryHandler::responses->write32bitByte((*e)->key);
 
 			//FIRST DEICE ARGUMENT KEY
 			_4BCPContainer::map4BCP.elements[element4BCP_number] = (*e);
@@ -375,22 +383,14 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 			_4BCPContainer::map4BCP.size++;
 
-//			response->writeRaw(F("COMMAND_SET element in MainMAP"));
-//			response->write32bitByte(_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND_SET element in MainMAP"));
+//			 ApplianceMemmoryHandler::responses->write32bitByte(_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
 
 			// ELEMENT is READY to RECEVICE ARGS status = MSGPACK_STATE_COMMAND_SETTING_ARGS
 			continue;
 			//we can't continue we are setting the element and we must set the element values
 		}
 		/*****************************************************************************/
-
-
-
-
-
-
-
-
 
 		/******************************************************************************
 		 * status  MSGPACK_STATE_COMMAND_SETTING_ARGS must hae while status different commands args ready
@@ -399,7 +399,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		 * must get the key of device (actuator) and dispach to WAITING ARGS to set nested elements
 		 *
 		 */
-		if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS){
+		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS) {
 			_byte = getNextType();
 
 			// Check always if it's a map to allocate the nested elements
@@ -407,17 +407,17 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			if (!(map_size > 0)) {
 				//TODO: error
 				//		error_code = ERROR_MSGPACK_MAL_FORMED_4BCP;
-				//		response->writeErrorMsgPackHasFinishedWithBytes();
+				//		 ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
 				//		response->closeJsonResponse();
 				return false;
 			}
 
-			while(map_size > 0){
+			while (map_size > 0) {
 				_byte = getNextType();
 				if (_byte != MSGPACK_UINT32) {
 					//TODO: error
 					error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
-					response->writeErrorMsgPack4BCPElementKeyProcessing();
+					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPElementKeyProcessing();
 					response->closeJsonResponse();
 					return false;
 				}
@@ -429,8 +429,8 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
 				if (total_element4BCP >= MAX_MSGPACK_4BCP_ELEMENTS) {
 					error_code =
-							ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-					response->write4BCPNestedElementsOutOfBound();
+					ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+					ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
 					return false;
 				}
 
@@ -442,17 +442,18 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				(*nested_element)->key = _32bitword;
 				(*nested_element)->value_type = _byte;
 
-				//			response->writeRaw(F("_32bitword to assign key of device *element "));
-				//			response->write32bitByte(_32bitword);
+				//			 ApplianceMemmoryHandler::responses->writeRaw(F("_32bitword to assign key of device *element "));
+				//			 ApplianceMemmoryHandler::responses->write32bitByte(_32bitword);
 
-//				response->writeRaw(F("key of device *element "));
-//				response->write32bitByte((*nested_element)->key);
+//				 ApplianceMemmoryHandler::responses->writeRaw(F("key of device *element "));
+//				 ApplianceMemmoryHandler::responses->write32bitByte((*nested_element)->key);
 
 				setElementValue(nested_element);
 
 				_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] =
 						(*nested_element);
-				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements = nested_element4BCP+1;
+				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements =
+						nested_element4BCP + 1;
 
 				nested_element4BCP++;
 				map_size--;
@@ -462,13 +463,13 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			element4BCP_number++;
 			nested_element4BCP = 0;
 
-			_4BCPMapElement **e =  processStatusNextElement();
+			_4BCPMapElement **e = processStatusNextElement();
 
-			if((*e)->key == MODULE_COMMMAND_EXECUTE_FLAG){
+			if ((*e)->key == MODULE_COMMMAND_EXECUTE_FLAG) {
 				_byte = getNextType();
-				if(_byte != MSGPACK_TRUE){
+				if (_byte != MSGPACK_TRUE) {
 					error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
-					response->writeErrorMsgPack4BCPExecuteFlagError();
+					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPExecuteFlagError();
 					return false;
 				}
 
@@ -478,7 +479,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 				//DONE ALL DEVICES AND ARGS ARE SET
 				break;
 			}
-
 
 			//OTHERS DEVICE ARGUMENT KEY
 			_4BCPContainer::map4BCP.elements[element4BCP_number] = (*e);
@@ -490,15 +490,11 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 			continue;
 
-
 		}
 		/*****************************************************************************/
 
 //		//DEBUG3
 //		return false;
-
-
-
 
 		counter++;
 
@@ -516,10 +512,12 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 	}
 
-	response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
-	response->writeRaw(F("map4BCP size:"));
-	response->writeByte(_4BCPContainer::map4BCP.size);
-	response->writeRaw(F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
+	ApplianceMemmoryHandler::responses->writeRaw(
+			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
+	ApplianceMemmoryHandler::responses->writeRaw(F("map4BCP size:"));
+	ApplianceMemmoryHandler::responses->writeByte(_4BCPContainer::map4BCP.size);
+	ApplianceMemmoryHandler::responses->writeRaw(
+			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 
 	return true;
 }
@@ -545,7 +543,6 @@ _4BCPMapElement** MsgPackHandler::processStatusNextElement() {
 	if (!assemble_uint32_Byte(_byte))
 		return NULL;
 
-
 	//Check if word if mapped by this module
 	if (checkModulesMap()) {
 
@@ -557,34 +554,32 @@ _4BCPMapElement** MsgPackHandler::processStatusNextElement() {
 		(*element)->key = _32bitword;
 		(*element)->value_type = MSGPACK_UINT32;
 
-
 	} else {
 		//TODO: error
 //		error_code = ERROR_MSGPACK_4BCP_NOT_MAPPED;
-//		response->writeErrorMsgPackHasFinishedWithBytes();
+//		 ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
 //		response->closeJsonResponse();
 		return NULL;
 	}
 
-//	response->writeRaw(F("dentro do processStatusMSG_STATE_COMMAND_SET key"));
-//	response->write32bitByte((*element)->key);
-//	response->writeByte(_32bitword);
-//	response->writeRaw(F("dentro do processStatusMSG_STATE_COMMAND_SET value_type"));
-//	response->writeByte((*element)->value_type);
+//	 ApplianceMemmoryHandler::responses->writeRaw(F("dentro do processStatusMSG_STATE_COMMAND_SET key"));
+//	 ApplianceMemmoryHandler::responses->write32bitByte((*element)->key);
+//	 ApplianceMemmoryHandler::responses->writeByte(_32bitword);
+//	 ApplianceMemmoryHandler::responses->writeRaw(F("dentro do processStatusMSG_STATE_COMMAND_SET value_type"));
+//	 ApplianceMemmoryHandler::responses->writeByte((*element)->value_type);
 
 	return element;
 
 }
 
 bool MsgPackHandler::processMap() {
-	response->writeRaw(F("Total BCP  elements instatiated"));
-	response->write32bitByte(total_element4BCP);
+	ApplianceMemmoryHandler::responses->writeRaw(
+			F("Total BCP  elements instatiated"));
+	ApplianceMemmoryHandler::responses->write32bitByte(total_element4BCP);
 
-	response->writeRaw(F("How many elements in the array"));
-	response->write32bitByte(element4BCP_number);
-
-
-
+	ApplianceMemmoryHandler::responses->writeRaw(
+			F("How many elements in the array"));
+	ApplianceMemmoryHandler::responses->write32bitByte(element4BCP_number);
 
 	//check both MSGPACK4BCPProcessFlow with arguments without arguments
 	if (status != MSGPACK_STATE_COMMAND_ARGS_READY
@@ -592,24 +587,22 @@ bool MsgPackHandler::processMap() {
 			&& status != MSGPACK_STATE_COMMAND_ASSEMBLY) {
 		//TODO:
 		error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
-		response->writeMsgPackProcessingFlowError(status, next_status,
-				prev_status);
+		ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowError(
+				status, next_status, prev_status);
 		return false;
 	}
 	if (!(_4BCPContainer::map4BCP.size > 0)) {
 		//TODO:
 		error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
-		response->writeErrorMsgPack4BCPZeroElementMap();
+		ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPZeroElementMap();
 		return false;
 	}
-
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_ASSEMBLY))
 		return false;
 
-
-	response->writeRaw(F("BYTES REMAINING:"));
-	response->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
+	ApplianceMemmoryHandler::responses->writeRaw(F("BYTES REMAINING:"));
+	ApplianceMemmoryHandler::responses->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
 
 	commands_handler->initCommand();
 
@@ -655,7 +648,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_2->value   = (*element_value);
+			_4BCPContainer::element4BCP_2->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_2;
 //		element4BCP_number++;
@@ -666,7 +659,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_3->value  = (*element_value);
+			_4BCPContainer::element4BCP_3->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_3;
 //		element4BCP_number++;
@@ -677,7 +670,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_4->value  = (*element_value);
+			_4BCPContainer::element4BCP_4->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_4;
 //		element4BCP_number++;
@@ -688,7 +681,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_5->value  = (*element_value);
+			_4BCPContainer::element4BCP_5->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_5;
 //		element4BCP_number++;
@@ -699,7 +692,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_6->value  = (*element_value);
+			_4BCPContainer::element4BCP_6->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_6;
 //		element4BCP_number++;
@@ -710,7 +703,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_7->value  = (*element_value);
+			_4BCPContainer::element4BCP_7->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_7;
 //		element4BCP_number++;
@@ -721,7 +714,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_8->value  = (*element_value);
+			_4BCPContainer::element4BCP_8->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_8;
 //		element4BCP_number++;
@@ -732,7 +725,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_9->value  = (*element_value);
+			_4BCPContainer::element4BCP_9->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_9;
 		break;
@@ -742,7 +735,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_10->value  = (*element_value);
+			_4BCPContainer::element4BCP_10->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_10;
 		break;
@@ -752,7 +745,7 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_11->value  = (*element_value);
+			_4BCPContainer::element4BCP_11->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_11;
 		break;
@@ -762,101 +755,101 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 		elements_remaining--;
 		if (add_value) {
 			element_value = setStructElementValue();
-			_4BCPContainer::element4BCP_12->value  = (*element_value);
+			_4BCPContainer::element4BCP_12->value = (*element_value);
 		}
 		return &_4BCPContainer::element4BCP_12;
 		break;
 	}
 	case 12: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_13->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_13;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_13->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_13;
+		break;
+	}
 	case 13: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_14->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_14;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_14->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_14;
+		break;
+	}
 	case 14: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_15->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_15;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_15->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_15;
+		break;
+	}
 	case 15: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_16->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_16;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_16->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_16;
+		break;
+	}
 	case 16: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_17->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_17;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_17->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_17;
+		break;
+	}
 	case 17: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_18->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_18;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_18->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_18;
+		break;
+	}
 	case 18: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_19->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_19;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_19->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_19;
+		break;
+	}
 	case 19: {
-			total_element4BCP++;
-			elements_remaining--;
-			if (add_value) {
-				element_value = setStructElementValue();
-				_4BCPContainer::element4BCP_20->value  = (*element_value);
-			}
-			return &_4BCPContainer::element4BCP_20;
-			break;
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_20->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_20;
+		break;
+	}
 	default: {
 //		return   _4BCPElement::element4BCP_9;
 		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-		response->write4BCPNestedElementsOutOfBound();
+		ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
 		return NULL;
 	}
 	}
 }
 
-_4BCPElementValue ** MsgPackHandler::setStructElementValue() {
+_4BCPElementValue** MsgPackHandler::setStructElementValue() {
 	switch (total_elementValue4BCP) {
 	case 0: {
 		total_elementValue4BCP++;
@@ -864,10 +857,10 @@ _4BCPElementValue ** MsgPackHandler::setStructElementValue() {
 		break;
 	}
 	case 1: {
-			total_elementValue4BCP++;
-			return &_4BCPContainer::value_2;
-			break;
-		}
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_2;
+		break;
+	}
 	case 2: {
 		total_elementValue4BCP++;
 		return &_4BCPContainer::value_3;
@@ -892,23 +885,20 @@ _4BCPElementValue ** MsgPackHandler::setStructElementValue() {
 	default: {
 //		return   _4BCPElement::element4BCP_9;
 		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-		response->write4BCPNestedElementsOutOfBound();
+		ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
 		return NULL;
 	}
 	}
 	return NULL;
 }
 
-
-
 bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 	//Change to function template each case can be a Template Specialization
 	//https://www.geeksforgeeks.org/template-specialization-c/
 
-//	response->writeRaw(
+//	 ApplianceMemmoryHandler::responses->writeRaw(
 //		F(" value type of nested element inside seElementValue()::"));
-//	response->writeByte((*element)->value_type);
-
+//	 ApplianceMemmoryHandler::responses->writeByte((*element)->value_type);
 
 	switch ((*element)->value_type) {
 	case MSGPACK_NIL: {
@@ -929,54 +919,62 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 	case MSGPACK_BIN8: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_BIN16: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_BIN32: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_EXT8: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_EXT16: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_EXT32: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FLOAT32: {
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FLOAT64: {
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
@@ -1009,7 +1007,8 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 	case MSGPACK_UINT64: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
@@ -1066,42 +1065,48 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 	case MSGPACK_INT64: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FIXEXT1: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FIXEXT2: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FIXEXT4: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FIXEXT8: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_FIXEXT16: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
@@ -1118,42 +1123,48 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 	case MSGPACK_STR16: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_STR32: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_ARRAY16: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_ARRAY32: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_MAP16: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
 	case MSGPACK_MAP32: {
 		//TODO:
 		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
-		response->writeMsgPackUnimplemented((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
 		return false;
 	}
 
@@ -1163,13 +1174,14 @@ bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
 			return true;
 		//TODO:
 		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType((*element)->value_type);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(
+				(*element)->value_type);
 		return false;
 	}
 	}
 
 	error_code = ERROR_MSGPACK_UNKNOW;
-	response->writeMsgPackUnknowError();
+	ApplianceMemmoryHandler::responses->writeMsgPackUnknowError();
 	return false;
 }
 
@@ -1179,7 +1191,7 @@ uint8_t MsgPackHandler::getNextType() {
 	if (!MsgPackDataTypes::checkDataType(_byte)) {
 		//If it's not a recognized type on MsgPack definitions
 		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType(_byte);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(_byte);
 		return false;
 	}
 
@@ -1191,7 +1203,7 @@ bool MsgPackHandler::checkModulesMap() {
 
 	//TODO: if( error )
 //	error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-//	response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+//	 ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 //	return false
 
 	return true;
@@ -1202,7 +1214,7 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 	if (!MsgPackDataTypes::checkDataType(_byte)) {
 		//If it's not a recognized type on MsgPack definitions
 		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType(_byte);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(_byte);
 		return false;
 	}
 
@@ -1213,7 +1225,7 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 	if (_32bitword != MODULE_COMMMAND_FLAG) {
 		//TODO:
 		error_code = ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG;
-		response->writeErrorMsgPack4BCPHasNoCommandFlag();
+		ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPHasNoCommandFlag();
 		return false;
 	}
 
@@ -1223,8 +1235,9 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 
 	commands_handler->command_executing = _32bitword;
 
-	response->writeRaw(F("COMMAND TO EXECUTE:"));
-	response->write32bitByte(commands_handler->command_executing);
+	ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND TO EXECUTE:"));
+	ApplianceMemmoryHandler::responses->write32bitByte(
+			commands_handler->command_executing);
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_SET))
 		return false;
@@ -1235,7 +1248,7 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 bool MsgPackHandler::processArray(uint8_t _word, uint8_t array_size) {
 	//TODO
 //	error_code = ERROR_MSGPACK_NOT_IMPLEMENTED;
-//	response->writeMsgPackUnknownType(_byte);
+//	 ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(_byte);
 	return false;//return false if/but all errors had been took care and reponses has already trasmitted
 }
 
@@ -1252,12 +1265,12 @@ uint8_t MsgPackHandler::actualBufferByte() {
 
 uint8_t MsgPackHandler::next() {
 	buffer_bytes_remaining--;
-	if(buffer_bytes_remaining < 0) {
+	if (buffer_bytes_remaining < 0) {
 		buffer_bytes_remaining = 0;
-		response->writeRaw(F("There is no bytes left on buffer to processs."));
+		ApplianceMemmoryHandler::responses->writeRaw(
+				F("There is no bytes left on buffer to processs."));
 		return '\0';;
 	}
-
 
 	//FIXME: last_byte has no function
 	last_byte = LocalBuffers::client_request_buffer[buffer_position];
@@ -1276,7 +1289,7 @@ bool MsgPackHandler::assemble_uint32_Byte(uint8_t _byte) {
 	//IF NOT MSGPACK_UINT32 (unsigned long) MessaPack 0xce which is 4Bytes CmdProtocol relies
 	if (_byte != MSGPACK_UINT32) {
 		error_code = ERROR_32BIT_PROCESSING;
-		response->writeProcess32bitwordERROR();
+		ApplianceMemmoryHandler::responses->writeProcess32bitwordERROR();
 		return false;
 	}
 
@@ -1307,7 +1320,7 @@ bool MsgPackHandler::assemble_uint32_Byte(uint8_t _byte) {
 					+ _byte;
 			_32bitword_remaining--;
 			status = actual_status;	//return machine status to the previous status
-//			response->write32bitByte(_32bitword); // DEBUG
+//			 ApplianceMemmoryHandler::responses->write32bitByte(_32bitword); // DEBUG
 			break;
 		}
 	}
@@ -1319,7 +1332,7 @@ bool MsgPackHandler::reset_32bit_processing() {
 	//This should never happen, only if your programming made some mistake on the PROGRAM STRUCTURE FLOW
 	if (status == MSGPACK_STATE_WORKING_32BIT) {
 		error_code = ERROR_32BIT_RESETING;
-		response->writeReseting32bitwordERROR();
+		ApplianceMemmoryHandler::responses->writeReseting32bitwordERROR();
 		return false;
 	}
 
@@ -1343,26 +1356,25 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow,
 
 	while (array_size > 0) {
 		actual_process = pgm_read_word(&msgPack4BCPProcessFlow[position]);
-//		response->writeRaw(F("LOOPING STATUS:"));
-//		response->writeByte(actual_process);
-//		response->writeRaw(F("PREV STATUS:"));
-//		response->writeByte(prev_status);
+//		 ApplianceMemmoryHandler::responses->writeRaw(F("LOOPING STATUS:"));
+//		 ApplianceMemmoryHandler::responses->writeByte(actual_process);
+//		 ApplianceMemmoryHandler::responses->writeRaw(F("PREV STATUS:"));
+//		 ApplianceMemmoryHandler::responses->writeByte(prev_status);
 
 		if (status == actual_process) {
 			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position] + 1); //next position
 			//DEBUG
-//			response->writeRaw(F("IDENTIFIED STATUS:"));
-//			response->writeByte(actual_process);
-//			response->writeRaw(F("PREV STATUS:"));
-//			response->writeByte(prev_status);
-//			response->writeRaw(F("NEXT STATUS:"));
-//			response->writeByte(next_status); //DEBUG
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("IDENTIFIED STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(actual_process);
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("PREV STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(prev_status);
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("NEXT STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(next_status); //DEBUG
 
 			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
 			if (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
 					&& prev_status == MSGPACK_STATE_COMMAND_SET)
 				return true;
-
 
 			if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS
 					&& prev_status == MSGPACK_STATE_COMMAND_SETTING_ARGS)
@@ -1376,13 +1388,13 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow,
 //			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
 //				next_status = MSGPACK_STATE_COMMAND_ARGS_READY;
 
-//			response->writeRaw(F("NEXT STATUS:"));
-//			response->writeByte(next_status); //DEBUG
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("NEXT STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(next_status); //DEBUG
 
-			if ((last_process !=  '\0') && last_process != prev_status) {
+			if ((last_process != '\0') && last_process != prev_status) {
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
-				response->writeMsgPackProcessingFlowError(status, next_status,
-						prev_status);
+				ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowError(
+						status, next_status, prev_status);
 				return false;
 			}
 			break;
@@ -1427,9 +1439,9 @@ unsigned int MsgPackHandler::isMap(uint8_t _byte) {
 unsigned long MsgPackHandler::isMapped() {
 	//TODO: map all defines into PROGMEM array or use #ifdef but by value
 //	error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
-//	response->write32bitByte(_32bitword);
-//	response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
-//	response->writeMsgPackError(_32bitword);
+//	 ApplianceMemmoryHandler::responses->write32bitByte(_32bitword);
+//	 ApplianceMemmoryHandler::responses->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
+//	 ApplianceMemmoryHandler::responses->writeMsgPackError(_32bitword);
 	return _32bitword;			//DEBUG t needs to return the type of 4BCP
 }
 
@@ -1446,7 +1458,7 @@ bool MsgPackHandler::setStatus(uint8_t _status) {
 	return true;
 }
 
-void MsgPackHandler::reset(){
+void MsgPackHandler::reset() {
 	status = MSGPACK_STATE_IDLE;
 	prev_status = '\0';
 	next_status = '\0';
@@ -1456,20 +1468,20 @@ void MsgPackHandler::reset(){
 	//TCP request buffer
 	buffer_lenght = 0;
 	buffer_position = 0;
-	buffer_bytes_remaining = 0;;
+	buffer_bytes_remaining = 0;
+	;
 	buffer_processsing_byte = '\0';
 
 	last_byte = '\0'; // may be we'll use to know if we are inseide array, but i think other controll should be done for that
 
 	//32bit word of the 4Bytes Command Protocol
-	_32bitword = '\0';; // this buffer is utilized directly from inside methods, beaware to don't overwrite it
+	_32bitword = '\0';
+	; // this buffer is utilized directly from inside methods, beaware to don't overwrite it
 	_32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong
 	_32bitword_array[4]; //4th index is the NULL terminator
 
-
 	response_headers_code = '\0';
 	response_headers_already_sent = false;
-
 
 	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
 	element4BCP_number = 0;

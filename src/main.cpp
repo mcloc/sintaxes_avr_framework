@@ -91,7 +91,6 @@ void setup() {
 	machine_state.addActuator(&ApplianceMemmoryHandler::dn20_3);
 
 
-
 	sintaxes_lib.blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying
 //	while (Ethernet.begin(mac) == 0) {
@@ -113,14 +112,15 @@ void loop() {
 		sintaxes_lib.buzz( 8000, 200, 1);
 		while ((size = client.available()) > 0) {
 			responses.setClient(&client);
-			if(size > MAX_SIZE_ALLOWED_REQUEST || 1 == 1){
+			if(size > MAX_SIZE_ALLOWED_REQUEST){
 				responses.writeError_MAX_SIZE_REQUEST();
-				sintaxes_lib.buzz( 8000, 200, 1);
+				sintaxes_lib.buzz( 500, 200, 3);
 				break;
 			}
 
 			if(size == 0){
 				responses.writeError_MAL_FORMED_REQUEST();
+				sintaxes_lib.buzz( 500, 200, 3);
 				break;
 			}
 
@@ -128,21 +128,29 @@ void loop() {
 
 			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
-			msgpack_handler.init((Stream *) &client, size);
+			if(!msgpack_handler.init((Stream *) &client, size)){
+				responses.writeError_on_INIT();
+				sintaxes_lib.buzz( 500, 200, 3);
+				//TODO:roolback machine state from SD Card
+				break;
+			}
+
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpack_handler.processStream()){
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
 			} else {
+				responses.writeErrorProcessingStream();
+				sintaxes_lib.buzz( 500, 200, 3);
 				//TODO:roolback machine state from SD Card
 				break;
+
 			}
 //			client.write(LocalBuffers::client_request_buffer, size);
 		}
 
 		client.flush();
 		client.stop();
-		break;
 	}
 
 //	ApplianceMemmoryHandler::newLoop();

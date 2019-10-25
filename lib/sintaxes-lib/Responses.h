@@ -48,6 +48,7 @@ class Responses{
         void writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev);
         void writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, uint8_t prev);
         void writeMsgPackProcessingMap(uint8_t status, uint8_t next, uint8_t prev);
+        void writeErrorProcessingStream();
         void writeErrorMsgPackHasFinishedWithBytes();
 
         void writeSTXError();

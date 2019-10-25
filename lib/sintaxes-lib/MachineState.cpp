@@ -44,7 +44,7 @@ ActuatorBase** MachineState::getActuator(uint8_t index) {
 }
 
 uint8_t MachineState::getActuatorListSize() {
-	return actuator_list_index + 1; // index begins @ 0
+	return actuator_list_index; // index begins @ 0
 }
 
 void MachineState::incRequests() {
