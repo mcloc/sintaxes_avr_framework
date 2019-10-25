@@ -13,9 +13,7 @@ typedef const __FlashStringHelper* FSH;
 #include <memory/ApplianceMemmoryHandler.h>
 
 Responses::Responses(){
-	localBuffers = ApplianceMemmoryHandler::localBuffers;
 	response_json_initiated = false;
-//	response_json_finish_objects[] = {};
 }
 
 void Responses::setClient(EthernetClient *_client){

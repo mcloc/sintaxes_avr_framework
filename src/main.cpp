@@ -23,7 +23,7 @@
 
 
 // **** ETHERNET SETTING ****
-static EthernetServer server = EthernetServer(LISTENPORT);
+EthernetServer server = EthernetServer(LISTENPORT);
 const uint8_t mac[6] = { MACADDRESS };
 
 //DEBUG DHCPH is commented for debug proposes uncomment it for production
@@ -50,20 +50,12 @@ static DN20 dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
 static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
 
 //Just to initializate, we will use the pointer only no the object
-static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
+//static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
 
 
 
 
 void setup() {
-	pinMode(RED_LED, OUTPUT);
-	pinMode(LED_BUILTIN, OUTPUT);
-	pinMode(BUZZPIN, OUTPUT);
-	memory_handler.sintaxes_lib->setLed(RED_LED, LOW);
-	memory_handler.sintaxes_lib->setLed(LED_BUILTIN, LOW);
-	memory_handler.sintaxes_lib->_BUZZPIN= BUZZPIN;
-	memory_handler.sintaxes_lib->buzz(800, 500);
-
 	ApplianceMemmoryHandler::container_4BCP = &container_4BCP;
 	ApplianceMemmoryHandler::localBuffers = &localBuffers;
 	ApplianceMemmoryHandler::machine_state = &machine_state;
@@ -73,21 +65,34 @@ void setup() {
 	ApplianceMemmoryHandler::sintaxes_lib = &sintaxes_lib;
 	ApplianceMemmoryHandler::dht1 = &dht1;
 	ApplianceMemmoryHandler::dht2 = &dht2;
-	ApplianceMemmoryHandler::dn20_1= &dn20_1;
-	ApplianceMemmoryHandler::dn20_2= &dn20_2;
-	ApplianceMemmoryHandler::dn20_3= &dn20_3;
+	ApplianceMemmoryHandler::dn20_1 = &dn20_1;
+	ApplianceMemmoryHandler::dn20_2 = &dn20_2;
+	ApplianceMemmoryHandler::dn20_3 = &dn20_3;
+
+
+	pinMode(RED_LED, OUTPUT);
+	pinMode(LED_BUILTIN, OUTPUT);
+	pinMode(BUZZPIN, OUTPUT);
+//	memory_handler.sintaxes_lib->setLed(RED_LED, LOW);
+//	memory_handler.sintaxes_lib->setLed(LED_BUILTIN, LOW);
+//	memory_handler.sintaxes_lib->_BUZZPIN= BUZZPIN;
+//	memory_handler.sintaxes_lib->buzz(800, 500);
+	sintaxes_lib.setLed(RED_LED, LOW);
+	sintaxes_lib.setLed(LED_BUILTIN, LOW);
+	sintaxes_lib._BUZZPIN= BUZZPIN;
+	sintaxes_lib.buzz(800, 500);
 
 
 
 	//Set machine state
-	memory_handler.machine_state->init();
-	memory_handler.machine_state->addActuator(&ApplianceMemmoryHandler::dn20_1);
-	memory_handler.machine_state->addActuator(&ApplianceMemmoryHandler::dn20_2);
-	memory_handler.machine_state->addActuator(&ApplianceMemmoryHandler::dn20_3);
+	machine_state.init();
+	machine_state.addActuator(&ApplianceMemmoryHandler::dn20_1);
+	machine_state.addActuator(&ApplianceMemmoryHandler::dn20_2);
+	machine_state.addActuator(&ApplianceMemmoryHandler::dn20_3);
 
 
 
-	memory_handler.sintaxes_lib->blink(RED_LED, 200, 3);
+	sintaxes_lib.blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying
 //	while (Ethernet.begin(mac) == 0) {
 //		sintaxes_lib.buzz( 8000, 400, 2);
@@ -98,23 +103,24 @@ void setup() {
 
 //
 	server.begin();
-	memory_handler.sintaxes_lib->buzz( 5000, 300, 4);
+	sintaxes_lib.buzz( 5000, 300, 4);
 //	sintaxes_lib.blink(BOARD_LED, 200, 4);
 }
 
 void loop() {
 	size_t size;
 	while (EthernetClient client = server.available()) {
-		memory_handler.sintaxes_lib->buzz( 8000, 200, 1);
+		sintaxes_lib.buzz( 8000, 200, 1);
 		while ((size = client.available()) > 0) {
-			memory_handler.responses->setClient(&client);
-			if(size > MAX_SIZE_ALLOWED_REQUEST){
-				ApplianceMemmoryHandler::responses->writeError_MAX_SIZE_REQUEST();
+			responses.setClient(&client);
+			if(size > MAX_SIZE_ALLOWED_REQUEST || 1 == 1){
+				responses.writeError_MAX_SIZE_REQUEST();
+				sintaxes_lib.buzz( 8000, 200, 1);
 				break;
 			}
 
 			if(size == 0){
-				ApplianceMemmoryHandler::responses->writeError_MAL_FORMED_REQUEST();
+				responses.writeError_MAL_FORMED_REQUEST();
 				break;
 			}
 
@@ -122,9 +128,9 @@ void loop() {
 
 			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
-			ApplianceMemmoryHandler::msgpack_handler->init((Stream *) &client, size);
+			msgpack_handler.init((Stream *) &client, size);
 			//TODO: save previous state on SD Card, and LOG the request
-			if(ApplianceMemmoryHandler::msgpack_handler->processStream()){
+			if(msgpack_handler.processStream()){
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
 			} else {
@@ -133,10 +139,13 @@ void loop() {
 			}
 //			client.write(LocalBuffers::client_request_buffer, size);
 		}
+
+		client.flush();
 		client.stop();
+		break;
 	}
 
-	ApplianceMemmoryHandler::newLoop();
+//	ApplianceMemmoryHandler::newLoop();
 	delay(2);
 }
 

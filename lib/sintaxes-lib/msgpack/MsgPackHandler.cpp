@@ -70,9 +70,9 @@ MSGPACK_STATE_COMMAND_FINISHED };
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
 MsgPackHandler::MsgPackHandler() {
-	response = ApplianceMemmoryHandler::responses;
-	commands_handler = ApplianceMemmoryHandler::commands_handler;
-	sintaxesLib = ApplianceMemmoryHandler::sintaxes_lib;
+//	response = ApplianceMemmoryHandler::responses;
+//	commands_handler = ApplianceMemmoryHandler::commands_handler;
+//	sintaxesLib = ApplianceMemmoryHandler::sintaxes_lib;
 
 	setStatus(MSGPACK_STATE_IDLE);
 }
@@ -99,7 +99,7 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 			size);
 	buffer_bytes_remaining = buffer_lenght;
 
-	machine_state = ApplianceMemmoryHandler::machine_state;
+//	machine_state = ApplianceMemmoryHandler::machine_state;
 
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();

@@ -67,7 +67,6 @@ class Responses{
 
     
     private:
-        LocalBuffers *localBuffers;
         EthernetClient *client;
         
     	bool response_json_initiated = false;
