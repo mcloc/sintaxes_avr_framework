@@ -18,7 +18,7 @@
 #include <MsgPackHandler.h>
 #include <4BCProtocol/4BCPContainer.h>
 #include <commands/CommandsHandler.h>
-
+#include <memory/ApplianceMemmoryHandler.h>
 
 
 
@@ -30,15 +30,17 @@ const uint8_t mac[6] = { MACADDRESS };
 IPAddress ip(192,168,1,16);
 
 
-static  SintaxesLib sintaxes_lib;
-static LocalBuffers localBuffers;
-static volatile MachineState machine_state = MachineState();
-static  Responses response(&localBuffers);
-static volatile CommandsHandler commands(&localBuffers, &response);
-static volatile MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
-static volatile DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
-static volatile DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
-static volatile _4BCPContainer container_4BCP;
+//static  SintaxesLib sintaxes_lib;
+//static LocalBuffers localBuffers;
+//static  MachineState machine_state = MachineState();
+//static  Responses response(&localBuffers);
+//static  CommandsHandler commands(&localBuffers, &response);
+//static  MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
+//static  DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
+//static  DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
+//static  _4BCPContainer container_4BCP;
+
+static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
 
 
 //INITIALIZATION OF DEVICES
@@ -46,34 +48,27 @@ static volatile _4BCPContainer container_4BCP;
 //static ActuatorBase *dn20_2 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
 //static ActuatorBase *dn20_3 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
 
-static volatile ActuatorBase dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
-static volatile ActuatorBase dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
-static volatile ActuatorBase dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
 
 
 
 
 void setup() {
+
+
 	pinMode(RED_LED, OUTPUT);
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(BUZZPIN, OUTPUT);
-	sintaxes_lib.setLed(RED_LED, LOW);
-	sintaxes_lib.setLed(LED_BUILTIN, LOW);
-	sintaxes_lib._BUZZPIN = BUZZPIN;
-	sintaxes_lib.buzz(800, 500);
+	memory_handler.sintaxes_lib->setLed(RED_LED, LOW);
+	memory_handler.sintaxes_lib->setLed(LED_BUILTIN, LOW);
+	memory_handler.sintaxes_lib->_BUZZPIN= BUZZPIN;
+	memory_handler.sintaxes_lib->buzz(800, 500);
 
-	dn20_1_ptr = &dn20_1;
 
 	//Set machine state
-	machine_state.init();
+	memory_handler.machine_state->init();
 
 	//Set all actuators MAX_ACTUATORS define in sintaxes-framwork.h
-	if(!machine_state.addActuator(&dn20_1_ptr)){
-		while(true) {
-			sintaxes_lib.buzz(400, 500, 5);
-			delay(2000);
-		}
-	}
+
 //	if(!(*machine_state_ptr)->addActuator(&dn20_2)){
 //		while(true) {
 //			sintaxes_lib.buzz(400, 500, 5);
@@ -86,16 +81,9 @@ void setup() {
 //			sintaxes_lib.buzz(400, 500, 5);
 //			delay(2000);
 //		}
-//	}
 
-	//Set all commands devices objects that will be need to execute commands
-	//like Reading DHT, and other Arduino Objects
-	commands.setDHT1(&dht1, DHT1PIN, DHTTYPE);
-	commands.setDHT2(&dht2, DHT2PIN, DHTTYPE);
 
-	commands.setMachineState(&machine_state);
-
-	sintaxes_lib.blink(RED_LED, 200, 3);
+	memory_handler.sintaxes_lib->blink(RED_LED, 200, 3);
 	// DHCP, will buzz for ever trying
 //	while (Ethernet.begin(mac) == 0) {
 //		sintaxes_lib.buzz( 8000, 400, 2);
@@ -106,7 +94,7 @@ void setup() {
 
 //
 	server.begin();
-	sintaxes_lib.buzz( 5000, 300, 4);
+	memory_handler.sintaxes_lib->buzz( 5000, 300, 4);
 //	sintaxes_lib.blink(BOARD_LED, 200, 4);
 }
 
