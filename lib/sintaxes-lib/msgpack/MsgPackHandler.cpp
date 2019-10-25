@@ -341,7 +341,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		if (status == MSGPACK_STATE_BEGIN) {
 			//process the first tuple (COMMAND SET)
 			processStatusMSGPACK_STATE_BEGIN();
-			//Two elements from MAP goes on commandHeader, The COMMAND_FLAG and the COMMAND et si.
+			//Two elements from MAP goes on commandHeader, The COMMAND_FLAG and the COMMAND itself.
 			map_elements_size--;
 			map_elements_size--;
 			continue;
@@ -1444,6 +1444,39 @@ bool MsgPackHandler::setStatus(uint8_t _status) {
 		return false;
 
 	return true;
+}
+
+void MsgPackHandler::reset(){
+	status = MSGPACK_STATE_IDLE;
+	prev_status = '\0';
+	next_status = '\0';
+
+	error_code = '\0';
+
+	//TCP request buffer
+	buffer_lenght = 0;
+	buffer_position = 0;
+	buffer_bytes_remaining = 0;;
+	buffer_processsing_byte = '\0';
+
+	last_byte = '\0'; // may be we'll use to know if we are inseide array, but i think other controll should be done for that
+
+	//32bit word of the 4Bytes Command Protocol
+	_32bitword = '\0';; // this buffer is utilized directly from inside methods, beaware to don't overwrite it
+	_32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong
+	_32bitword_array[4]; //4th index is the NULL terminator
+
+
+	response_headers_code = '\0';
+	response_headers_already_sent = false;
+
+
+	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
+	element4BCP_number = 0;
+	nested_element4BCP = 0;
+	total_element4BCP = 0;
+	total_elementValue4BCP = 0;
+	elements_remaining = MAX_MSGPACK_4BCP_ELEMENTS;
 }
 
 /**

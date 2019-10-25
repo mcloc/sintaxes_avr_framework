@@ -168,7 +168,9 @@ bool CommandsHandler::set_actuator() {
 			return false;
 		}
 
-		delete actuator_command;
+		free(actuator_command); // never free twice the same malloc pointer:  double free. https://www.usna.edu/Users/cs/aviv/classes/ic221/s16/lec/08/lec.html
+								// mess up with the heap allocation map structure
+//		delete actuator_command;
 //		actuator_command.~SetActuator();
 
 		command_struct->total_devices_executed++;

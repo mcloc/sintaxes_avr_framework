@@ -12,23 +12,23 @@ MachineState::MachineState() {
 
 }
 
-uint32_t MachineState::getUptime(){
-	return millis()/1000; //seconds
+uint32_t MachineState::getUptime() {
+	return millis() / 1000; //seconds
 }
 
-bool MachineState::init(){
-	//TODO: set all field and start time
-
+bool MachineState::init() {
+//	for(uint8_t i =0; i< MAX_ACTUATORS;i++){
+//
+//	}
 }
 
-void MachineState::setStateTime(){
+void MachineState::setStateTime() {
 	//TODO: millis
 }
 
+bool MachineState::addActuator(ActuatorBase **actuator) {
 
-bool MachineState::addActuator(ActuatorBase **actuator){
-
-	if(actuator_list_index > MAX_ACTUATORS){
+	if (actuator_list_index > MAX_ACTUATORS) {
 		return false;
 	}
 
@@ -39,10 +39,22 @@ bool MachineState::addActuator(ActuatorBase **actuator){
 	return true;
 }
 
-ActuatorBase ** MachineState::getActuator(uint8_t index){
+ActuatorBase** MachineState::getActuator(uint8_t index) {
 	return &(*actuator_list[index]);
 }
 
-uint8_t MachineState::getActuatorListSize(){
-	return actuator_list_index+1; // index begins @ 0
+uint8_t MachineState::getActuatorListSize() {
+	return actuator_list_index + 1; // index begins @ 0
+}
+
+void MachineState::incRequests() {
+	if((sizeof(total_requests_processed + 1)) > sizeof(uint32_t)){
+		total_requests_processed = 1;
+		return;
+	}
+
+	total_requests_processed++;
+}
+uint32_t MachineState::getTotalRequests() {
+	return total_requests_processed;
 }

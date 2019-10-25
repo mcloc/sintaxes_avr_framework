@@ -9,7 +9,6 @@
 #define BUZZPIN A0
 
 
-
 //FIXME: should be refactored to go outside here
 #define MACADDRESS 0x74, 0x69, 0x69, 0x2D, 0x30, 0x31
 //#define MYIPADDR 192,168,1,6

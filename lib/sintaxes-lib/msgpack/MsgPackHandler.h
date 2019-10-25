@@ -21,6 +21,7 @@ public:
 //	MsgPackHandler(Responses *_response, CommandsHandler *commands, SintaxesLib *sintax_lib);
 	bool init(Stream * _stream, int size);
 	bool processStream();
+	void reset();
 
 private:
 	Stream *stream;

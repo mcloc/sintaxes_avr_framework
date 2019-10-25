@@ -29,12 +29,15 @@ public:
 	void setStateTime();
 	uint32_t getUptime();
 	ActuatorBase ** getActuator(uint8_t index);
+	void incRequests();
+	uint32_t getTotalRequests();
+
 	uint8_t actuator_list_total = 0;
 
 
 private:
 	uint8_t actuator_list_index = 0;
-
+	uint32_t total_requests_processed = 0;
 	ActuatorBase** actuator_list[];
 	uint32_t state_time;
 

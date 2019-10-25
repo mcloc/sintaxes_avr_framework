@@ -39,6 +39,7 @@ public:
 
 	bool request_to_write();
 	void unlock();
+	static void newLoop();
 private:
 	static bool lock;
 

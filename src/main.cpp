@@ -30,6 +30,25 @@ const uint8_t mac[6] = { MACADDRESS };
 IPAddress ip(192,168,1,16);
 
 
+
+
+static _4BCPContainer container_4BCP = _4BCPContainer();
+static LocalBuffers localBuffers = LocalBuffers();
+static MachineState machine_state = MachineState();
+static Responses responses = Responses();
+static CommandsHandler commands_handler = CommandsHandler();
+static MsgPackHandler msgpack_handler = MsgPackHandler();
+static SintaxesLib sintaxes_lib = SintaxesLib();
+
+static DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
+static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
+
+
+//TODO: assemble another 2 leds for the 3 actuators
+static DN20 dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
+static DN20 dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
+static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
+
 //Just to initializate, we will use the pointer only no the object
 static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
 
@@ -45,24 +64,27 @@ void setup() {
 	memory_handler.sintaxes_lib->_BUZZPIN= BUZZPIN;
 	memory_handler.sintaxes_lib->buzz(800, 500);
 
+	ApplianceMemmoryHandler::container_4BCP = &container_4BCP;
+	ApplianceMemmoryHandler::localBuffers = &localBuffers;
+	ApplianceMemmoryHandler::machine_state = &machine_state;
+	ApplianceMemmoryHandler::responses = &responses;
+	ApplianceMemmoryHandler::commands_handler = &commands_handler;
+	ApplianceMemmoryHandler::msgpack_handler = &msgpack_handler;
+	ApplianceMemmoryHandler::sintaxes_lib = &sintaxes_lib;
+	ApplianceMemmoryHandler::dht1 = &dht1;
+	ApplianceMemmoryHandler::dht2 = &dht2;
+	ApplianceMemmoryHandler::dn20_1= &dn20_1;
+	ApplianceMemmoryHandler::dn20_2= &dn20_2;
+	ApplianceMemmoryHandler::dn20_3= &dn20_3;
+
+
 
 	//Set machine state
 	memory_handler.machine_state->init();
+	memory_handler.machine_state->addActuator(&ApplianceMemmoryHandler::dn20_1);
+	memory_handler.machine_state->addActuator(&ApplianceMemmoryHandler::dn20_2);
+	memory_handler.machine_state->addActuator(&ApplianceMemmoryHandler::dn20_3);
 
-	//Set all actuators MAX_ACTUATORS define in sintaxes-framwork.h
-
-//	if(!(*machine_state_ptr)->addActuator(&dn20_2)){
-//		while(true) {
-//			sintaxes_lib.buzz(400, 500, 5);
-//			delay(2000);
-//		}
-//	}
-//
-//	if(!(*machine_state_ptr)->addActuator(&dn20_3)){
-//		while(true) {
-//			sintaxes_lib.buzz(400, 500, 5);
-//			delay(2000);
-//		}
 
 
 	memory_handler.sintaxes_lib->blink(RED_LED, 200, 3);
@@ -87,7 +109,7 @@ void loop() {
 		while ((size = client.available()) > 0) {
 			memory_handler.responses->setClient(&client);
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
-				memory_handler.responses->writeError_MAX_SIZE_REQUEST();
+				ApplianceMemmoryHandler::responses->writeError_MAX_SIZE_REQUEST();
 				break;
 			}
 
@@ -114,10 +136,7 @@ void loop() {
 		client.stop();
 	}
 
-//	LocalBuffers::reset()
-	ApplianceMemmoryHandler::localBuffers->float2char_buffer1[0] = '\0';
-	ApplianceMemmoryHandler::localBuffers->float2char_buffer2[0] = '\0';
-	ApplianceMemmoryHandler::localBuffers->string_cpy_buffer[0] = '\0';
+	ApplianceMemmoryHandler::newLoop();
 	delay(2);
 }
 
