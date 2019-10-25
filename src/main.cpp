@@ -30,31 +30,13 @@ const uint8_t mac[6] = { MACADDRESS };
 IPAddress ip(192,168,1,16);
 
 
-//static  SintaxesLib sintaxes_lib;
-//static LocalBuffers localBuffers;
-//static  MachineState machine_state = MachineState();
-//static  Responses response(&localBuffers);
-//static  CommandsHandler commands(&localBuffers, &response);
-//static  MsgPackHandler msgpck(&response, &commands, &sintaxes_lib);
-//static  DHT dht1 = DHT(DHT1PIN, DHTTYPE, 15);
-//static  DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
-//static  _4BCPContainer container_4BCP;
-
+//Just to initializate, we will use the pointer only no the object
 static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
-
-
-//INITIALIZATION OF DEVICES
-//static ActuatorBase *dn20_1 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
-//static ActuatorBase *dn20_2 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
-//static ActuatorBase *dn20_3 = (ActuatorBase *)malloc(sizeof(ActuatorBase));
-
 
 
 
 
 void setup() {
-
-
 	pinMode(RED_LED, OUTPUT);
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(BUZZPIN, OUTPUT);
@@ -101,16 +83,16 @@ void setup() {
 void loop() {
 	size_t size;
 	while (EthernetClient client = server.available()) {
-		sintaxes_lib.buzz( 8000, 200, 1);
+		memory_handler.sintaxes_lib->buzz( 8000, 200, 1);
 		while ((size = client.available()) > 0) {
-			response.setClient(&client);
+			memory_handler.responses->setClient(&client);
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
-				response.writeError_MAX_SIZE_REQUEST();
+				memory_handler.responses->writeError_MAX_SIZE_REQUEST();
 				break;
 			}
 
 			if(size == 0){
-				response.writeError_MAL_FORMED_REQUEST();
+				ApplianceMemmoryHandler::responses->writeError_MAL_FORMED_REQUEST();
 				break;
 			}
 
@@ -118,9 +100,9 @@ void loop() {
 
 			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
-			msgpck.init((Stream *) &client, size, &machine_state);
+			ApplianceMemmoryHandler::msgpack_handler->init((Stream *) &client, size);
 			//TODO: save previous state on SD Card, and LOG the request
-			if(msgpck.processStream()){
+			if(ApplianceMemmoryHandler::msgpack_handler->processStream()){
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
 			} else {
@@ -133,9 +115,9 @@ void loop() {
 	}
 
 //	LocalBuffers::reset()
-	LocalBuffers::float2char_buffer1[0] = '\0';
-	LocalBuffers::float2char_buffer2[0] = '\0';
-	LocalBuffers::string_cpy_buffer[0] = '\0';
+	ApplianceMemmoryHandler::localBuffers->float2char_buffer1[0] = '\0';
+	ApplianceMemmoryHandler::localBuffers->float2char_buffer2[0] = '\0';
+	ApplianceMemmoryHandler::localBuffers->string_cpy_buffer[0] = '\0';
 	delay(2);
 }
 

@@ -33,10 +33,14 @@ public:
 	static  DHT *dht1;
 	static  DHT *dht2;
 
-
 	static ActuatorBase *dn20_1;
 	static ActuatorBase *dn20_2;
 	static ActuatorBase *dn20_3;
+
+	bool request_to_write();
+	void unlock();
+private:
+	static bool lock;
 
 
 };

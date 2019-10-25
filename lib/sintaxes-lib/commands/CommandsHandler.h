@@ -10,7 +10,9 @@
 #include <MachineState.h>
 #include <4BCProtocol/4BCPContainer.h>
 
+
 //class Commands;
+
 
 typedef struct CommandStruct {
 	uint32_t command;
@@ -33,7 +35,7 @@ public:
 	static uint32_t command_executing;
 
 	CommandsHandler();
-	CommandsHandler(LocalBuffers *localBuffers, Responses *_response);
+//	CommandsHandler(LocalBuffers *localBuffers, Responses *_response);
 
 	void setMachineState(MachineState **_machine_state);
 	bool get_data();

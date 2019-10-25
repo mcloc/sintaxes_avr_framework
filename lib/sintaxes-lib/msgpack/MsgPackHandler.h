@@ -18,8 +18,8 @@ class MsgPackHandler;
 class MsgPackHandler {
 public:
 	MsgPackHandler();
-	MsgPackHandler(Responses *_response, CommandsHandler *commands, SintaxesLib *sintax_lib);
-	bool init(Stream * _stream, int size, MachineState * machine_state);
+//	MsgPackHandler(Responses *_response, CommandsHandler *commands, SintaxesLib *sintax_lib);
+	bool init(Stream * _stream, int size);
 	bool processStream();
 
 private:

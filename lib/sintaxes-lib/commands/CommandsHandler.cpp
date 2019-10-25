@@ -7,17 +7,17 @@
 #include <Responses.h>
 #include <commands/SetActuator.h>
 #include <defines/sintaxes-framework-defines.h>
-
+#include <memory/ApplianceMemmoryHandler.h>
 /**
  * command to execute / in execution
  */
 uint32_t CommandsHandler::command_executing;
 
-CommandsHandler::CommandsHandler(LocalBuffers *_localBuffers,
-		Responses *_response) {
-	localBuffers = _localBuffers;
-	response = _response;
-//	machineState = &_machine_state;
+
+CommandsHandler::CommandsHandler() {
+	localBuffers = ApplianceMemmoryHandler::localBuffers;
+	response = ApplianceMemmoryHandler::responses;
+	machineState = &ApplianceMemmoryHandler::machine_state;
 	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 }
 

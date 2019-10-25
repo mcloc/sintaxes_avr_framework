@@ -10,7 +10,7 @@ class Responses;
 
 class Responses{
     public:
-        Responses(LocalBuffers *_local_buffers);
+        Responses();
         void setClient(EthernetClient *client);
         void writeModuleDataResponse();
         void writeModule200DataHeaders();

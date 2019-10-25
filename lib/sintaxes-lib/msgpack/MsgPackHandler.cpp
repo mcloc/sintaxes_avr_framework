@@ -27,6 +27,7 @@
  *
  */
 
+#include <memory/ApplianceMemmoryHandler.h>
 #include <4BCProtocol/4BCPContainer.h>
 #include <Arduino.h>
 #include <defines/commands_map.h>
@@ -68,11 +69,10 @@ MSGPACK_STATE_COMMAND_FINISHED };
 /**
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
-MsgPackHandler::MsgPackHandler(Responses *_responses, CommandsHandler *_commands,
-		SintaxesLib *_sintaxes_lib) {
-	response = _responses;
-	commands_handler = _commands;
-	sintaxesLib = _sintaxes_lib;
+MsgPackHandler::MsgPackHandler() {
+	response = ApplianceMemmoryHandler::responses;
+	commands_handler = ApplianceMemmoryHandler::commands_handler;
+	sintaxesLib = ApplianceMemmoryHandler::sintaxes_lib;
 
 	setStatus(MSGPACK_STATE_IDLE);
 }
@@ -84,8 +84,7 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, CommandsHandler *_commands
  * if using bigger RAM you can increase the size of the request buffer
  * in sintaxes-framework-defines.h
  */
-bool MsgPackHandler::init(Stream *_stream, int size,
-		MachineState *_machine_state) {
+bool MsgPackHandler::init(Stream *_stream, int size) {
 	if (!setStatus(MSGPACK_STATE_BEGIN)) {
 		response->writeError_on_INIT();
 		response_headers_already_sent = true;
@@ -100,7 +99,7 @@ bool MsgPackHandler::init(Stream *_stream, int size,
 			size);
 	buffer_bytes_remaining = buffer_lenght;
 
-	machine_state = _machine_state;
+	machine_state = ApplianceMemmoryHandler::machine_state;
 
 	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
 	response->writeModule200DataHeaders();
