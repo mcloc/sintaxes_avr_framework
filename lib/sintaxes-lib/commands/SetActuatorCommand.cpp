@@ -5,10 +5,10 @@
  *      Author: mcloc
  */
 
-#include <commands/SetActuator.h>
+#include <commands/SetActuatorCommand.h>
 #include <memory/ApplianceMemmoryHandler.h>
 
-SetActuator::SetActuator(uint32_t _device_key) {
+SetActuatorCommand::SetActuatorCommand(uint32_t _device_key) {
 	device_key = _device_key;
 	state = '\0';
 	state_duration = '\0';
@@ -17,7 +17,7 @@ SetActuator::SetActuator(uint32_t _device_key) {
 	ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 }
 
-bool SetActuator::execute(){
+bool SetActuatorCommand::execute(){
 	if(!checkArguments()){
 		return false;
 	}
@@ -53,7 +53,7 @@ bool SetActuator::execute(){
 
 }
 
-bool SetActuator::checkArguments(){
+bool SetActuatorCommand::checkArguments(){
 	if((state == '\0' && state_duration == '\0') || state_duration == '\0') {
 //		error_code = ERROR_COMMAND_EXECUTION_FAILED;
 		ApplianceMemmoryHandler::responses->writeRaw(F("ERRO AO EXECUTAR DEVICE:"));
@@ -66,7 +66,7 @@ bool SetActuator::checkArguments(){
 	return true;
 }
 
-SetActuator::~SetActuator(){
+SetActuatorCommand::~SetActuatorCommand(){
 	device_key = '\0';
 	state = '\0';
 	state_duration = '\0';

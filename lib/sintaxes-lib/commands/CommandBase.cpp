@@ -7,9 +7,9 @@
 
 #include <memory/ApplianceMemmoryHandler.h>
 #include <commands/CommandBase.h>
+#include <commands/SetActuatorCommand.h>
 #include <defines/commands_map.h>
 #include <MachineState.h>
-#include <commands/SetActuator.h>
 #include <Responses.h>
 
 

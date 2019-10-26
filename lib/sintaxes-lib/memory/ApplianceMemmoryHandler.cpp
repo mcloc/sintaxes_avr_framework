@@ -16,6 +16,8 @@
 #include <Responses.h>
 #include <MachineState.h>
 #include <LocalBuffers.h>
+//#include <memory>
+#include <memory>
 
 //THIS IS SUPPOUSED TO BE ALLOCATED IN THE ROM
 SintaxesLib *ApplianceMemmoryHandler::sintaxes_lib = (SintaxesLib*) malloc(
@@ -45,7 +47,24 @@ ActuatorBase *ApplianceMemmoryHandler::dn20_2 = (ActuatorBase*) malloc(
 ActuatorBase *ApplianceMemmoryHandler::dn20_3 = (ActuatorBase*) malloc(
 		sizeof(ActuatorBase*));
 
+
+////Command Classe::
+SetActuatorCommand *ApplianceMemmoryHandler::command_set_actuator ;
+
+
+
+
 bool ApplianceMemmoryHandler::lock;
+
+void ApplianceMemmoryHandler::allocSetActuatorCommand(uint8_t device_key) {
+
+
+	if(ApplianceMemmoryHandler::command_set_actuator != '\0')
+		delete ApplianceMemmoryHandler::command_set_actuator;
+
+	ApplianceMemmoryHandler::command_set_actuator = new SetActuatorCommand(device_key);
+
+}
 
 ApplianceMemmoryHandler::ApplianceMemmoryHandler() {
 	lock = false;
@@ -67,6 +86,7 @@ static void ApplianceMemmoryHandler::newLoop() {
 	ApplianceMemmoryHandler::commands_handler->reset();
 	ApplianceMemmoryHandler::msgpack_handler->reset();
 
+//	ApplianceMemmoryHandler::machine_state->clean();
 	lock = false;
 }
 

@@ -11,6 +11,7 @@
 #include <Arduino.h>
 #include <devices/SintaxesSensors.h>
 #include <devices/types/DN20.h>
+#include <sintaxes-framework-defines.h>
 
 class MachineState {
 public:
@@ -31,6 +32,7 @@ public:
 	ActuatorBase ** getActuator(uint8_t index);
 	void incRequests();
 	uint32_t getTotalRequests();
+	void clean();
 
 	uint8_t actuator_list_total = 0;
 
@@ -38,7 +40,7 @@ public:
 private:
 	uint8_t actuator_list_index = 0;
 	uint32_t total_requests_processed = 0;
-	ActuatorBase** actuator_list[];
+	ActuatorBase** actuator_list[MAX_ACTUATORS];
 	uint32_t state_time;
 
 

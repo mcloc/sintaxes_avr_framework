@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <commands/CommandsHandler.h>
+#include <commands/SetActuatorCommand.h>
 #include <defines/commands_map.h>
 #include <defines/devices.h>
 #include <defines/module_string.h>
 #include <LocalBuffers.h>
 #include <Responses.h>
-#include <commands/SetActuator.h>
 #include <defines/sintaxes-framework-defines.h>
 #include <memory/ApplianceMemmoryHandler.h>
 /**
@@ -140,12 +140,11 @@ bool CommandsHandler::set_actuator() {
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE KEY TO SET::"));
 		ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 
-		SetActuator *actuator_command  = (SetActuator *)malloc(sizeof(SetActuator));
-		actuator_command = &SetActuator(device_key);
+		ApplianceMemmoryHandler::command_set_actuator = &SetActuatorCommand(device_key);
 
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
-		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->device_key);
+		ApplianceMemmoryHandler::responses->write32bitByte(ApplianceMemmoryHandler::command_set_actuator->device_key);
 
 
 		//The problem is in machoneState; //FIXME:
@@ -158,29 +157,31 @@ bool CommandsHandler::set_actuator() {
 		ApplianceMemmoryHandler::responses->writeRaw(F("--------------------------------------------"));
 
 
-		actuator_command->state =
+		ApplianceMemmoryHandler::command_set_actuator->state =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[0]->value->bool_value;
-		actuator_command->state_duration =
+		ApplianceMemmoryHandler::command_set_actuator->state_duration =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[1]->value->uint32_value;
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE STATE::"));
-		ApplianceMemmoryHandler::responses->writeByte(actuator_command->state);
+		ApplianceMemmoryHandler::responses->writeByte(ApplianceMemmoryHandler::command_set_actuator->state);
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE DURATION STATE::"));
-		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->state_duration);
+		ApplianceMemmoryHandler::responses->write32bitByte(ApplianceMemmoryHandler::command_set_actuator->state_duration);
 		ApplianceMemmoryHandler::responses->writeRaw(
 				F("JUST BEFORE SetActuator::EXECUTE()"));
 
 
-		if (!actuator_command->execute()) { // machineState->getActuator(); and set actuator digital real values
+		if (!ApplianceMemmoryHandler::command_set_actuator->execute()) { // machineState->getActuator(); and set actuator digital real values
 			//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
 			ApplianceMemmoryHandler::responses->write4BCPCommandExecutionERROR();
 			return false;
 		}
 
-		free(actuator_command); // never free twice the same malloc pointer:  double free. https://www.usna.edu/Users/cs/aviv/classes/ic221/s16/lec/08/lec.html
+		//no
+//		free(ApplianceMemmoryHandler::command_set_actuator);
+
 								// mess up with the heap allocation map structure
 //		delete actuator_command;
-//		actuator_command.~SetActuator();
+//		ApplianceMemmoryHandler::command_set_actuator->~SetActuator();
 
 		command_struct->total_devices_executed++;
 	}

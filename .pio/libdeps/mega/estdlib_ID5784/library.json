@@ -1,0 +1,40 @@
+{
+    "name": "estdlib",
+    "keywords": "std, STL",
+    "description": "Embedded-specific flavor of C++ std library.  No dynamic allocation!",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/malachi-iot/estdlib.git"
+    },
+    "authors":
+    [
+        {
+            "name": "Malachi Burke",
+            "maintainer": true
+        }
+    ],
+    "build":
+    {
+        "srcFilter":
+        [
+            "-<*>",
+            "+<src/>",
+            "-<src/.idea>"
+        ]
+    },
+    "export": {
+        "exclude": [
+            "test",
+            "ext"
+        ]
+    },
+    "version": "0.1.2",
+    "frameworks": [
+        "arduino",
+        "espidf",
+        "esp8266-rtos-sdk",
+        "cmsis"
+    ],
+    "platforms": "*"
+}

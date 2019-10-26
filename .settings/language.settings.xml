@@ -18,10 +18,6 @@
                 <language-scope id="org.eclipse.cdt.core.g++"/>
                 			
             </provider>
-            			
-            <provider copy-of="extension" id="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser"/>
-            			
-            <provider copy-of="extension" id="org.eclipse.cdt.autotools.core.LibtoolGCCBuildCommandParser"/>
             		
         </extension>
         	

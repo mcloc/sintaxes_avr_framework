@@ -58,3 +58,9 @@ void MachineState::incRequests() {
 uint32_t MachineState::getTotalRequests() {
 	return total_requests_processed;
 }
+
+
+void MachineState::clean(){
+//	actuator_list_index = 0;
+
+}

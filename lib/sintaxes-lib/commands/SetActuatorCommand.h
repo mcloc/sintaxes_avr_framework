@@ -5,8 +5,8 @@
  *      Author: mcloc
  */
 
-#ifndef LIB_SINTAXES_LIB_COMMANDS_SETACTUATOR_H_
-#define LIB_SINTAXES_LIB_COMMANDS_SETACTUATOR_H_
+#ifndef LIB_SINTAXES_LIB_COMMANDS_SETACTUATORCOMMAND_H_
+#define LIB_SINTAXES_LIB_COMMANDS_SETACTUATORCOMMAND_H_
 
 #include <Arduino.h>
 #include <defines/commands_map.h>
@@ -14,21 +14,21 @@
 #include <Responses.h>
 
 
-class SetActuator : public CommandBase{
+class SetActuatorCommand : public CommandBase{
 public:
-	SetActuator();
-	SetActuator(uint32_t device_key);
+	SetActuatorCommand();
+	SetActuatorCommand(uint32_t device_key);
 	bool execute();
 	bool checkArguments();
-	~SetActuator();
+	~SetActuatorCommand();
 	bool state;
 	uint32_t state_duration; //in seconds overflow in 231 MAX days approximately
 	uint32_t device_key;
-	SetActuator ** cmd_ptr;
+	SetActuatorCommand ** cmd_ptr;
 protected:
 	static const uint32_t command = MODULE_COMMMAND_SET_ACTUATOR;
 
 
 };
 
-#endif /* LIB_SINTAXES_LIB_COMMANDS_SETACTUATOR_H_ */
+#endif /* LIB_SINTAXES_LIB_COMMANDS_SETACTUATORCOMMAND_H_ */
