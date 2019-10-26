@@ -151,7 +151,10 @@ bool MsgPackHandler::processStream() {
 			|| status != MSGPACK_STATE_COMMAND_FINISHED) {
 		//Get next byte on buffer
 		uint8_t _byte = next();
-//		 ApplianceMemmoryHandler::responses->writeByte(_byte);
+		ApplianceMemmoryHandler::responses->writeRaw(F("processStream nextByte:"));
+		ApplianceMemmoryHandler::responses->writeByte(_byte);
+		ApplianceMemmoryHandler::responses->writeRaw(F("processStream status:"));
+		ApplianceMemmoryHandler::responses->writeByte(status);
 
 		uint8_t array_size = 0;
 		uint8_t map_elements_size = 0;
@@ -167,7 +170,7 @@ bool MsgPackHandler::processStream() {
 			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
 			ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
 					_byte);
-			response->closeJsonResponse();
+			ApplianceMemmoryHandler::responses->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
 		}
@@ -185,20 +188,26 @@ bool MsgPackHandler::processStream() {
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-		} else if (_byte == '\0' || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
-			ApplianceMemmoryHandler::responses->writeRaw(F("Asemble ok"));
-			return false;
-//			if (!processMap()) {
-//				response->closeJsonResponse();
-//				setStatus(MSGPACK_STATE_IDLE);
-//				return false;
-//			}
+
+			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling assembleMap() ok. STATUS::"));
+			ApplianceMemmoryHandler::responses->writeByte(status);
+			continue;
+
+		} else if (buffer_bytes_remaining == 0 || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
+			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling processMap():"));
+			if (!processMap()) {
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
+				setStatus(MSGPACK_STATE_IDLE);
+				return false;
+			}
 
 		} else {
+			ApplianceMemmoryHandler::responses->writeRaw(F("processStream else:"));
+			return false;
 			error_code = ERROR_MAL_FORMED_MSGPCK;
 			ApplianceMemmoryHandler::responses->write4BCPMalFormedRequest(_byte,
 					status);
-			response->closeJsonResponse();
+			ApplianceMemmoryHandler::responses->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
 		}
@@ -225,12 +234,12 @@ bool MsgPackHandler::processStream() {
 				error_code =
 				ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
 				ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
-				response->closeJsonResponse();
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
 			if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED)) {
-				response->closeJsonResponse();
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				return false;
 			}
 			break;
@@ -245,7 +254,7 @@ bool MsgPackHandler::processStream() {
 	//we will use SD Card as log. So must implement methods for getting this log if requested
 	if (status == MSGPACK_STATE_COMMAND_FINISHED) {
 		if (!setStatus(MSGPACK_STATE_IDLE)) {
-			response->closeJsonResponse();
+			ApplianceMemmoryHandler::responses->closeJsonResponse();
 			return false;
 		}
 
@@ -253,7 +262,7 @@ bool MsgPackHandler::processStream() {
 	} else {
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
 		ApplianceMemmoryHandler::responses->writeErrorMsgPackHasNotFinishedStatus();
-		response->closeJsonResponse();
+		ApplianceMemmoryHandler::responses->closeJsonResponse();
 		setStatus(MSGPACK_STATE_IDLE);
 		return false;
 	}
@@ -336,13 +345,8 @@ bool MsgPackHandler::processStream() {
  *
  */
 bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
-	ApplianceMemmoryHandler::responses->writeRaw(
-			F("Total BCP  elements 4instatiated"));
-	ApplianceMemmoryHandler::responses->writeByte(total_element4BCP);
-
 	uint8_t counter = 0;
 
-	return false;
 	//While there're tuples to process
 	while (status != MSGPACK_STATE_COMMAND_ARGS_READY
 			|| counter > MAX_MSGPACK_4BCP_ELEMENTS) {
@@ -356,9 +360,11 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			processStatusMSGPACK_STATE_BEGIN();
 			//Two elements from MAP goes on commandHeader, The COMMAND_FLAG and the COMMAND itself.
 			map_elements_size--;
-			map_elements_size--;
 			continue;
 		}
+
+
+
 		/*****************************************************************************/
 
 		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
@@ -406,9 +412,9 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			uint8_t map_size = isMap(_byte);
 			if (!(map_size > 0)) {
 				//TODO: error
-				//		error_code = ERROR_MSGPACK_MAL_FORMED_4BCP;
-				//		 ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
-				//		response->closeJsonResponse();
+				error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
+				ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPZeroElementMap();
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				return false;
 			}
 
@@ -418,7 +424,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					//TODO: error
 					error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
 					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPElementKeyProcessing();
-					response->closeJsonResponse();
+					ApplianceMemmoryHandler::responses->closeJsonResponse();
 					return false;
 				}
 
@@ -457,7 +463,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 				nested_element4BCP++;
 				map_size--;
-
 			}
 
 			element4BCP_number++;
@@ -477,7 +482,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 					return false;
 
 				//DONE ALL DEVICES AND ARGS ARE SET
-				break;
+				return true;
 			}
 
 			//OTHERS DEVICE ARGUMENT KEY
@@ -558,7 +563,7 @@ _4BCPMapElement** MsgPackHandler::processStatusNextElement() {
 		//TODO: error
 //		error_code = ERROR_MSGPACK_4BCP_NOT_MAPPED;
 //		 ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
-//		response->closeJsonResponse();
+//		ApplianceMemmoryHandler::responses->closeJsonResponse();
 		return NULL;
 	}
 
@@ -573,13 +578,22 @@ _4BCPMapElement** MsgPackHandler::processStatusNextElement() {
 }
 
 bool MsgPackHandler::processMap() {
+
+
+//	ApplianceMemmoryHandler::responses->writeRaw(F("inside processMap status:"));
+//	ApplianceMemmoryHandler::responses->writeByte(status);
+//	return false;
+
+
 	ApplianceMemmoryHandler::responses->writeRaw(
 			F("Total BCP  elements instatiated"));
-	ApplianceMemmoryHandler::responses->write32bitByte(total_element4BCP);
+	ApplianceMemmoryHandler::responses->writeByte(total_element4BCP);
 
 	ApplianceMemmoryHandler::responses->writeRaw(
 			F("How many elements in the array"));
-	ApplianceMemmoryHandler::responses->write32bitByte(element4BCP_number);
+	ApplianceMemmoryHandler::responses->writeByte(element4BCP_number);
+
+
 
 	//check both MSGPACK4BCPProcessFlow with arguments without arguments
 	if (status != MSGPACK_STATE_COMMAND_ARGS_READY
@@ -604,7 +618,12 @@ bool MsgPackHandler::processMap() {
 	ApplianceMemmoryHandler::responses->writeRaw(F("BYTES REMAINING:"));
 	ApplianceMemmoryHandler::responses->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
 
-	commands_handler->initCommand();
+
+
+	ApplianceMemmoryHandler::responses->writeRaw(F("Calling commands_handler init"));
+	ApplianceMemmoryHandler::commands_handler->initCommand();
+
+	return false;
 
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
@@ -612,11 +631,11 @@ bool MsgPackHandler::processMap() {
 
 //	_4BCPMapElement ** elements_ptr = & _4BCPContainer::map4BCP.elements;
 	//process all devices for this command;
-	commands_handler->assembleCommand();
+	ApplianceMemmoryHandler::commands_handler->assembleCommand();
 	if (!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
 		return false;
 
-	commands_handler->execute(); // execute one by one in a loop
+	ApplianceMemmoryHandler::commands_handler->execute(); // execute one by one in a loop
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
 		return false;
@@ -626,8 +645,8 @@ bool MsgPackHandler::processMap() {
 
 _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 
-//	if(nested_element4BCP > 1)
-//		nested_element4BCP = 0;
+//	ApplianceMemmoryHandler::responses->writeRaw(F("DEBUG in setElementPointer"));
+//	return false; //DEBUG
 
 	_4BCPElementValue **element_value;
 	switch (total_element4BCP) {
@@ -844,12 +863,14 @@ _4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 //		return   _4BCPElement::element4BCP_9;
 		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
 		ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
-		return NULL;
+		return '\0';
 	}
 	}
 }
 
 _4BCPElementValue** MsgPackHandler::setStructElementValue() {
+//	ApplianceMemmoryHandler::responses->writeRaw(F("DEBUG in setStructElementValue ptr"));
+//	return false; //DEBUG
 	switch (total_elementValue4BCP) {
 	case 0: {
 		total_elementValue4BCP++;
@@ -886,13 +907,15 @@ _4BCPElementValue** MsgPackHandler::setStructElementValue() {
 //		return   _4BCPElement::element4BCP_9;
 		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
 		ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
-		return NULL;
+		return '\0';
 	}
 	}
-	return NULL;
+	return '\0';
 }
 
 bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
+//	ApplianceMemmoryHandler::responses->writeRaw(F("DEBUG in setElementValue"));
+//	return false; //DEBUG
 	//Change to function template each case can be a Template Specialization
 	//https://www.geeksforgeeks.org/template-specialization-c/
 
@@ -1233,11 +1256,11 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 	if (!assemble_uint32_Byte(_byte))
 		return false;
 
-	commands_handler->command_executing = _32bitword;
+	ApplianceMemmoryHandler::commands_handler->command_executing = _32bitword;
 
 	ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND TO EXECUTE:"));
 	ApplianceMemmoryHandler::responses->write32bitByte(
-			commands_handler->command_executing);
+			ApplianceMemmoryHandler::commands_handler->command_executing);
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_SET))
 		return false;
@@ -1269,7 +1292,7 @@ uint8_t MsgPackHandler::next() {
 		buffer_bytes_remaining = 0;
 		ApplianceMemmoryHandler::responses->writeRaw(
 				F("There is no bytes left on buffer to processs."));
-		return '\0';;
+		return '\0';
 	}
 
 	//FIXME: last_byte has no function

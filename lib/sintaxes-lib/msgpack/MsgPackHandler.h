@@ -25,10 +25,10 @@ public:
 
 private:
 	Stream *stream;
-	Responses *response;
-	CommandsHandler *commands_handler;
-	SintaxesLib *sintaxesLib;
-	MachineState *machine_state;
+//	Responses *response;
+//	CommandsHandler *commands_handler;
+//	SintaxesLib *sintaxesLib;
+//	MachineState *machine_state;
 
 	uint8_t status;
 	uint8_t prev_status;

@@ -15,36 +15,34 @@ uint32_t CommandsHandler::command_executing;
 
 
 CommandsHandler::CommandsHandler() {
-	localBuffers = ApplianceMemmoryHandler::localBuffers;
-	response = ApplianceMemmoryHandler::responses;
-	machineState = &ApplianceMemmoryHandler::machine_state;
 	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 }
 
-void CommandsHandler::setMachineState(MachineState **_machine_state) {
-	machineState = _machine_state;
-}
+//void CommandsHandler::setMachineState(MachineState **_machine_state) {
+//	machineState = _machine_state;
+//}
 
 bool CommandsHandler::initCommand() {
 	command_struct->command = command_executing;
 	command_struct->devices_element_list[0] = '\0';
 	command_struct->total_devices_executed = 0;
-	response->writeRaw(F("assembleCommand() zeroing the command_struct"));
+	ApplianceMemmoryHandler::responses->writeRaw(F("assembleCommand() zeroing the command_struct"));
+	return true;
 }
 
 bool CommandsHandler::assembleCommand() {
 //	command_struct->total_devices_executed = _4BCPContainer::map4BCP.size;
-	response->writeRaw(F("assembleCommand() adding elements to command_struct"));
+	ApplianceMemmoryHandler::responses->writeRaw(F("assembleCommand() adding elements to command_struct"));
 	for (uint8_t i = 0; i < _4BCPContainer::map4BCP.size; i++) {
 		command_struct->devices_element_list[i] = _4BCPContainer::map4BCP.elements[i];
 		//TODO this for is jsut to copy element_list to command_struct->devices_element_list  which will be used on execute
-		response->writeRaw(F("KEY AND VALUES ON assembleCommand()"));
-		response->write32bitByte(command_struct->devices_element_list[i]->key);
-		response->write32bitByte(
+		ApplianceMemmoryHandler::responses->writeRaw(F("KEY AND VALUES ON assembleCommand()"));
+		ApplianceMemmoryHandler::responses->write32bitByte(command_struct->devices_element_list[i]->key);
+		ApplianceMemmoryHandler::responses->write32bitByte(
 				command_struct->devices_element_list[i]->nested_elements[0]->value->bool_value);
-		response->write32bitByte(
+		ApplianceMemmoryHandler::responses->write32bitByte(
 				command_struct->devices_element_list[i]->nested_elements[1]->value->uint32_value);
-//		response->write32bitByte(command_struct.devices_element_list[i]->key);
+//		ApplianceMemmoryHandler::responses->write32bitByte(command_struct.devices_element_list[i]->key);
 	}
 }
 
@@ -65,7 +63,7 @@ bool CommandsHandler::get_data() {
 //	// DTH21#2 ouput
 	memmove(sensor2_data, buffer, MAX_SIZE_ALLOWED_PROGMEM_STRING);
 
-	response->sendFullStatusData(sensor1_data, sensor2_data);
+	ApplianceMemmoryHandler::responses->sendFullStatusData(sensor1_data, sensor2_data);
 
 	return true;
 
@@ -90,25 +88,25 @@ void CommandsHandler::setDHT2(DHT *_dht2, uint8_t dht_pin, uint8_t type) {
 
 char* CommandsHandler::getSensor1() {
 	float readed_value = (*dht1).readHumidity();
-	dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer1);
+	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer1);
 	readed_value = (*dht1).readTemperature();
-	dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
+	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer2);
 	snprintf_P(LocalBuffers::string_cpy_buffer,
 			sizeof(LocalBuffers::string_cpy_buffer),
-			(PGM_P) &(json_module_sensor1), localBuffers->float2char_buffer1,
-			localBuffers->float2char_buffer2);
+			(PGM_P) &(json_module_sensor1), LocalBuffers::float2char_buffer1,
+			LocalBuffers::float2char_buffer2);
 	return LocalBuffers::string_cpy_buffer;
 }
 
 char* CommandsHandler::getSensor2() {
 	float readed_value = (*dht2).readHumidity();
-	dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer1);
+	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer1);
 	readed_value = (*dht2).readTemperature();
-	dtostrf(readed_value, 5, 2, localBuffers->float2char_buffer2);
+	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer2);
 	snprintf_P(LocalBuffers::string_cpy_buffer,
 			sizeof(LocalBuffers::string_cpy_buffer),
-			(PGM_P) &(json_module_sensor2), localBuffers->float2char_buffer1,
-			localBuffers->float2char_buffer2);
+			(PGM_P) &(json_module_sensor2), LocalBuffers::float2char_buffer1,
+			LocalBuffers::float2char_buffer2);
 	return LocalBuffers::string_cpy_buffer;
 }
 
@@ -121,32 +119,32 @@ bool CommandsHandler::set_actuator() {
 //	}
 	uint32_t device_key;
 
-	response->writeRaw(F("inside EXECUTE:"));
-	response->writeRaw(F("inside EXECUTE command:"));
-	response->write32bitByte(command_executing);
+	ApplianceMemmoryHandler::responses->writeRaw(F("inside EXECUTE:"));
+	ApplianceMemmoryHandler::responses->writeRaw(F("inside EXECUTE command:"));
+	ApplianceMemmoryHandler::responses->write32bitByte(command_executing);
 	while (command_struct->total_devices_executed < _4BCPContainer::map4BCP.size) {
 
 
 		device_key = command_struct->devices_element_list[command_struct->total_devices_executed]->key;
-		response->writeRaw(F("DEVICE KEY TO SET::"));
-		response->write32bitByte(device_key);
+		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE KEY TO SET::"));
+		ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 
 		SetActuator *actuator_command  = (SetActuator *)malloc(sizeof(SetActuator));
-		actuator_command = &SetActuator(&(*response), device_key, machineState);
+		actuator_command = &SetActuator(device_key);
 
 
-		response->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
-		response->write32bitByte(actuator_command->device_key);
+		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
+		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->device_key);
 
 
 		//The problem is in machoneState; //FIXME:
 
-		response->writeRaw(F("machineState Actuator"));
+		ApplianceMemmoryHandler::responses->writeRaw(F("machineState Actuator"));
 		ActuatorBase **act_ptr;
-//		act_ptr = (*machineState)->actuator_list[0];
+		act_ptr = ApplianceMemmoryHandler::machine_state->getActuator(0);
 
-		response->write32bitByte((*act_ptr)->uuid);
-		response->writeRaw(F("--------------------------------------------"));
+		ApplianceMemmoryHandler::responses->write32bitByte((*act_ptr)->uuid);
+		ApplianceMemmoryHandler::responses->writeRaw(F("--------------------------------------------"));
 
 
 		actuator_command->state =
@@ -154,17 +152,17 @@ bool CommandsHandler::set_actuator() {
 		actuator_command->state_duration =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[1]->value->uint32_value;
 
-		response->writeRaw(F("DEVICE STATE::"));
-		response->writeByte(actuator_command->state);
-		response->writeRaw(F("DEVICE DURATION STATE::"));
-		response->write32bitByte(actuator_command->state_duration);
-		response->writeRaw(
+		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE STATE::"));
+		ApplianceMemmoryHandler::responses->writeByte(actuator_command->state);
+		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE DURATION STATE::"));
+		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->state_duration);
+		ApplianceMemmoryHandler::responses->writeRaw(
 				F("JUST BEFORE SetActuator::EXECUTE()"));
 
 
 		if (!actuator_command->execute()) { // machineState->getActuator(); and set actuator digital real values
 			//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
-			response->write4BCPCommandExecutionERROR();
+			ApplianceMemmoryHandler::responses->write4BCPCommandExecutionERROR();
 			return false;
 		}
 
@@ -198,7 +196,7 @@ bool CommandsHandler::execute() {
 
 	default: {
 //			error_code = ERROR_MSGPACK_4BCP_UNKNOW_COMMAND;
-		response->write4BCPUnknowCommand();
+		ApplianceMemmoryHandler::responses->write4BCPUnknowCommand();
 		return false;
 	}
 	}
