@@ -1500,11 +1500,24 @@ void MsgPackHandler::reset() {
 	response_headers_already_sent = false;
 
 	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
+//	for(uint8_t i = 0; i < total_element4BCP;i++){
+//		if(_4BCPContainer::map4BCP.elements[i]->total_nested_elements > 0){
+//			for(uint8_t j = 0; j < _4BCPContainer::map4BCP.elements[i]->total_nested_elements;j++){
+//				free(_4BCPContainer::map4BCP.elements[i]->nested_elements[j]);
+//			}
+//		}
+//		free(_4BCPContainer::map4BCP.elements[i]);
+//	}
+
+	_4BCPContainer::map4BCP.size = 0;
+
 	element4BCP_number = 0;
 	nested_element4BCP = 0;
 	total_element4BCP = 0;
 	total_elementValue4BCP = 0;
 	elements_remaining = MAX_MSGPACK_4BCP_ELEMENTS;
+
+
 }
 
 /**

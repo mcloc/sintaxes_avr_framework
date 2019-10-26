@@ -62,5 +62,8 @@ uint32_t MachineState::getTotalRequests() {
 
 void MachineState::clean(){
 //	actuator_list_index = 0;
+//	for(uint8_t i = 0; i < MAX_ACTUATORS;i++){
+//		free(actuator_list[i]);
+//	}
 
 }

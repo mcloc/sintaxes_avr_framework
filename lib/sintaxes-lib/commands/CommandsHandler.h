@@ -64,7 +64,7 @@ private:
 	DHT getDHT2();
 //	MachineState **machineState;
 	CommandStruct *command_struct;
-	_4BCPMapElement *args_list[];
+//	_4BCPMapElement *args_list[];
 
 };
 

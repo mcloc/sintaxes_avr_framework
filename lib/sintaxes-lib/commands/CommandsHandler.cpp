@@ -8,6 +8,7 @@
 #include <Responses.h>
 #include <defines/sintaxes-framework-defines.h>
 #include <memory/ApplianceMemmoryHandler.h>
+#include <stdlib.h>
 /**
  * command to execute / in execution
  */
@@ -15,7 +16,7 @@ uint32_t CommandsHandler::command_executing;
 
 
 CommandsHandler::CommandsHandler() {
-	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
+	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct)); //once allocated for ever
 }
 
 //void CommandsHandler::setMachineState(MachineState **_machine_state) {
@@ -24,7 +25,10 @@ CommandsHandler::CommandsHandler() {
 
 bool CommandsHandler::initCommand() {
 	command_struct->command = command_executing;
-	command_struct->devices_element_list[0] = '\0';
+//	for(uint8_t i=0; i < MAX_ACTUATORS; i++){
+//		if(command_struct->devices_element_list[i] != '\0' )
+//			free(command_struct->devices_element_list[i]);
+//	}
 	command_struct->total_devices_executed = 0;
 	return true;
 }
@@ -32,9 +36,16 @@ bool CommandsHandler::initCommand() {
 
 void CommandsHandler::reset() {
 	command_struct->command = '\0';
-	command_struct->devices_element_list[0] = '\0';
+//	for(uint8_t i=0; i < (MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)); i++){
+//		free(command_struct->devices_element_list[i]);
+//	}
+
+//	for(uint8_t i=0; i < MAX_ACTUATORS; i++){
+//		free(args_list[i]);
+//	}
 	command_struct->total_devices_executed = 0;
-	args_list[0] = '\0';
+
+
 }
 
 
@@ -76,6 +87,7 @@ bool CommandsHandler::get_data() {
 
 	ApplianceMemmoryHandler::responses->sendFullStatusData(sensor1_data, sensor2_data);
 
+//	free(buffer);
 	return true;
 
 }
@@ -140,11 +152,13 @@ bool CommandsHandler::set_actuator() {
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE KEY TO SET::"));
 		ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 
-		ApplianceMemmoryHandler::command_set_actuator = &SetActuatorCommand(device_key);
+//		ApplianceMemmoryHandler::allocSetActuatorCommand(device_key);
+		SetActuatorCommand *actuator_command = (SetActuatorCommand*) malloc(sizeof(SetActuatorCommand));
+		actuator_command = &SetActuatorCommand(device_key);
 
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
-		ApplianceMemmoryHandler::responses->write32bitByte(ApplianceMemmoryHandler::command_set_actuator->device_key);
+		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->device_key);
 
 
 		//The problem is in machoneState; //FIXME:
@@ -157,32 +171,36 @@ bool CommandsHandler::set_actuator() {
 		ApplianceMemmoryHandler::responses->writeRaw(F("--------------------------------------------"));
 
 
-		ApplianceMemmoryHandler::command_set_actuator->state =
+		actuator_command->state =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[0]->value->bool_value;
-		ApplianceMemmoryHandler::command_set_actuator->state_duration =
+		actuator_command->state_duration =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[1]->value->uint32_value;
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE STATE::"));
-		ApplianceMemmoryHandler::responses->writeByte(ApplianceMemmoryHandler::command_set_actuator->state);
+		ApplianceMemmoryHandler::responses->writeByte(actuator_command->state);
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE DURATION STATE::"));
-		ApplianceMemmoryHandler::responses->write32bitByte(ApplianceMemmoryHandler::command_set_actuator->state_duration);
+		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->state_duration);
 		ApplianceMemmoryHandler::responses->writeRaw(
 				F("JUST BEFORE SetActuator::EXECUTE()"));
 
 
-		if (!ApplianceMemmoryHandler::command_set_actuator->execute()) { // machineState->getActuator(); and set actuator digital real values
+		if (!actuator_command->execute()) { // machineState->getActuator(); and set actuator digital real values
 			//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
+//			free(actuator_command);
+//			free(act_ptr);
 			ApplianceMemmoryHandler::responses->write4BCPCommandExecutionERROR();
 			return false;
 		}
 
+
 		//no
-//		free(ApplianceMemmoryHandler::command_set_actuator);
+//		free(actuator_command);
 
 								// mess up with the heap allocation map structure
 //		delete actuator_command;
-//		ApplianceMemmoryHandler::command_set_actuator->~SetActuator();
-
+//		actuator_command->~SetActuator();
+//		free(actuator_command);
+//		free(act_ptr);
 		command_struct->total_devices_executed++;
 	}
 

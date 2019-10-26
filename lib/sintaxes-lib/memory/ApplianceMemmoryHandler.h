@@ -38,9 +38,9 @@ public:
 	static ActuatorBase *dn20_2;
 	static ActuatorBase *dn20_3;
 
-	static SetActuatorCommand *command_set_actuator;
+//	static SetActuatorCommand *command_set_actuator;
 
-	void allocSetActuatorCommand(uint8_t device_key);
+//	static void allocSetActuatorCommand(uint8_t device_key);
 	bool request_to_write();
 	void unlock();
 	static void newLoop();

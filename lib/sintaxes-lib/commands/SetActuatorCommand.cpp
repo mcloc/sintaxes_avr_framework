@@ -8,6 +8,7 @@
 #include <commands/SetActuatorCommand.h>
 #include <memory/ApplianceMemmoryHandler.h>
 
+
 SetActuatorCommand::SetActuatorCommand(uint32_t _device_key) {
 	device_key = _device_key;
 	state = '\0';
@@ -43,8 +44,10 @@ bool SetActuatorCommand::execute(){
 				ApplianceMemmoryHandler::responses->writeRaw(F("CALL COMMMAND SET ACTUATOR AND MACHINE STATUS:"));
 				ApplianceMemmoryHandler::responses->writeRaw(F("******************************************************************************************************"));
 
+//			free(actuator);
 			break;
 		}
+//		free(actuator);
 	}
 
 
@@ -71,3 +74,5 @@ SetActuatorCommand::~SetActuatorCommand(){
 	state = '\0';
 	state_duration = '\0';
 }
+
+
