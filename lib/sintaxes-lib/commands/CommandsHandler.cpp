@@ -13,10 +13,10 @@
  * command to execute / in execution
  */
 uint32_t CommandsHandler::command_executing;
-
+CommandStruct *CommandsHandler::command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 
 CommandsHandler::CommandsHandler() {
-	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct)); //once allocated for ever
+//	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct)); //once allocated for ever
 }
 
 //void CommandsHandler::setMachineState(MachineState **_machine_state) {
@@ -39,7 +39,8 @@ void CommandsHandler::reset() {
 //	for(uint8_t i=0; i < (MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)); i++){
 //		free(command_struct->devices_element_list[i]);
 //	}
-
+//
+//	free(command_struct->devices_element_list);
 //	for(uint8_t i=0; i < MAX_ACTUATORS; i++){
 //		free(args_list[i]);
 //	}

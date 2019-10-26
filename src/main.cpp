@@ -23,7 +23,7 @@
 
 
 // **** ETHERNET SETTING ****
-EthernetServer server = EthernetServer(LISTENPORT);
+static EthernetServer server = EthernetServer(LISTENPORT);
 const uint8_t mac[6] = { MACADDRESS };
 
 //DEBUG DHCPH is commented for debug proposes uncomment it for production
@@ -137,7 +137,7 @@ void loop() {
 
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpack_handler.processStream()){
-				sintaxes_lib.buzz( 3000, 200, 3);
+				sintaxes_lib.buzz( 3000, 200, 1);
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
 			} else {
