@@ -26,7 +26,7 @@ bool CommandsHandler::initCommand() {
 	command_struct->command = command_executing;
 	command_struct->devices_element_list[0] = '\0';
 	command_struct->total_devices_executed = 0;
-	ApplianceMemmoryHandler::responses->writeRaw(F("assembleCommand() zeroing the command_struct"));
+	ApplianceMemmoryHandler::responses->writeRaw(F("initCommand() zeroing the command_struct"));
 	return true;
 }
 
@@ -44,6 +44,8 @@ bool CommandsHandler::assembleCommand() {
 				command_struct->devices_element_list[i]->nested_elements[1]->value->uint32_value);
 //		ApplianceMemmoryHandler::responses->write32bitByte(command_struct.devices_element_list[i]->key);
 	}
+
+	return true;
 }
 
 //void Commands::setActuator(uint32_t actuator_id, bool state, uint16_t duration){

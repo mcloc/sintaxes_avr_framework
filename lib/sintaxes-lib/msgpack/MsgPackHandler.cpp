@@ -623,8 +623,6 @@ bool MsgPackHandler::processMap() {
 	ApplianceMemmoryHandler::responses->writeRaw(F("Calling commands_handler init"));
 	ApplianceMemmoryHandler::commands_handler->initCommand();
 
-	return false;
-
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
 	//a device and trasverse MachineState actuators_list to match same and set it's values
 	//TODO: set Command object and execute it
