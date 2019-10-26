@@ -153,41 +153,38 @@ bool CommandsHandler::set_actuator() {
 		ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 
 //		ApplianceMemmoryHandler::allocSetActuatorCommand(device_key);
-		SetActuatorCommand *actuator_command = (SetActuatorCommand*) malloc(sizeof(SetActuatorCommand));
-		actuator_command = &SetActuatorCommand(device_key);
+//		SetActuatorCommand *actuator_command = (SetActuatorCommand*) malloc(sizeof(SetActuatorCommand));
+//		actuator_command = &SetActuatorCommand(device_key);
 
+		SetActuatorCommand actuator_command = SetActuatorCommand(device_key);
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
-		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->device_key);
+		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.device_key);
 
 
 		//The problem is in machoneState; //FIXME:
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("machineState Actuator"));
-		ActuatorBase **act_ptr;
-		act_ptr = ApplianceMemmoryHandler::machine_state->getActuator(0);
-
-		ApplianceMemmoryHandler::responses->write32bitByte((*act_ptr)->uuid);
+		ApplianceMemmoryHandler::responses->write32bitByte((*ApplianceMemmoryHandler::machine_state->getActuator(0))->uuid);
 		ApplianceMemmoryHandler::responses->writeRaw(F("--------------------------------------------"));
 
 
-		actuator_command->state =
+		actuator_command.state =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[0]->value->bool_value;
-		actuator_command->state_duration =
+		actuator_command.state_duration =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[1]->value->uint32_value;
 
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE STATE::"));
-		ApplianceMemmoryHandler::responses->writeByte(actuator_command->state);
+		ApplianceMemmoryHandler::responses->writeByte(actuator_command.state);
 		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE DURATION STATE::"));
-		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command->state_duration);
+		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.state_duration);
 		ApplianceMemmoryHandler::responses->writeRaw(
 				F("JUST BEFORE SetActuator::EXECUTE()"));
 
 
-		if (!actuator_command->execute()) { // machineState->getActuator(); and set actuator digital real values
+		if (!actuator_command.execute()) { // machineState->getActuator(); and set actuator digital real values
 			//		error_code = ERROR_COMMAND_EXECUTION_FAILED;
 //			free(actuator_command);
-//			free(act_ptr);
 			ApplianceMemmoryHandler::responses->write4BCPCommandExecutionERROR();
 			return false;
 		}
@@ -200,7 +197,6 @@ bool CommandsHandler::set_actuator() {
 //		delete actuator_command;
 //		actuator_command->~SetActuator();
 //		free(actuator_command);
-//		free(act_ptr);
 		command_struct->total_devices_executed++;
 	}
 

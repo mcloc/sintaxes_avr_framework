@@ -24,13 +24,11 @@ bool SetActuatorCommand::execute(){
 	}
 
 	for(uint8_t i = 0; i < ApplianceMemmoryHandler::machine_state->actuator_list_total;i++){
-		ActuatorBase ** actuator = ApplianceMemmoryHandler::machine_state->getActuator(i);
-
 		ApplianceMemmoryHandler::responses->writeRaw(F("actuator:"));
-		ApplianceMemmoryHandler::responses->write32bitByte((*actuator)->uuid);
+		ApplianceMemmoryHandler::responses->write32bitByte((*ApplianceMemmoryHandler::machine_state->getActuator(i))->uuid);
 
-		if((*actuator)->uuid == device_key) {
-			(*actuator)->setNewState(state, state_duration );
+		if((*ApplianceMemmoryHandler::machine_state->getActuator(i))->uuid == device_key) {
+			(*ApplianceMemmoryHandler::machine_state->getActuator(i))->setNewState(state, state_duration );
 			ApplianceMemmoryHandler::responses->writeRaw(F("****************************** R E A L   E X E C U T I O N   V A L U E S *****************************"));
 				ApplianceMemmoryHandler::responses->writeRaw(F("INSIDE SetActuatorExecute.... bring to here the set of real actuator in machine state:"));
 				ApplianceMemmoryHandler::responses->writeRaw(F("command to execute:"));
@@ -49,8 +47,6 @@ bool SetActuatorCommand::execute(){
 		}
 //		free(actuator);
 	}
-
-
 
 	return true;
 
