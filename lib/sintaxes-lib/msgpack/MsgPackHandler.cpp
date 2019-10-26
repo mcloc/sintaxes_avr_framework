@@ -92,15 +92,10 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 		return false;
 	}
 
-
-
 	reset_32bit_processing();
-
 
 	buffer_position = 0;
 	stream = _stream;
-
-
 
 	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer,
 			size);

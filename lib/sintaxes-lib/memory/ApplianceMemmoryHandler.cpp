@@ -64,6 +64,9 @@ static void ApplianceMemmoryHandler::newLoop() {
 	ApplianceMemmoryHandler::localBuffers->float2char_buffer1[0] = '\0';
 	ApplianceMemmoryHandler::localBuffers->float2char_buffer2[0] = '\0';
 	ApplianceMemmoryHandler::localBuffers->string_cpy_buffer[0] = '\0';
+	ApplianceMemmoryHandler::commands_handler->reset();
+	ApplianceMemmoryHandler::msgpack_handler->reset();
+
 	lock = false;
 }
 

@@ -153,7 +153,7 @@ void loop() {
 		client.stop();
 	}
 
-//	ApplianceMemmoryHandler::newLoop();
+	ApplianceMemmoryHandler::newLoop();
 	delay(2);
 }
 

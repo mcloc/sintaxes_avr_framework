@@ -26,9 +26,18 @@ bool CommandsHandler::initCommand() {
 	command_struct->command = command_executing;
 	command_struct->devices_element_list[0] = '\0';
 	command_struct->total_devices_executed = 0;
-	ApplianceMemmoryHandler::responses->writeRaw(F("initCommand() zeroing the command_struct"));
 	return true;
 }
+
+
+void CommandsHandler::reset() {
+	command_struct->command = '\0';
+	command_struct->devices_element_list[0] = '\0';
+	command_struct->total_devices_executed = 0;
+	args_list[0] = '\0';
+}
+
+
 
 bool CommandsHandler::assembleCommand() {
 //	command_struct->total_devices_executed = _4BCPContainer::map4BCP.size;

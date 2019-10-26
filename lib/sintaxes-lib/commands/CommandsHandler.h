@@ -55,6 +55,7 @@ public:
 	char* getSensor1();
 	char* getSensor2();
 	bool execute();
+	void reset();
 
 private:
 //	LocalBuffers *localBuffers;
