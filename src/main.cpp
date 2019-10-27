@@ -109,7 +109,7 @@ void setup() {
 void loop() {
 	size_t size;
 	while (EthernetClient client = server.available()) {
-		sintaxes_lib.buzz( 8000, 200, 1);
+		sintaxes_lib.buzz( 8000, 80, 1);
 		while ((size = client.available()) > 0) {
 			responses.setClient(&client);
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
