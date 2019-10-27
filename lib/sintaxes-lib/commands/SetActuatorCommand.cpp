@@ -14,8 +14,8 @@ SetActuatorCommand::SetActuatorCommand(uint32_t _device_key) {
 	state = '\0';
 	state_duration = '\0';
 
-	ApplianceMemmoryHandler::responses->writeRaw(F("SetActuator()_constructor device_key"));
-	ApplianceMemmoryHandler::responses->write32bitByte(device_key);
+//	ApplianceMemmoryHandler::responses->writeRaw(F("SetActuator()_constructor device_key"));
+//	ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 }
 
 bool SetActuatorCommand::execute(){

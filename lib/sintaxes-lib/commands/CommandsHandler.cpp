@@ -16,12 +16,8 @@ uint32_t CommandsHandler::command_executing;
 CommandStruct *CommandsHandler::command_struct = (CommandStruct*) malloc(sizeof(CommandStruct));
 
 CommandsHandler::CommandsHandler() {
-//	command_struct = (CommandStruct*) malloc(sizeof(CommandStruct)); //once allocated for ever
 }
 
-//void CommandsHandler::setMachineState(MachineState **_machine_state) {
-//	machineState = _machine_state;
-//}
 
 bool CommandsHandler::initCommand() {
 	command_struct->command = command_executing;
@@ -124,38 +120,32 @@ char* CommandsHandler::getSensor2() {
 
 bool CommandsHandler::set_actuator() {
 
-//	CommandBase command_base = CommandBase::CommandBase(response, element->key, nested_element->key);
-//	CommandBase ** cmd_execute = command_base.getCommandObj();
-//	if((* cmd_execute)->execute()){
-//		return false;
-//	}
 	uint32_t device_key;
 
-	ApplianceMemmoryHandler::responses->writeRaw(F("inside EXECUTE:"));
-	ApplianceMemmoryHandler::responses->writeRaw(F("inside EXECUTE command:"));
-	ApplianceMemmoryHandler::responses->write32bitByte(command_executing);
+//	ApplianceMemmoryHandler::responses->writeRaw(F("inside EXECUTE command:"));
+//	ApplianceMemmoryHandler::responses->write32bitByte(command_executing);
 	while (command_struct->total_devices_executed < _4BCPContainer::map4BCP.size) {
 
 
 		device_key = command_struct->devices_element_list[command_struct->total_devices_executed]->key;
-		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE KEY TO SET::"));
-		ApplianceMemmoryHandler::responses->write32bitByte(device_key);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE KEY TO SET::"));
+//		ApplianceMemmoryHandler::responses->write32bitByte(device_key);
 
 //		ApplianceMemmoryHandler::allocSetActuatorCommand(device_key);
 //		SetActuatorCommand *actuator_command = (SetActuatorCommand*) malloc(sizeof(SetActuatorCommand));
 //		actuator_command = &SetActuatorCommand(device_key);
 
 		SetActuatorCommand actuator_command = SetActuatorCommand(device_key);
-
-		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj(), out side of it"));
+//
+		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj()"));
 		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.device_key);
 
 
 		//The problem is in machoneState; //FIXME:
 
-		ApplianceMemmoryHandler::responses->writeRaw(F("machineState Actuator"));
-		ApplianceMemmoryHandler::responses->write32bitByte((*ApplianceMemmoryHandler::machine_state->getActuator(0))->uuid);
-		ApplianceMemmoryHandler::responses->writeRaw(F("--------------------------------------------"));
+//		ApplianceMemmoryHandler::responses->writeRaw(F("machineState Actuator"));
+//		ApplianceMemmoryHandler::responses->write32bitByte((*ApplianceMemmoryHandler::machine_state->getActuator(0))->uuid);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("--------------------------------------------"));
 
 
 		actuator_command.state =
@@ -163,12 +153,12 @@ bool CommandsHandler::set_actuator() {
 		actuator_command.state_duration =
 				command_struct->devices_element_list[command_struct->total_devices_executed]->nested_elements[1]->value->uint32_value;
 
-		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE STATE::"));
-		ApplianceMemmoryHandler::responses->writeByte(actuator_command.state);
-		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE DURATION STATE::"));
-		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.state_duration);
-		ApplianceMemmoryHandler::responses->writeRaw(
-				F("JUST BEFORE SetActuator::EXECUTE()"));
+//		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE STATE::"));
+//		ApplianceMemmoryHandler::responses->writeByte(actuator_command.state);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("DEVICE DURATION STATE::"));
+//		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.state_duration);
+//		ApplianceMemmoryHandler::responses->writeRaw(
+//				F("JUST BEFORE SetActuator::EXECUTE()"));
 
 
 		if (!actuator_command.execute()) { // machineState->getActuator(); and set actuator digital real values
