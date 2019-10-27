@@ -498,17 +498,6 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 		counter++;
 
-		//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
-		//back status to MSGPACK_STATE_COMMAND_ARGS_READY so the loop can roll again for other devices that must be set.
-//		if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY)) //now the status should be execute command
-//			return false;
-
-//	element4BCP_number++;
-//	map_elements_size--;
-
-		//now the status should be execute command
-//	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
-//		return false;
 
 	}
 
@@ -580,13 +569,13 @@ bool MsgPackHandler::processMap() {
 //	return false;
 
 
-	ApplianceMemmoryHandler::responses->writeRaw(
-			F("Total BCP  elements instatiated"));
-	ApplianceMemmoryHandler::responses->writeByte(total_element4BCP);
-
-	ApplianceMemmoryHandler::responses->writeRaw(
-			F("How many elements in the array"));
-	ApplianceMemmoryHandler::responses->writeByte(element4BCP_number);
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("Total BCP  elements instatiated"));
+//	ApplianceMemmoryHandler::responses->writeByte(total_element4BCP);
+//
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("How many elements in the array"));
+//	ApplianceMemmoryHandler::responses->writeByte(element4BCP_number);
 
 
 
@@ -610,12 +599,12 @@ bool MsgPackHandler::processMap() {
 	if (!setStatus(MSGPACK_STATE_COMMAND_ASSEMBLY))
 		return false;
 
-	ApplianceMemmoryHandler::responses->writeRaw(F("BYTES REMAINING:"));
-	ApplianceMemmoryHandler::responses->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
-
-
-
-	ApplianceMemmoryHandler::responses->writeRaw(F("Calling commands_handler init"));
+//	ApplianceMemmoryHandler::responses->writeRaw(F("BYTES REMAINING:"));
+//	ApplianceMemmoryHandler::responses->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
+//
+//
+//
+//	ApplianceMemmoryHandler::responses->writeRaw(F("Calling commands_handler init"));
 	ApplianceMemmoryHandler::commands_handler->initCommand();
 
 	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
