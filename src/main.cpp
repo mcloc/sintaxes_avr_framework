@@ -137,7 +137,7 @@ void loop() {
 
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpack_handler.processStream()){
-				sintaxes_lib.buzz( 3000, 200, 1);
+//				sintaxes_lib.buzz( 3000, 200, 1);
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
 			} else {
@@ -156,7 +156,7 @@ void loop() {
 	}
 
 
-	delay(2);
+	delay(20);
 }
 
 

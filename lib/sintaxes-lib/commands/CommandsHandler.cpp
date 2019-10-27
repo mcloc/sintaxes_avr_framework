@@ -25,10 +25,6 @@ CommandsHandler::CommandsHandler() {
 
 bool CommandsHandler::initCommand() {
 	command_struct->command = command_executing;
-//	for(uint8_t i=0; i < MAX_ACTUATORS; i++){
-//		if(command_struct->devices_element_list[i] != '\0' )
-//			free(command_struct->devices_element_list[i]);
-//	}
 	command_struct->total_devices_executed = 0;
 	return true;
 }
@@ -36,14 +32,6 @@ bool CommandsHandler::initCommand() {
 
 void CommandsHandler::reset() {
 	command_struct->command = '\0';
-//	for(uint8_t i=0; i < (MAX_MSGPACK_COMMAND_LOOP * sizeof(int *)); i++){
-//		free(command_struct->devices_element_list[i]);
-//	}
-//
-//	free(command_struct->devices_element_list);
-//	for(uint8_t i=0; i < MAX_ACTUATORS; i++){
-//		free(args_list[i]);
-//	}
 	command_struct->total_devices_executed = 0;
 
 
@@ -53,16 +41,16 @@ void CommandsHandler::reset() {
 
 bool CommandsHandler::assembleCommand() {
 //	command_struct->total_devices_executed = _4BCPContainer::map4BCP.size;
-	ApplianceMemmoryHandler::responses->writeRaw(F("assembleCommand() adding elements to command_struct"));
+//	ApplianceMemmoryHandler::responses->writeRaw(F("assembleCommand() adding elements to command_struct"));
 	for (uint8_t i = 0; i < _4BCPContainer::map4BCP.size; i++) {
 		command_struct->devices_element_list[i] = _4BCPContainer::map4BCP.elements[i];
 		//TODO this for is jsut to copy element_list to command_struct->devices_element_list  which will be used on execute
-		ApplianceMemmoryHandler::responses->writeRaw(F("KEY AND VALUES ON assembleCommand()"));
-		ApplianceMemmoryHandler::responses->write32bitByte(command_struct->devices_element_list[i]->key);
-		ApplianceMemmoryHandler::responses->write32bitByte(
-				command_struct->devices_element_list[i]->nested_elements[0]->value->bool_value);
-		ApplianceMemmoryHandler::responses->write32bitByte(
-				command_struct->devices_element_list[i]->nested_elements[1]->value->uint32_value);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("KEY AND VALUES ON assembleCommand()"));
+//		ApplianceMemmoryHandler::responses->write32bitByte(command_struct->devices_element_list[i]->key);
+//		ApplianceMemmoryHandler::responses->write32bitByte(
+//				command_struct->devices_element_list[i]->nested_elements[0]->value->bool_value);
+//		ApplianceMemmoryHandler::responses->write32bitByte(
+//				command_struct->devices_element_list[i]->nested_elements[1]->value->uint32_value);
 //		ApplianceMemmoryHandler::responses->write32bitByte(command_struct.devices_element_list[i]->key);
 	}
 

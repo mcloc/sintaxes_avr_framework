@@ -24,8 +24,8 @@ bool SetActuatorCommand::execute(){
 	}
 
 	for(uint8_t i = 0; i < ApplianceMemmoryHandler::machine_state->actuator_list_total;i++){
-		ApplianceMemmoryHandler::responses->writeRaw(F("actuator:"));
-		ApplianceMemmoryHandler::responses->write32bitByte((*ApplianceMemmoryHandler::machine_state->getActuator(i))->uuid);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("actuator:"));
+//		ApplianceMemmoryHandler::responses->write32bitByte((*ApplianceMemmoryHandler::machine_state->getActuator(i))->uuid);
 
 		if((*ApplianceMemmoryHandler::machine_state->getActuator(i))->uuid == device_key) {
 			(*ApplianceMemmoryHandler::machine_state->getActuator(i))->setNewState(state, state_duration );
@@ -42,10 +42,8 @@ bool SetActuatorCommand::execute(){
 				ApplianceMemmoryHandler::responses->writeRaw(F("CALL COMMMAND SET ACTUATOR AND MACHINE STATUS:"));
 				ApplianceMemmoryHandler::responses->writeRaw(F("******************************************************************************************************"));
 
-//			free(actuator);
 			break;
 		}
-//		free(actuator);
 	}
 
 	return true;
