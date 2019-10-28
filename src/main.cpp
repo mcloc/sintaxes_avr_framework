@@ -58,6 +58,22 @@ static DN20 dn20_4 = DN20(MODULE_ACTUATOR_DN20_1_4, RED_LED);
 static uint32_t total_requests = 0;
 
 void setup() {
+
+	//RESET THE DHT#1 SENSOR
+	digitalWrite(DHT1PIN, LOW); // sets output to gnd
+	pinMode(DHT1PIN, OUTPUT); // switches power to DHT on
+	delay(1200); // delay necessary after power up for DHT to stabilize
+	dht1.begin();
+
+	//RESET THE DHT#1 SENSOR
+	digitalWrite(DHT2PIN, LOW); // sets output to gnd
+	pinMode(DHT2PIN, OUTPUT); // switches power to DHT on
+	delay(1200); // delay necessary after power up for DHT to stabilize
+	dht2.begin();
+
+
+
+
 	ApplianceMemmoryHandler::container_4BCP = &container_4BCP;
 	ApplianceMemmoryHandler::localBuffers = &localBuffers;
 	ApplianceMemmoryHandler::machine_state = &machine_state;

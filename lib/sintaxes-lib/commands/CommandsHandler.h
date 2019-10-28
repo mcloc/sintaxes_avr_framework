@@ -46,10 +46,10 @@ public:
 //	bool assembleCommand(uint32_t command_key);
 	bool assembleCommand();
 
-	DHT *dht1;
-	DHT *dht2;
-	void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
-	void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
+//	DHT *dht1;
+//	DHT *dht2;
+//	void setDHT1(DHT *dht1, uint8_t dht_pin, uint8_t type);
+//	void setDHT2(DHT *dht2, uint8_t dht_pin, uint8_t type);
 //    void setActuator(uint32_t actuator_id, bool state, uint16_t duration);
 
 	char* getSensor1();
@@ -60,8 +60,8 @@ public:
 private:
 //	LocalBuffers *localBuffers;
 //	Responses *response;
-	DHT getDHT1();
-	DHT getDHT2();
+//	DHT getDHT1();
+//	DHT getDHT2();
 //	MachineState **machineState;
 	static CommandStruct *command_struct;
 //	_4BCPMapElement *args_list[];

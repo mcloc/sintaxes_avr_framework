@@ -77,27 +77,27 @@ bool CommandsHandler::get_data() {
 
 }
 
-void CommandsHandler::setDHT1(DHT *_dht1, uint8_t dht_pin, uint8_t type) {
-	dht1 = _dht1;
-	//RESET THE DHT#1 SENSOR
-	digitalWrite(dht_pin, LOW); // sets output to gnd
-	pinMode(dht_pin, OUTPUT); // switches power to DHT on
-	delay(1200); // delay necessary after power up for DHT to stabilize
-	(*dht1).begin();
-}
-void CommandsHandler::setDHT2(DHT *_dht2, uint8_t dht_pin, uint8_t type) {
-	dht2 = _dht2;
-	//RESET THE DHT#2 SENSOR
-	digitalWrite(dht_pin, LOW); // sets output to gnd
-	pinMode(dht_pin, OUTPUT); // switches power to DHT on
-	delay(1200); // delay necessary after power up for DHT to stabilize
-	(*dht2).begin();
-}
+//void CommandsHandler::setDHT1(DHT *_dht1, uint8_t dht_pin, uint8_t type) {
+//	dht1 = _dht1;
+//	//RESET THE DHT#1 SENSOR
+//	digitalWrite(dht_pin, LOW); // sets output to gnd
+//	pinMode(dht_pin, OUTPUT); // switches power to DHT on
+//	delay(1200); // delay necessary after power up for DHT to stabilize
+//	(*dht1).begin();
+//}
+//void CommandsHandler::setDHT2(DHT *_dht2, uint8_t dht_pin, uint8_t type) {
+//	dht2 = _dht2;
+//	//RESET THE DHT#2 SENSOR
+//	digitalWrite(dht_pin, LOW); // sets output to gnd
+//	pinMode(dht_pin, OUTPUT); // switches power to DHT on
+//	delay(1200); // delay necessary after power up for DHT to stabilize
+//	(*dht2).begin();
+//}
 
 char* CommandsHandler::getSensor1() {
-	float readed_value = (*dht1).readHumidity();
+	float readed_value = ApplianceMemmoryHandler::dht1->readHumidity();
 	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer1);
-	readed_value = (*dht1).readTemperature();
+	readed_value = ApplianceMemmoryHandler::dht1->readTemperature();
 	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer2);
 	snprintf_P(LocalBuffers::string_cpy_buffer,
 			sizeof(LocalBuffers::string_cpy_buffer),
@@ -107,9 +107,9 @@ char* CommandsHandler::getSensor1() {
 }
 
 char* CommandsHandler::getSensor2() {
-	float readed_value = (*dht2).readHumidity();
+	float readed_value = ApplianceMemmoryHandler::dht2->readHumidity();
 	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer1);
-	readed_value = (*dht2).readTemperature();
+	readed_value = ApplianceMemmoryHandler::dht2->readTemperature();
 	dtostrf(readed_value, 5, 2, LocalBuffers::float2char_buffer2);
 	snprintf_P(LocalBuffers::string_cpy_buffer,
 			sizeof(LocalBuffers::string_cpy_buffer),
