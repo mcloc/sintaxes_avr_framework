@@ -122,7 +122,7 @@ bool CommandsHandler::set_actuator() {
 
 	uint32_t device_key;
 
-//	ApplianceMemmoryHandler::responses->writeRaw(F("inside EXECUTE command:"));
+//	ApplianceMemmoryHandler::responses->writeRaw(F("inaaaide EXECUTE command:"));
 //	ApplianceMemmoryHandler::responses->write32bitByte(command_executing);
 	while (command_struct->total_devices_executed < _4BCPContainer::map4BCP.size) {
 
