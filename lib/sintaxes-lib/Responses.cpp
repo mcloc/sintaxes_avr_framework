@@ -12,6 +12,8 @@ typedef const __FlashStringHelper* FSH;
 #include <defines/errors_code.h>
 #include <memory/ApplianceMemmoryHandler.h>
 
+EthernetClient *Responses::client;
+
 Responses::Responses(){
 	response_json_initiated = false;
 }
@@ -23,6 +25,16 @@ void Responses::setClient(EthernetClient *_client){
 //void Responses::setReponseJsonInitiated(){
 //	response_json_initiated = true;
 //}
+
+
+void Responses::writeTotalRequests(uint32_t total, uint32_t time_processing, uint32_t uptime){
+	if(response_json_initiated)
+		client->print(FSH(json_module_comma_separator));
+	else
+		response_json_initiated = true;
+	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_total_requests), total, time_processing, uptime);
+	client->print(LocalBuffers::string_cpy_buffer);
+}
 
 void Responses::writeProcess32bitwordERROR(){
 	if(response_json_initiated)

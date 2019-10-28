@@ -22,9 +22,9 @@ public:
 	bool init(Stream * _stream, int size);
 	bool processStream();
 	void reset();
-
+	static Stream *stream;
 private:
-	Stream *stream;
+
 //	Responses *response;
 //	CommandsHandler *commands_handler;
 //	SintaxesLib *sintaxesLib;
@@ -66,6 +66,7 @@ private:
 	uint8_t total_element4BCP = 0;
 	uint8_t total_elementValue4BCP = 0;
 	uint8_t elements_remaining = MAX_MSGPACK_4BCP_ELEMENTS;
+	bool no_args = false;
 
 
 

@@ -66,6 +66,9 @@ MSGPACK_STATE_COMMAND_ASSEMBLY,
 MSGPACK_STATE_COMMAND_EXECUTING,
 MSGPACK_STATE_COMMAND_FINISHED };
 
+Stream *MsgPackHandler::stream;
+
+
 /**
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
@@ -104,8 +107,8 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 //	machine_state = ApplianceMemmoryHandler::machine_state;
 
 //IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
-	ApplianceMemmoryHandler::responses->writeModule200DataHeaders();
-	ApplianceMemmoryHandler::responses->initJsonResponse();
+//	ApplianceMemmoryHandler::responses->writeModule200DataHeaders();
+//	ApplianceMemmoryHandler::responses->initJsonResponse();
 	response_headers_already_sent = true;
 	response_headers_code = 200;
 
@@ -146,10 +149,10 @@ bool MsgPackHandler::processStream() {
 			|| status != MSGPACK_STATE_COMMAND_FINISHED) {
 		//Get next byte on buffer
 		uint8_t _byte = next();
-		ApplianceMemmoryHandler::responses->writeRaw(F("processStream nextByte:"));
-		ApplianceMemmoryHandler::responses->writeByte(_byte);
-		ApplianceMemmoryHandler::responses->writeRaw(F("processStream status:"));
-		ApplianceMemmoryHandler::responses->writeByte(status);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("processStream nextByte:"));
+//		ApplianceMemmoryHandler::responses->writeByte(_byte);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("processStream status:"));
+//		ApplianceMemmoryHandler::responses->writeByte(status);
 
 		uint8_t array_size = 0;
 		uint8_t map_elements_size = 0;
@@ -184,12 +187,12 @@ bool MsgPackHandler::processStream() {
 				return false;
 			}
 
-			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling assembleMap() ok. STATUS::"));
-			ApplianceMemmoryHandler::responses->writeByte(status);
+//			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling assembleMap() ok. STATUS::"));
+//			ApplianceMemmoryHandler::responses->writeByte(status);
 			continue;
 
 		} else if (buffer_bytes_remaining == 0 || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
-			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling processMap():"));
+//			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling processMap():"));
 			if (!processMap()) {
 				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
@@ -197,8 +200,8 @@ bool MsgPackHandler::processStream() {
 			}
 
 		} else {
-			ApplianceMemmoryHandler::responses->writeRaw(F("processStream else:"));
-			return false;
+//			ApplianceMemmoryHandler::responses->writeRaw(F("processStream else:"));
+//			return false;
 			error_code = ERROR_MAL_FORMED_MSGPCK;
 			ApplianceMemmoryHandler::responses->write4BCPMalFormedRequest(_byte,
 					status);
@@ -352,9 +355,13 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		//SET Command with first element of MAP which is mandatory to be COMMAND_FLAG WITH VALUE AS COMMAND_TO_EXECUTE
 		if (status == MSGPACK_STATE_BEGIN) {
 			//process the first tuple (COMMAND SET)
-			processStatusMSGPACK_STATE_BEGIN();
+			if(!processStatusMSGPACK_STATE_BEGIN()){
+				return false;
+			}
 			//Two elements from MAP goes on commandHeader, The COMMAND_FLAG and the COMMAND itself.
 			map_elements_size--;
+//			if(no_args)
+//				break;
 			continue;
 		}
 
@@ -379,10 +386,17 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			//FIRST DEICE ARGUMENT KEY
 			_4BCPContainer::map4BCP.elements[element4BCP_number] = (*e);
 			//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
-			if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
-				return false;
+			if (!no_args) {
+				if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+					return false;
 
-			_4BCPContainer::map4BCP.size++;
+				_4BCPContainer::map4BCP.size++;
+			} else {
+				if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+//					return false;
+					break;
+			}
+
 
 //			 ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND_SET element in MainMAP"));
 //			 ApplianceMemmoryHandler::responses->write32bitByte(_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
@@ -400,7 +414,7 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 		 * must get the key of device (actuator) and dispach to WAITING ARGS to set nested elements
 		 *
 		 */
-		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS) {
+		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS && !no_args) {
 			_byte = getNextType();
 
 			// Check always if it's a map to allocate the nested elements
@@ -491,6 +505,30 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 			continue;
 
 		}
+
+
+
+		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS && no_args) {
+			_4BCPMapElement **e = processStatusNextElement();
+
+			if ((*e)->key == MODULE_COMMMAND_EXECUTE_FLAG) {
+				_byte = getNextType();
+				if (_byte != MSGPACK_TRUE) {
+					error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
+					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPExecuteFlagError();
+					return false;
+				}
+
+				if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+					return false;
+
+				//DONE ALL DEVICES AND ARGS ARE SET
+				return true;
+			}
+		}
+
+
+
 		/*****************************************************************************/
 
 //		//DEBUG3
@@ -501,12 +539,12 @@ bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
 
 	}
 
-	ApplianceMemmoryHandler::responses->writeRaw(
-			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
-	ApplianceMemmoryHandler::responses->writeRaw(F("map4BCP size:"));
-	ApplianceMemmoryHandler::responses->writeByte(_4BCPContainer::map4BCP.size);
-	ApplianceMemmoryHandler::responses->writeRaw(
-			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
+//	ApplianceMemmoryHandler::responses->writeRaw(F("map4BCP size:"));
+//	ApplianceMemmoryHandler::responses->writeByte(_4BCPContainer::map4BCP.size);
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 
 	return true;
 }
@@ -589,7 +627,7 @@ bool MsgPackHandler::processMap() {
 				status, next_status, prev_status);
 		return false;
 	}
-	if (!(_4BCPContainer::map4BCP.size > 0)) {
+	if (!(_4BCPContainer::map4BCP.size > 0) && no_args == false) {
 		//TODO:
 		error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
 		ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPZeroElementMap();
@@ -613,7 +651,9 @@ bool MsgPackHandler::processMap() {
 
 //	_4BCPMapElement ** elements_ptr = & _4BCPContainer::map4BCP.elements;
 	//process all devices for this command;
-	ApplianceMemmoryHandler::commands_handler->assembleCommand();
+	if(!no_args)
+		ApplianceMemmoryHandler::commands_handler->assembleCommand();
+
 	if (!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
 		return false;
 
@@ -1240,9 +1280,16 @@ bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 
 	ApplianceMemmoryHandler::commands_handler->command_executing = _32bitword;
 
-	ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND TO EXECUTE:"));
-	ApplianceMemmoryHandler::responses->write32bitByte(
-			ApplianceMemmoryHandler::commands_handler->command_executing);
+//	ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND TO EXECUTE:"));
+//	ApplianceMemmoryHandler::responses->write32bitByte(
+//			ApplianceMemmoryHandler::commands_handler->command_executing);
+
+	if(ApplianceMemmoryHandler::commands_handler->command_executing == MODULE_COMMMAND_GET_DATA) {
+		no_args = true;
+//		if (!setStatus(MSGPACK_STATE_COMMAND_SET))
+//			return true;
+	}
+
 
 	if (!setStatus(MSGPACK_STATE_COMMAND_SET))
 		return false;
@@ -1272,8 +1319,8 @@ uint8_t MsgPackHandler::next() {
 	buffer_bytes_remaining--;
 	if (buffer_bytes_remaining < 0) {
 		buffer_bytes_remaining = 0;
-		ApplianceMemmoryHandler::responses->writeRaw(
-				F("There is no bytes left on buffer to processs."));
+//		ApplianceMemmoryHandler::responses->writeRaw(
+//				F("There is no bytes left on buffer to processs."));
 		return '\0';
 	}
 
@@ -1377,6 +1424,14 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow,
 //			 ApplianceMemmoryHandler::responses->writeByte(next_status); //DEBUG
 
 			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
+//			if (status == MSGPACK_STATE_COMMAND_SET
+//					&& prev_status == MSGPACK_STATE_COMMAND_SET)
+//				return true;
+
+			if (status == MSGPACK_STATE_COMMAND_ARGS_READY
+					&& prev_status == MSGPACK_STATE_COMMAND_SET)
+				return true;
+
 			if (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
 					&& prev_status == MSGPACK_STATE_COMMAND_SET)
 				return true;
@@ -1465,6 +1520,7 @@ bool MsgPackHandler::setStatus(uint8_t _status) {
 
 void MsgPackHandler::reset() {
 	status = MSGPACK_STATE_IDLE;
+	no_args = false;
 	prev_status = '\0';
 	next_status = '\0';
 

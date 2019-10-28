@@ -15,6 +15,7 @@ class Responses{
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
         void writeModule500DataHeaders();
+        void writeTotalRequests(uint32_t total, uint32_t time_processing, uint32_t uptime);
 
         void sendFullStatusData(char *sensor1_data, char *sensor2_data);
         void initJsonResponse();
@@ -64,11 +65,11 @@ class Responses{
 //        void writeDEBUG_CHAR(unsigned long byte);
         int	error_MAX_SIZE_REQUEST_SIZE();
         void setReponseJsonInitiated();
-
+        static EthernetClient *client;
 
     
     private:
-        EthernetClient *client;
+
         
     	bool response_json_initiated = false;
     	char response_json_finish_objects[];

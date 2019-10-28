@@ -29,18 +29,18 @@ bool SetActuatorCommand::execute(){
 
 		if((*ApplianceMemmoryHandler::machine_state->getActuator(i))->uuid == device_key) {
 			(*ApplianceMemmoryHandler::machine_state->getActuator(i))->setNewState(state, state_duration );
-			ApplianceMemmoryHandler::responses->writeRaw(F("****************************** R E A L   E X E C U T I O N   V A L U E S *****************************"));
-				ApplianceMemmoryHandler::responses->writeRaw(F("INSIDE SetActuatorExecute.... bring to here the set of real actuator in machine state:"));
-				ApplianceMemmoryHandler::responses->writeRaw(F("command to execute:"));
-				ApplianceMemmoryHandler::responses->write32bitByte(command);
-				ApplianceMemmoryHandler::responses->writeRaw(F("command devuce_key::"));
-				ApplianceMemmoryHandler::responses->write32bitByte(device_key);
-				ApplianceMemmoryHandler::responses->writeRaw(F("command state:"));
-				ApplianceMemmoryHandler::responses->writeByte(state);
-				ApplianceMemmoryHandler::responses->writeRaw(F("command duration:"));
-				ApplianceMemmoryHandler::responses->write32bitByte(state_duration);
-				ApplianceMemmoryHandler::responses->writeRaw(F("CALL COMMMAND SET ACTUATOR AND MACHINE STATUS:"));
-				ApplianceMemmoryHandler::responses->writeRaw(F("******************************************************************************************************"));
+//			ApplianceMemmoryHandler::responses->writeRaw(F("****************************** R E A L   E X E C U T I O N   V A L U E S *****************************"));
+//				ApplianceMemmoryHandler::responses->writeRaw(F("INSIDE SetActuatorExecute.... bring to here the set of real actuator in machine state:"));
+//				ApplianceMemmoryHandler::responses->writeRaw(F("command to execute:"));
+//				ApplianceMemmoryHandler::responses->write32bitByte(command);
+//				ApplianceMemmoryHandler::responses->writeRaw(F("command devuce_key::"));
+//				ApplianceMemmoryHandler::responses->write32bitByte(device_key);
+//				ApplianceMemmoryHandler::responses->writeRaw(F("command state:"));
+//				ApplianceMemmoryHandler::responses->writeByte(state);
+//				ApplianceMemmoryHandler::responses->writeRaw(F("command duration:"));
+//				ApplianceMemmoryHandler::responses->write32bitByte(state_duration);
+//				ApplianceMemmoryHandler::responses->writeRaw(F("CALL COMMMAND SET ACTUATOR AND MACHINE STATUS:"));
+//				ApplianceMemmoryHandler::responses->writeRaw(F("******************************************************************************************************"));
 
 			break;
 		}

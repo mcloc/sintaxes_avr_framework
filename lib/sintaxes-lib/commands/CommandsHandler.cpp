@@ -137,8 +137,8 @@ bool CommandsHandler::set_actuator() {
 
 		SetActuatorCommand actuator_command = SetActuatorCommand(device_key);
 //
-		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj()"));
-		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.device_key);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("device_key just after created SetcActuatorObj()"));
+//		ApplianceMemmoryHandler::responses->write32bitByte(actuator_command.device_key);
 
 
 		//The problem is in machoneState; //FIXME:

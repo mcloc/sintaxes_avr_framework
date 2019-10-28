@@ -19,11 +19,12 @@
 #include <4BCProtocol/4BCPContainer.h>
 #include <commands/CommandsHandler.h>
 #include <memory/ApplianceMemmoryHandler.h>
-
+#include <stdlib.h>
 
 
 // **** ETHERNET SETTING ****
 static EthernetServer server = EthernetServer(LISTENPORT);
+static EthernetClient *etherClient = (EthernetClient*)malloc(sizeof(EthernetClient));
 const uint8_t mac[6] = { MACADDRESS };
 
 //DEBUG DHCPH is commented for debug proposes uncomment it for production
@@ -48,12 +49,13 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 static DN20 dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
 static DN20 dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
 static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
+static DN20 dn20_4 = DN20(MODULE_ACTUATOR_DN20_1_4, RED_LED);
 
 //Just to initializate, we will use the pointer only no the object
 //static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
 
 
-
+static uint32_t total_requests = 0;
 
 void setup() {
 	ApplianceMemmoryHandler::container_4BCP = &container_4BCP;
@@ -109,9 +111,13 @@ void setup() {
 void loop() {
 	size_t size;
 	while (EthernetClient client = server.available()) {
+		etherClient = &client;
+		total_requests++;
+		uint32_t start = millis();
 		sintaxes_lib.buzz( 8000, 80, 1);
-		while ((size = client.available()) > 0) {
-			responses.setClient(&client);
+		while ((size = etherClient->available()) > 0) {
+//			responses.setClient(etherClient);
+			Responses::client = etherClient;
 			if(size > MAX_SIZE_ALLOWED_REQUEST){
 				responses.writeError_MAX_SIZE_REQUEST();
 				sintaxes_lib.buzz( 500, 200, 3);
@@ -128,7 +134,7 @@ void loop() {
 
 			//MsgPackHandler: deserialize 4Bytes Command Protocol (4BCP) over the MessagePack Messages
 			//[check 4BCP specs Documentation for more information]
-			if(!msgpack_handler.init((Stream *) &client, size)){
+			if(!msgpack_handler.init((Stream *) etherClient, size)){
 				responses.writeError_on_INIT();
 				sintaxes_lib.buzz( 500, 200, 3);
 				//TODO:roolback machine state from SD Card
@@ -137,6 +143,8 @@ void loop() {
 
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpack_handler.processStream()){
+				ApplianceMemmoryHandler::responses->writeTotalRequests(total_requests, (millis() - start), (millis()/1000/60));
+//				ApplianceMemmoryHandler::responses->closeJsonResponse();
 //				sintaxes_lib.buzz( 3000, 200, 1);
 				//TODO:save the new state on SD Card and log executions, and a break;
 				//break;
@@ -150,12 +158,10 @@ void loop() {
 //			client.write(LocalBuffers::client_request_buffer, size);
 		}
 
-		client.flush();
-		client.stop();
+		etherClient->flush();
+		etherClient->stop();
 		ApplianceMemmoryHandler::newLoop();
 	}
-
-
 	delay(20);
 }
 

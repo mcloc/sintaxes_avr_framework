@@ -16,6 +16,7 @@
     const char header_server[] PROGMEM = "Server: AVR-Sintaxes-module-1";
     const char header_connection[] PROGMEM = "Connection: close";
 
+    const char json_total_requests[] PROGMEM = "{\"requests\":%lu, \"processing time\":%lu, \"uptime\":%lu}";
     const char json_module_braces_open[] PROGMEM = "{";
     const char json_module_braces_close[] PROGMEM = "}";
     const char json_module_brackets_open[] PROGMEM = "[";
@@ -51,7 +52,7 @@
     const char ERROR_REQUEST_MAX_LENGHT_STR[] PROGMEM = "max request length achieved.";
     const char ERROR_INIT_MSGPACK_STR[] PROGMEM = "Error on INIT class MsgPackaHandler";
     const char ERROR_MAL_FORMED_REQUEST_STR[] PROGMEM = "BAD Request, request must not have headers, must be straight raw msgpack message. It must follow MessagePack with 4Bytes Commands Protocol (4BCP).";
-    const char ERROR_MAL_FORMATED_MSGPCK_STR[] PROGMEM = "malformed msgpack or 4byteCommandProtocol";
+    const char ERROR_MAL_FORMATED_MSGPCK_STR[] PROGMEM = "malformed msgpack ojson_module_errorr 4byteCommandProtocol";
     const char ERROR_32BIT_PROCESSING_STR[] PROGMEM = "error trying to assembly 32bit word";
     const char ERROR_32BIT_RESETING_STR[] PROGMEM = "trying to reset _32bitword with Machine Status set as MSGPACK_STATE_WORKING_32BIT. Check your Program Flow, maybe you misunderstood STATUS Chain";
 
@@ -71,5 +72,5 @@
     const char ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS_STR[] PROGMEM = "4BCP error: No elements found in arguments map";
     const char ERROR_COMMAND_EXECUTION_FAILED_STR[] PROGMEM = "Execution 4BCP Command failed, backing to old state";
     const char ERROR_COMMAND_ARGS_MISSING_STR[] PROGMEM = "Arguments missing for execution command. Backing to old state";
-    const char ERROR_PROCESSING_STREAM_STR[] PROGMEM = "Error on processingStream(). Rollback to previous state";
+    const char ERROR_PROCESSING_STREAM_STR[] PROGMEM = "Error on processingStream(). Rollback to previous state---------------------";
 #endif
