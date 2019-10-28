@@ -10,11 +10,12 @@ class Responses;
 
 class Responses{
     public:
-        Responses(LocalBuffers *_local_buffers);
+        Responses();
         void setClient(EthernetClient *client);
         void writeModuleDataResponse();
         void writeModule200DataHeaders();
         void writeModule500DataHeaders();
+        void writeTotalRequests(uint32_t total, uint32_t time_processing, uint32_t uptime);
 
         void sendFullStatusData(char *sensor1_data, char *sensor2_data);
         void initJsonResponse();
@@ -26,19 +27,29 @@ class Responses{
         void writeProcess32bitwordERROR();
         void writeReseting32bitwordERROR();
         void write4BCPWordNotMappedERROR();
+        void write4BCPCommandExecutionERROR();
+        void write4BCPCommandArgsMissing();
         void write4BCPUnknowCommand();
         void writeErrorMsgPack4BCPElementHasNoKey(uint8_t byte);
         void writeErrorMsgPack4BCPElementKeyProcessing();
         void writeErrorMsgPack4BCPExecuteFlagError();
+        void writeErrorMsgPack4BCPHasNoCommandFlag();
+        void write4BCPMalFormedRequest(uint8_t byte,uint8_t status);
+        void write4BCPNestedElementsOutOfBound();
+
         void write4BCPUnknowError(uint8_t prev, uint8_t status, uint8_t next);
         void writeErrorMsgPackHasNotFinishedStatus();
+        void writeErrorMsgPack4BCPZeroElementMap();
         void writeMsgPackError(unsigned long  _word);
         void writeMsgPackUnknowError();
+        void writeMsgPackUnimplemented(uint8_t _byte);
+        void writeMsgPack4BCPMethodUnimplemented(uint32_t _byte);
         void writeMsgPackUnknownType(uint8_t type);
         void writeMsgPackProcessingFlowError();
         void writeMsgPackProcessingFlowError(uint8_t status, uint8_t next, uint8_t prev);
         void writeMsgPackProcessingFlowStatus(uint8_t status, uint8_t next, uint8_t prev);
         void writeMsgPackProcessingMap(uint8_t status, uint8_t next, uint8_t prev);
+        void writeErrorProcessingStream();
         void writeErrorMsgPackHasFinishedWithBytes();
 
         void writeSTXError();
@@ -54,12 +65,11 @@ class Responses{
 //        void writeDEBUG_CHAR(unsigned long byte);
         int	error_MAX_SIZE_REQUEST_SIZE();
         void setReponseJsonInitiated();
-
+        static EthernetClient *client;
 
     
     private:
-        LocalBuffers *localBuffers;
-        EthernetClient *client;
+
         
     	bool response_json_initiated = false;
     	char response_json_finish_objects[];

@@ -27,8 +27,8 @@
  *
  */
 
-#include <4BCProtocol/MsgPack4BCPMap.h>
-#include <4BCProtocol/MsgPack4BCPMapElement.h>
+#include <memory/ApplianceMemmoryHandler.h>
+#include <4BCProtocol/4BCPContainer.h>
 #include <Arduino.h>
 #include <defines/commands_map.h>
 #include <defines/devices.h>
@@ -36,48 +36,49 @@
 #include <defines/module_string.h>
 #include <defines/msgpack_defines.h>
 #include <msgpack/MsgPackDataTypes.h>
-#include <msgpack/MsgPackHandler.h>
-
-
+#include <MachineState.h>
+#include <MsgPackHandler.h>
+#include <commands/CommandBase.h>
+#include <stdlib.h>
 //TODO: sintax-framework namespace
 //namespace sintax-iot-framework{
 //
 //}
 
-
-
 //static class members must be declared also in cpp.
-static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE] PROGMEM = {
-		MSGPACK_STATE_IDLE,
-		MSGPACK_STATE_BEGIN,
-		MSGPACK_STATE_COMMAND_SET,
-		MSGPACK_STATE_COMMAND_SETTING_ARGS,
-		MSGPACK_STATE_COMMAND_WATING_ARG_VALUE,
-		MSGPACK_STATE_COMMAND_ARGS_READY,
-		MSGPACK_STATE_COMMAND_EXECUTING,
-		MSGPACK_STATE_COMMAND_EXECUTED,
-		MSGPACK_STATE_COMMAND_FINISHED
-	};
+static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow[MSGPACK4BCPProcessFlow_SIZE] PROGMEM
+= {
+MSGPACK_STATE_IDLE,
+MSGPACK_STATE_BEGIN,
+MSGPACK_STATE_COMMAND_SET,
+MSGPACK_STATE_COMMAND_SETTING_ARGS,
+MSGPACK_STATE_COMMAND_ARGS_READY,
+MSGPACK_STATE_COMMAND_ASSEMBLY,
+MSGPACK_STATE_COMMAND_EXECUTING,
+MSGPACK_STATE_COMMAND_FINISHED };
 
-static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE] PROGMEM = {
-		MSGPACK_STATE_IDLE,
-		MSGPACK_STATE_BEGIN,
-		MSGPACK_STATE_COMMAND_SET,
-		MSGPACK_STATE_COMMAND_EXECUTING,
-		MSGPACK_STATE_COMMAND_EXECUTED,
-		MSGPACK_STATE_COMMAND_FINISHED
-	};
+static const uint8_t MsgPackHandler::MSGPACK4BCPProcessFlow2[MSGPACK4BCPProcessFlow2_SIZE] PROGMEM
+= {
+MSGPACK_STATE_IDLE,
+MSGPACK_STATE_BEGIN,
+MSGPACK_STATE_COMMAND_SET,
+MSGPACK_STATE_COMMAND_ASSEMBLY,
+MSGPACK_STATE_COMMAND_EXECUTING,
+MSGPACK_STATE_COMMAND_FINISHED };
+
+Stream *MsgPackHandler::stream;
+
 
 /**
  * we will need Response Object to write on TCP client JSON objects and Commands to execute them on the fly.
  */
-MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, SintaxesLib *_sintaxes_lib) {
-	response = _responses;
-	commands = _commands;
-	sintaxesLib = _sintaxes_lib;
+MsgPackHandler::MsgPackHandler() {
+//	response = ApplianceMemmoryHandler::responses;
+//	commands_handler = ApplianceMemmoryHandler::commands_handler;
+//	sintaxesLib = ApplianceMemmoryHandler::sintaxes_lib;
+
 	setStatus(MSGPACK_STATE_IDLE);
 }
-
 
 /**
  * reset module communication and get the request buffer. The size of the buffer is defined in
@@ -87,31 +88,32 @@ MsgPackHandler::MsgPackHandler(Responses *_responses, Commands *_commands, Sinta
  * in sintaxes-framework-defines.h
  */
 bool MsgPackHandler::init(Stream *_stream, int size) {
-	if(!setStatus(MSGPACK_STATE_BEGIN)) {
-		response->writeError_on_INIT();
+	if (!setStatus(MSGPACK_STATE_BEGIN)) {
+		ApplianceMemmoryHandler::responses->writeError_on_INIT();
 		response_headers_already_sent = true;
 		response_headers_code = 500;
 		return false;
 	}
 
 	reset_32bit_processing();
+
 	buffer_position = 0;
 	stream = _stream;
-	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer, size);
+
+	buffer_lenght = stream->readBytes(LocalBuffers::client_request_buffer,
+			size);
 	buffer_bytes_remaining = buffer_lenght;
 
-	map = MsgPack4BCPMap();
+//	machine_state = ApplianceMemmoryHandler::machine_state;
 
-	//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
-	response->writeModule200DataHeaders();
-	response->initJsonResponse();
+//IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
+//	ApplianceMemmoryHandler::responses->writeModule200DataHeaders();
+//	ApplianceMemmoryHandler::responses->initJsonResponse();
 	response_headers_already_sent = true;
 	response_headers_code = 200;
 
 	return true;
 }
-
-
 
 /**
  * MAIN FUNCTION ON THE PROCESSING, IS THE DESERALIZATION
@@ -143,11 +145,14 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
  */
 
 bool MsgPackHandler::processStream() {
-	while (buffer_bytes_remaining > 0) {
+	while (buffer_bytes_remaining > 0
+			|| status != MSGPACK_STATE_COMMAND_FINISHED) {
 		//Get next byte on buffer
 		uint8_t _byte = next();
-//		response->writeByte(_byte);
-
+//		ApplianceMemmoryHandler::responses->writeRaw(F("processStream nextByte:"));
+//		ApplianceMemmoryHandler::responses->writeByte(_byte);
+//		ApplianceMemmoryHandler::responses->writeRaw(F("processStream status:"));
+//		ApplianceMemmoryHandler::responses->writeByte(status);
 
 		uint8_t array_size = 0;
 		uint8_t map_elements_size = 0;
@@ -158,15 +163,15 @@ bool MsgPackHandler::processStream() {
 		 */
 		//THIS IS AN ARRAY - [COMMANDS FRAMEWORK] STATUS ALREAY PROCESSING
 		array_size = isArray(_byte);
-		if( array_size > 0){
+		if (array_size > 0) {
 			//TODO: not implemented
-//			error_code = ERROR_MSGPACK_4BCP_NOT_IMPLEMENTED;
-//			response->writeErrorMsgPackHasFinishedWithBytes();
-			response->closeJsonResponse();
+			error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+			ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+					_byte);
+			ApplianceMemmoryHandler::responses->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
 		}
-
 
 		/**
 		 * 4BCP determines that it's message should be encapsulated inside a msgpack MAP (0x80 ~ 0x8f)
@@ -175,28 +180,35 @@ bool MsgPackHandler::processStream() {
 		 * on top of msgpack protocol
 		 */
 		map_elements_size = isMap(_byte);
-		if(map_elements_size > 0) {
-			if(!assembleMap(_byte, map_elements_size)) {
-				response->closeJsonResponse();
+		if (map_elements_size > 0) {
+			if (!assembleMap(_byte, map_elements_size)) {
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
 
-			if(!processMap()) {
-				response->closeJsonResponse();
+//			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling assembleMap() ok. STATUS::"));
+//			ApplianceMemmoryHandler::responses->writeByte(status);
+			continue;
+
+		} else if (buffer_bytes_remaining == 0 || status == MSGPACK_STATE_COMMAND_ARGS_READY) {
+//			ApplianceMemmoryHandler::responses->writeRaw(F("processStream calling processMap():"));
+			if (!processMap()) {
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-
 
 		} else {
+//			ApplianceMemmoryHandler::responses->writeRaw(F("processStream else:"));
+//			return false;
 			error_code = ERROR_MAL_FORMED_MSGPCK;
-//			response->writeError
-			response->closeJsonResponse();
+			ApplianceMemmoryHandler::responses->write4BCPMalFormedRequest(_byte,
+					status);
+			ApplianceMemmoryHandler::responses->closeJsonResponse();
 			setStatus(MSGPACK_STATE_IDLE);
 			return false;
 		}
-
 
 		/**
 		 * ON COMMAND FRAMEWORK PROTOCOL WILL ALWAYS BE LOOKING FOR 32BIT UNSINED LONG
@@ -212,20 +224,22 @@ bool MsgPackHandler::processStream() {
 		 * 		for the previous state guarded on SD card
 		 */
 //		if(!processByte(_byte)) {
-//			response->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
+//			 ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowStatus(status, next_status, prev_status);//DEBUG
 //			return false;
 //		}
-
-		if(status == MSGPACK_STATE_COMMAND_EXECUTED){
-			if(buffer_bytes_remaining > 0){
-				error_code = ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
-				response->writeErrorMsgPackHasFinishedWithBytes();
-				response->closeJsonResponse();
+		if (status == MSGPACK_STATE_COMMAND_EXECUTING) {
+			if (buffer_bytes_remaining > 0) {
+				error_code =
+				ERROR_MSGPACK_4BCP_IN_FINISHED_STATE_WITH_REMAINING_BYTES;
+				ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				setStatus(MSGPACK_STATE_IDLE);
 				return false;
 			}
-			if(!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
+			if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED)) {
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
 				return false;
+			}
 			break;
 		}
 	}
@@ -236,34 +250,30 @@ bool MsgPackHandler::processStream() {
 
 	//return after execution of each command with status and guard the new machine state on SD Card
 	//we will use SD Card as log. So must implement methods for getting this log if requested
-	if(status == MSGPACK_STATE_COMMAND_FINISHED) {
-		if(!setStatus(MSGPACK_STATE_IDLE)) {
-			response->closeJsonResponse();
+	if (status == MSGPACK_STATE_COMMAND_FINISHED) {
+		if (!setStatus(MSGPACK_STATE_IDLE)) {
+			ApplianceMemmoryHandler::responses->closeJsonResponse();
 			return false;
 		}
 
 		return true;
-	} else{
+	} else {
 		error_code = ERROR_MSGPACK_NOT_IN_FINISHED_STATE;
-		response->writeErrorMsgPackHasNotFinishedStatus();
-		response->closeJsonResponse();
+		ApplianceMemmoryHandler::responses->writeErrorMsgPackHasNotFinishedStatus();
+		ApplianceMemmoryHandler::responses->closeJsonResponse();
 		setStatus(MSGPACK_STATE_IDLE);
 		return false;
 	}
 }
 
-
-
 //		case MODULE_COMMMAND_EXECUTE_FLAG: {
 //			uint8_t _byte = next();
 //			if(!_byte == MSGPACK_TRUE){
 //				error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
-//				response->writeErrorMsgPack4BCPExecuteFlagError();
+//				 ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPExecuteFlagError();
 //				setStatus(MSGPACK_STATE_COMMAND_FINISHED);
 //				return false;
 //			}
-
-
 
 /**
  *	processMap() is a state machine based processor. Every package must be encoded with 4BCP protocol which defines
@@ -332,378 +342,993 @@ bool MsgPackHandler::processStream() {
  * Be aware that we still have to process the msgpack protocol for arguments values which can be any of msgpack types.
  *
  */
-bool MsgPackHandler::assembleMap(uint8_t _byte, int map_elements_size) {
-
-	uint8_t element_number = 0;
-
-	//size of the first msgpack map which is our base for 4BCP processing
-	map.setSize(map_elements_size);
-
+bool MsgPackHandler::assembleMap(uint8_t _byte, uint8_t map_elements_size) {
+	uint8_t counter = 0;
 
 	//While there're tuples to process
-	while(map_elements_size > 0) {
+	while (status != MSGPACK_STATE_COMMAND_ARGS_READY
+			|| counter > MAX_MSGPACK_4BCP_ELEMENTS) {
 
+		/******************************************************************************
+		 * status  MSGPACK_STATE_BEGIN time to set command
+		 */
 		//SET Command with first element of MAP which is mandatory to be COMMAND_FLAG WITH VALUE AS COMMAND_TO_EXECUTE
-		if(status == MSGPACK_STATE_BEGIN) {
+		if (status == MSGPACK_STATE_BEGIN) {
 			//process the first tuple (COMMAND SET)
-			processCommandHeader(_byte);
+			if(!processStatusMSGPACK_STATE_BEGIN()){
+				return false;
+			}
+			//Two elements from MAP goes on commandHeader, The COMMAND_FLAG and the COMMAND itself.
 			map_elements_size--;
+//			if(no_args)
+//				break;
 			continue;
 		}
+
+
+
+		/*****************************************************************************/
 
 		//This will be the first tuple after COMMAND SET (command definition tuples, like devices and devices arguments)
 		//p.e. device MODULE_ACTUATOR_DN20_1_1 is a element which contains for example 2 nested elements, one for status (ON/OFF)
 		//and other for time period of the state. Each loop in this while can be considered a device that will be set or read.
-		MsgPack4BCPMapElement element;
-
+//		_4BCPMapElement *element;
+		/******************************************************************************
+		 * status  MSGPACK_STATE_COMMAND_SET time to set arguments and it's values
+		 */
 		//Time to get ARGS for COMMAND. as 4BCP explicit, beginning with the COMMAND_ARG_TYPE it self, it can be an actuator for instance
-		if(status == MSGPACK_STATE_COMMAND_SET) {
-			//This should be 4BCP key (0xce)
-			_byte = getNextType();
+		if (status == MSGPACK_STATE_COMMAND_SET) {
 
-			//get uint32_t key for this element
-			if(!assemble32bitByte(_byte))
-				return false;
+			_4BCPMapElement **e = processStatusNextElement();
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND_SET element key before putting in MainMAP"));
+//			 ApplianceMemmoryHandler::responses->write32bitByte((*e)->key);
 
-			//Check if word if mapped by this module
-			if(checkModulesMap()){
-				//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
-				element.setKey(_32bitword);
-				//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
-				if(!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+			//FIRST DEICE ARGUMENT KEY
+			_4BCPContainer::map4BCP.elements[element4BCP_number] = (*e);
+			//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
+			if (!no_args) {
+				if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
 					return false;
+
+				_4BCPContainer::map4BCP.size++;
+			} else {
+				if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+//					return false;
+					break;
 			}
+
+
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND_SET element in MainMAP"));
+//			 ApplianceMemmoryHandler::responses->write32bitByte(_4BCPContainer::map4BCP.elements[element4BCP_number]->key);
+
+			// ELEMENT is READY to RECEVICE ARGS status = MSGPACK_STATE_COMMAND_SETTING_ARGS
+			continue;
 			//we can't continue we are setting the element and we must set the element values
 		}
+		/*****************************************************************************/
 
-		//We already have the key on tuple for executing the command
-		if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS ){
-			//get next msgpack data type which should be a MAP of arguments value
+		/******************************************************************************
+		 * status  MSGPACK_STATE_COMMAND_SETTING_ARGS must hae while status different commands args ready
+		 *
+		 *
+		 * must get the key of device (actuator) and dispach to WAITING ARGS to set nested elements
+		 *
+		 */
+		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS && !no_args) {
 			_byte = getNextType();
+
+			// Check always if it's a map to allocate the nested elements
 			uint8_t map_size = isMap(_byte);
-
-			//If it's a map it has no single argument value, it has more then one attribute to set
-			if(map_size > 0) {
-				//This is each new arguments map() on the msgpack generally 0x81 0x82 0x83 this are the values for SETTING Actuators p.e.
-				while(map_size > 0){
-					//
-					if(!setStatus(MSGPACK_STATE_COMMAND_WATING_ARG_VALUE))
-						return false;
-
-					_byte = getNextType();
-					//this is the nested tuple with arguments value of the outside tuple which is the UUID of device to be set.
-					MsgPack4BCPMapElement element_1;
-
-					//get key uint32_t
-					if(!assemble32bitByte(_byte))
-						return false;
-
-					//Check if the UUID key of the argument exists
-					if(checkModulesMap()){
-						element_1.setKey(_32bitword);
-
-						//this is the msgpack data type of the argument value
-						_byte = getNextType();
-						element_1.setType(_byte);
-
-						//set value based on switch() case statement for each kind of msgpack data type
-						setElementValue(&element_1, _byte);
-
-						//set this nested element to outside tuple for example MODULE_ACTUATOR_DN20_1_1
-						if(!element.setElement(element_1)){
-							//TODO:
-	//						error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-	//						response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
-							return false;
-						}
-					}
-					map_size--;
-					//go for the next argument of the outside element p.e. MODULE_ACTUATOR_DN20_1_1
-				} // END of WHILE arguments MAP of a device key
-			} // END of IF MAP
-			else { //process msgpack value that is not a MAP
-				//this is the msgpack data type of the argument value
-				_byte = getNextType();
-				element.setType(_byte);
-
-				//set value based on switch() case statement for each kind of msgpack data type
-				setElementValue(&element, _byte);
+			if (!(map_size > 0)) {
+				//TODO: error
+				error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
+				ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPZeroElementMap();
+				ApplianceMemmoryHandler::responses->closeJsonResponse();
+				return false;
 			}
-			//First device tuple is all set, go for the next tuple (device) p.e. MODULE_ACTUATOR_DN20_1_2, MODULE_ACTUATOR_DN20_1_3
-			//back status to MSGPACK_STATE_COMMAND_SET so the loop can roll again for other devices that must be set.
-			if(!setStatus(MSGPACK_STATE_COMMAND_SET))
-				return false;
+
+			while (map_size > 0) {
+				_byte = getNextType();
+				if (_byte != MSGPACK_UINT32) {
+					//TODO: error
+					error_code = ERROR_MSGPACK_4BCP_ELEMENT_KEY_PROCESSING;
+					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPElementKeyProcessing();
+					ApplianceMemmoryHandler::responses->closeJsonResponse();
+					return false;
+				}
+
+				//KEY for NEXT ACTUATOR
+				if (!assemble_uint32_Byte(_byte))
+					return false;
+
+				//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
+				if (total_element4BCP >= MAX_MSGPACK_4BCP_ELEMENTS) {
+					error_code =
+					ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+					ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
+					return false;
+				}
+
+				_4BCPMapElement **nested_element;
+				nested_element = setElementPointer(true);
+
+				_byte = getNextType();
+				//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS in this case 8 elements maximum
+				(*nested_element)->key = _32bitword;
+				(*nested_element)->value_type = _byte;
+
+				//			 ApplianceMemmoryHandler::responses->writeRaw(F("_32bitword to assign key of device *element "));
+				//			 ApplianceMemmoryHandler::responses->write32bitByte(_32bitword);
+
+//				 ApplianceMemmoryHandler::responses->writeRaw(F("key of device *element "));
+//				 ApplianceMemmoryHandler::responses->write32bitByte((*nested_element)->key);
+
+				setElementValue(nested_element);
+
+				_4BCPContainer::map4BCP.elements[element4BCP_number]->nested_elements[nested_element4BCP] =
+						(*nested_element);
+				_4BCPContainer::map4BCP.elements[element4BCP_number]->total_nested_elements =
+						nested_element4BCP + 1;
+
+				nested_element4BCP++;
+				map_size--;
+			}
+
+			element4BCP_number++;
+			nested_element4BCP = 0;
+
+			_4BCPMapElement **e = processStatusNextElement();
+
+			if ((*e)->key == MODULE_COMMMAND_EXECUTE_FLAG) {
+				_byte = getNextType();
+				if (_byte != MSGPACK_TRUE) {
+					error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
+					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPExecuteFlagError();
+					return false;
+				}
+
+				if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+					return false;
+
+				//DONE ALL DEVICES AND ARGS ARE SET
+				return true;
+			}
+
+			//OTHERS DEVICE ARGUMENT KEY
+			_4BCPContainer::map4BCP.elements[element4BCP_number] = (*e);
+			//now we ready to set arguments for this device, p.e. MODULE_ACTUATOR_DN20_1_1
+//			if (!setStatus(MSGPACK_STATE_COMMAND_SETTING_ARGS))
+//				return false;
+
+			_4BCPContainer::map4BCP.size++;
+
+			continue;
+
 		}
 
-		//Max number of nested elements into one element, which means by 4BCP Max number of executing elements (devices)
-		if(element_number >= MAX_MSGPACK_COMMANDS){
-			//TODO:
-//			error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
-//			response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
-			return false;
-		}
-		map.elements[element_number] = element;
-		element_number++;
-		map_elements_size--;
-	} // END of WHILE 4BCP MAP tuples
 
-	//now the status should be execute command
-	if(!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
-		return false;
+
+		if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS && no_args) {
+			_4BCPMapElement **e = processStatusNextElement();
+
+			if ((*e)->key == MODULE_COMMMAND_EXECUTE_FLAG) {
+				_byte = getNextType();
+				if (_byte != MSGPACK_TRUE) {
+					error_code = ERROR_MSGPACK_4BCP_EXECUTE_FLAG;
+					ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPExecuteFlagError();
+					return false;
+				}
+
+				if (!setStatus(MSGPACK_STATE_COMMAND_ARGS_READY))
+					return false;
+
+				//DONE ALL DEVICES AND ARGS ARE SET
+				return true;
+			}
+		}
+
+
+
+		/*****************************************************************************/
+
+//		//DEBUG3
+//		return false;
+
+		counter++;
+
+
+	}
+
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
+//	ApplianceMemmoryHandler::responses->writeRaw(F("map4BCP size:"));
+//	ApplianceMemmoryHandler::responses->writeByte(_4BCPContainer::map4BCP.size);
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"));
 
 	return true;
 }
 
-bool MsgPackHandler::processMap(){
-	if(! map.haveElements()){
+bool MsgPackHandler::processStatusMSGPACK_STATE_BEGIN() {
+	uint8_t _byte = next();
+	if (!processCommandHeader(_byte))
+		return false;
+
+	return true;
+
+}
+
+_4BCPMapElement** MsgPackHandler::processStatusNextElement() {
+
+	_4BCPMapElement **element;
+
+	//GET FIRST DEVICE KEY (ACTUATOR) TO ASSEMBLE THE FIRST ELEMENT;
+	//This should be 4BCP key (0xce)
+	uint8_t _byte = getNextType();
+
+	//KEY for NEXT ACTUATOR
+	if (!assemble_uint32_Byte(_byte))
+		return NULL;
+
+	//Check if word if mapped by this module
+	if (checkModulesMap()) {
+
+		//THIS SET THE CORRENT POINTER TO ELEMENT OF THE ALREADY INSTATIATED STRUCTS, FOR NOW WE HAVE MAXIMUM OF 8 ELEMENTS
+		element = setElementPointer();
+
+		//set element key for example the UUID of the actuator to be set: MODULE_ACTUATOR_DN20_1_1
+//				memcpy(&element->key, &_32bitword, sizeof(uint32_t));
+		(*element)->key = _32bitword;
+		(*element)->value_type = MSGPACK_UINT32;
+
+	} else {
+		//TODO: error
+//		error_code = ERROR_MSGPACK_4BCP_NOT_MAPPED;
+//		 ApplianceMemmoryHandler::responses->writeErrorMsgPackHasFinishedWithBytes();
+//		ApplianceMemmoryHandler::responses->closeJsonResponse();
+		return NULL;
+	}
+
+//	 ApplianceMemmoryHandler::responses->writeRaw(F("dentro do processStatusMSG_STATE_COMMAND_SET key"));
+//	 ApplianceMemmoryHandler::responses->write32bitByte((*element)->key);
+//	 ApplianceMemmoryHandler::responses->writeByte(_32bitword);
+//	 ApplianceMemmoryHandler::responses->writeRaw(F("dentro do processStatusMSG_STATE_COMMAND_SET value_type"));
+//	 ApplianceMemmoryHandler::responses->writeByte((*element)->value_type);
+
+	return element;
+
+}
+
+bool MsgPackHandler::processMap() {
+
+
+//	ApplianceMemmoryHandler::responses->writeRaw(F("inside processMap status:"));
+//	ApplianceMemmoryHandler::responses->writeByte(status);
+//	return false;
+
+
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("Total BCP  elements instatiated"));
+//	ApplianceMemmoryHandler::responses->writeByte(total_element4BCP);
+//
+//	ApplianceMemmoryHandler::responses->writeRaw(
+//			F("How many elements in the array"));
+//	ApplianceMemmoryHandler::responses->writeByte(element4BCP_number);
+
+
+
+	//check both MSGPACK4BCPProcessFlow with arguments without arguments
+	if (status != MSGPACK_STATE_COMMAND_ARGS_READY
+			&& status != MSGPACK_STATE_COMMAND_SET
+			&& status != MSGPACK_STATE_COMMAND_ASSEMBLY) {
 		//TODO:
-//		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-//		response->writeMsgPackUnknownType(_byte);
+		error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
+		ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowError(
+				status, next_status, prev_status);
 		return false;
 	}
+	if (!(_4BCPContainer::map4BCP.size > 0) && no_args == false) {
+		//TODO:
+		error_code = ERROR_MSGPACK_4BCP_MAP_ZERO_ELEMENTS;
+		ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPZeroElementMap();
+		return false;
+	}
+
+	if (!setStatus(MSGPACK_STATE_COMMAND_ASSEMBLY))
+		return false;
+
+//	ApplianceMemmoryHandler::responses->writeRaw(F("BYTES REMAINING:"));
+//	ApplianceMemmoryHandler::responses->writeByte(buffer_bytes_remaining); // must be zeto it's FF why FIXME:
+//
+//
+//
+//	ApplianceMemmoryHandler::responses->writeRaw(F("Calling commands_handler init"));
+	ApplianceMemmoryHandler::commands_handler->initCommand();
+
+	//NOW IT's the time to get Devices, must get a element key which is suppoused to be
+	//a device and trasverse MachineState actuators_list to match same and set it's values
+	//TODO: set Command object and execute it
+
+//	_4BCPMapElement ** elements_ptr = & _4BCPContainer::map4BCP.elements;
+	//process all devices for this command;
+	if(!no_args)
+		ApplianceMemmoryHandler::commands_handler->assembleCommand();
+
+	if (!setStatus(MSGPACK_STATE_COMMAND_EXECUTING))
+		return false;
+
+	ApplianceMemmoryHandler::commands_handler->execute(); // execute one by one in a loop
+
+	if (!setStatus(MSGPACK_STATE_COMMAND_FINISHED))
+		return false;
 
 	return true;
 }
 
-bool MsgPackHandler::setElementValue(MsgPack4BCPMapElement *element, uint8_t _byte){
-	element->value_type = _byte;
+_4BCPMapElement** MsgPackHandler::setElementPointer(bool add_value) {
 
-	switch(_byte){
-		case MSGPACK_NIL: {
-			element->value_bool = false;
-			return true;
+//	ApplianceMemmoryHandler::responses->writeRaw(F("DEBUG in setElementPointer"));
+//	return false; //DEBUG
+
+	_4BCPElementValue **element_value;
+	switch (total_element4BCP) {
+	case 0: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_1->value = (*element_value);
 		}
-
-		case MSGPACK_FALSE: {
-			element->value_bool = false;
-			return true;
+		return &_4BCPContainer::element4BCP_1;
+		//		nested_element = _4BCPElement::element4BCP_1;
+//		element4BCP_number++;
+		break;
+	}
+	case 1: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_2->value = (*element_value);
 		}
-
-		case MSGPACK_TRUE: {
-			element->value_bool = true;
-			return true;
+		return &_4BCPContainer::element4BCP_2;
+//		element4BCP_number++;
+		break;
+	}
+	case 2: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_3->value = (*element_value);
 		}
-
-//		case MSGPACK_BIN8: {
-//			return true;
-//		}
-//
-//		case MSGPACK_BIN16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_BIN32: {
-//			return true;
-//		}
-//
-//		case MSGPACK_EXT8: {
-//			return true;
-//		}
-//
-//		case MSGPACK_EXT16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_EXT32: {
-//			return true;
-//		}
-
-		case MSGPACK_FLOAT32: {
-//			if(!assemble32bitFloat(_byte))
-//				return false;
-//			element->value_float = _32bitword;
-			return true;
+		return &_4BCPContainer::element4BCP_3;
+//		element4BCP_number++;
+		break;
+	}
+	case 3: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_4->value = (*element_value);
 		}
-
-		case MSGPACK_FLOAT64: {
-			return true;
+		return &_4BCPContainer::element4BCP_4;
+//		element4BCP_number++;
+		break;
+	}
+	case 4: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_5->value = (*element_value);
 		}
-
-		case MSGPACK_UINT8: {
-			element->value_uint8 = next();
-			return true;
+		return &_4BCPContainer::element4BCP_5;
+//		element4BCP_number++;
+		break;
+	}
+	case 5: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_6->value = (*element_value);
 		}
-
-		case MSGPACK_UINT16: {
-			return true;
+		return &_4BCPContainer::element4BCP_6;
+//		element4BCP_number++;
+		break;
+	}
+	case 6: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_7->value = (*element_value);
 		}
-
-		case MSGPACK_UINT32: {
-			if(!assemble32bitByte(_byte))
-				return false;
-			element->value_uint32 = _32bitword;
-			return true;
+		return &_4BCPContainer::element4BCP_7;
+//		element4BCP_number++;
+		break;
+	}
+	case 7: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_8->value = (*element_value);
 		}
-
-		case MSGPACK_UINT64: {
-			return true;
+		return &_4BCPContainer::element4BCP_8;
+//		element4BCP_number++;
+		break;
+	}
+	case 8: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_9->value = (*element_value);
 		}
-
-		case MSGPACK_INT8: {
-			element->value_int8 = next();
-			return true;
+		return &_4BCPContainer::element4BCP_9;
+		break;
+	}
+	case 9: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_10->value = (*element_value);
 		}
-
-		case MSGPACK_INT16: {
-			return true;
+		return &_4BCPContainer::element4BCP_10;
+		break;
+	}
+	case 10: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_11->value = (*element_value);
 		}
-
-		case MSGPACK_INT32: {
-//			if(!assemble32bitByte(_byte))
-//				return false;
-//			element->value_uint32 = _32bitword;
-			return true;
+		return &_4BCPContainer::element4BCP_11;
+		break;
+	}
+	case 11: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_12->value = (*element_value);
 		}
-
-//		case MSGPACK_INT64: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT1: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT2: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT4: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT8: {
-//			return true;
-//		}
-//
-//		case MSGPACK_FIXEXT16: {
-//			return true;
-//		}
-
-		case MSGPACK_STR8: {
-//			element->value_fixstring = next();
-			return true;
+		return &_4BCPContainer::element4BCP_12;
+		break;
+	}
+	case 12: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_13->value = (*element_value);
 		}
-
-//		case MSGPACK_STR16: {
-////			element->value_fixstring = next();
-//			return true;
-//		}
-//
-//		case MSGPACK_STR32: {
-////			element->value_fixstring = next();
-//			return true;
-//		}
-
-//		case MSGPACK_ARRAY16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_ARRAY32: {
-//			return true;
-//		}
-//
-//		case MSGPACK_MAP16: {
-//			return true;
-//		}
-//
-//		case MSGPACK_MAP32: {
-//			return true;
-//		}
-
-		default:{
-			//TODO:
-//			error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-//			response->writeMsgPackUnknownType(_byte);
-			return false;
+		return &_4BCPContainer::element4BCP_13;
+		break;
+	}
+	case 13: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_14->value = (*element_value);
 		}
+		return &_4BCPContainer::element4BCP_14;
+		break;
+	}
+	case 14: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_15->value = (*element_value);
+		}
+		return &_4BCPContainer::element4BCP_15;
+		break;
+	}
+	case 15: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_16->value = (*element_value);
+		}
+		return &_4BCPContainer::element4BCP_16;
+		break;
+	}
+	case 16: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_17->value = (*element_value);
+		}
+		return &_4BCPContainer::element4BCP_17;
+		break;
+	}
+	case 17: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_18->value = (*element_value);
+		}
+		return &_4BCPContainer::element4BCP_18;
+		break;
+	}
+	case 18: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_19->value = (*element_value);
+		}
+		return &_4BCPContainer::element4BCP_19;
+		break;
+	}
+	case 19: {
+		total_element4BCP++;
+		elements_remaining--;
+		if (add_value) {
+			element_value = setStructElementValue();
+			_4BCPContainer::element4BCP_20->value = (*element_value);
+		}
+		return &_4BCPContainer::element4BCP_20;
+		break;
+	}
+	default: {
+//		return   _4BCPElement::element4BCP_9;
+		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+		ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
+		return '\0';
+	}
+	}
+}
+
+_4BCPElementValue** MsgPackHandler::setStructElementValue() {
+//	ApplianceMemmoryHandler::responses->writeRaw(F("DEBUG in setStructElementValue ptr"));
+//	return false; //DEBUG
+	switch (total_elementValue4BCP) {
+	case 0: {
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_1;
+		break;
+	}
+	case 1: {
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_2;
+		break;
+	}
+	case 2: {
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_3;
+		break;
+	}
+	case 3: {
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_4;
+		break;
+	}
+	case 4: {
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_5;
+//		value_number++;
+		break;
+	}
+	case 5: {
+		total_elementValue4BCP++;
+		return &_4BCPContainer::value_6;
+		break;
+	}
+	default: {
+//		return   _4BCPElement::element4BCP_9;
+		error_code = ERROR_MSGPACK_4BCP_NESTED_ELEMENTS_OUT_OF_BOUNDS;
+		ApplianceMemmoryHandler::responses->write4BCPNestedElementsOutOfBound();
+		return '\0';
+	}
+	}
+	return '\0';
+}
+
+bool MsgPackHandler::setElementValue(_4BCPMapElement **element) {
+//	ApplianceMemmoryHandler::responses->writeRaw(F("DEBUG in setElementValue"));
+//	return false; //DEBUG
+	//Change to function template each case can be a Template Specialization
+	//https://www.geeksforgeeks.org/template-specialization-c/
+
+//	 ApplianceMemmoryHandler::responses->writeRaw(
+//		F(" value type of nested element inside seElementValue()::"));
+//	 ApplianceMemmoryHandler::responses->writeByte((*element)->value_type);
+
+	switch ((*element)->value_type) {
+	case MSGPACK_NIL: {
+		(*element)->value->bool_value = false;
+		return true;
 	}
 
-	//TODO:
-//	error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-//	response->writeMsgPackUnknownType(_byte);
+	case MSGPACK_FALSE: {
+		(*element)->value->bool_value = false;
+		return true;
+	}
+
+	case MSGPACK_TRUE: {
+		(*element)->value->bool_value = true;
+		return true;
+	}
+
+	case MSGPACK_BIN8: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_BIN16: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_BIN32: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_EXT8: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_EXT16: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_EXT32: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FLOAT32: {
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FLOAT64: {
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_UINT8: {
+		uint8_t _byte = next();
+		(*element)->value->uint8_value = _byte;
+		return true;
+	}
+
+	case MSGPACK_UINT16: {
+		uint8_t _byte = next();
+		uint16_t i = ((uint16_t) _byte) << 8;
+		_byte = next();
+		i += (uint16_t) _byte;
+//			uint16_t *ptr = &i;
+		(*element)->value->uint16_value = i;
+//			memcpy(element->value, (uint16_t *)&ptr, sizeof(uint16_t)); // TODO: check this
+
+		return true;
+	}
+
+	case MSGPACK_UINT32: {
+		if (!assemble_uint32_Byte((*element)->value_type))
+			return false;
+
+		(*element)->value->uint32_value = _32bitword;
+		return true;
+	}
+
+	case MSGPACK_UINT64: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_INT8: {
+		int8_t _byte = next();
+		(*element)->value->int8_value = _byte;
+		return true;
+	}
+
+	case MSGPACK_INT16: {
+		int8_t _byte = next();
+		int16_t i = ((int16_t) _byte) << 8;
+		_byte = next();
+		i += (int16_t) _byte;
+
+		(*element)->value->int16_value = i;
+		return true;
+	}
+
+	case MSGPACK_INT32: {
+		long int32word_array[4];
+		long int32bitword;
+		uint8_t int32_remaining = 4;
+		while (int32_remaining > 0) {
+			int8_t _byte = next();
+			switch (int32_remaining) {
+			case 4:
+				int32word_array[0] = _byte;
+				int32_remaining--;
+				break;
+			case 3:
+				int32word_array[1] = _byte;
+				int32_remaining--;
+				break;
+			case 2:
+				int32word_array[2] = _byte;
+				int32_remaining--;
+				break;
+			case 1:
+				//The arithmetic should be performed with the 4 bytes at once. Does'nt work storing in the array bytes already shifted
+				int32bitword = (int32word_array[0] << 24)
+						+ (int32word_array[1] << 16) + (int32word_array[2] << 8)
+						+ _byte;
+				int32_remaining--;
+				break;
+			}
+		}
+
+//			int32_t *ptr = &int32bitword;
+		(*element)->value->int16_value = int32bitword;
+		return true;
+	}
+
+	case MSGPACK_INT64: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FIXEXT1: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FIXEXT2: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FIXEXT4: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FIXEXT8: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_FIXEXT16: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_STR8: {
+		char _byte = next();
+//			char *ptr = &_byte;
+
+		(*element)->value->char_value = _byte;
+//			memcpy((*element)->value, (char *)ptr, sizeof(char)); //TODO: check this
+
+		return true;
+	}
+
+	case MSGPACK_STR16: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_STR32: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_ARRAY16: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_ARRAY32: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_MAP16: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	case MSGPACK_MAP32: {
+		//TODO:
+		error_code = ERROR_MSGPACK_UNIMPLEMENTED;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnimplemented(
+				(*element)->value_type);
+		return false;
+	}
+
+	default: {
+		//MAP nested element
+		if ((*element)->value_type > 0x80 && (*element)->value_type <= 0x8f)
+			return true;
+		//TODO:
+		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
+		ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(
+				(*element)->value_type);
+		return false;
+	}
+	}
+
+	error_code = ERROR_MSGPACK_UNKNOW;
+	ApplianceMemmoryHandler::responses->writeMsgPackUnknowError();
 	return false;
 }
 
-uint8_t  MsgPackHandler::getNextType() {
+uint8_t MsgPackHandler::getNextType() {
 	uint8_t _byte = next();
 
-	if(!MsgPackDataTypes::checkDataType(_byte)){
+	if (!MsgPackDataTypes::checkDataType(_byte)) {
 		//If it's not a recognized type on MsgPack definitions
 		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType(_byte);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(_byte);
 		return false;
 	}
 
 	return _byte;
 }
 
-bool MsgPackHandler::checkModulesMap(){
+bool MsgPackHandler::checkModulesMap() {
 	//TODO loop into devices sensors actuators map
 
 	//TODO: if( error )
 //	error_code = ERROR_MSGPACK_4BCP_UNKNOW;
-//	response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+//	 ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowError(status, next_status, prev_status);
 //	return false
 
 	return true;
 }
 
-bool MsgPackHandler::processCommandHeader(uint8_t _byte){
+bool MsgPackHandler::processCommandHeader(uint8_t _byte) {
 	//PROCESS KEY
-	if(!MsgPackDataTypes::checkDataType(_byte)){
+	if (!MsgPackDataTypes::checkDataType(_byte)) {
 		//If it's not a recognized type on MsgPack definitions
 		error_code = ERROR_MSGPACK_UNKNOW_TYPE;
-		response->writeMsgPackUnknownType(_byte);
+		ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(_byte);
 		return false;
 	}
 
 	//get key uint32_t
-	if(!assemble32bitByte(_byte))
+	if (!assemble_uint32_Byte(_byte))
 		return false;
 
-	if(_32bitword != MODULE_COMMMAND_FLAG){
+	if (_32bitword != MODULE_COMMMAND_FLAG) {
 		//TODO:
-//		error_code = ERROR_32BIT_PROCESSING;
-//		response->writeProcess32bitwordERROR();
+		error_code = ERROR_MSGPACK_4BCP_NO_COMMAND_FLAG;
+		ApplianceMemmoryHandler::responses->writeErrorMsgPack4BCPHasNoCommandFlag();
 		return false;
 	}
 
 	_byte = next();
-	if(!assemble32bitByte(_byte))
+	if (!assemble_uint32_Byte(_byte))
 		return false;
 
-	commands->command_executing = _32bitword;
-	if(!setStatus(MSGPACK_STATE_COMMAND_SET))
+	ApplianceMemmoryHandler::commands_handler->command_executing = _32bitword;
+
+//	ApplianceMemmoryHandler::responses->writeRaw(F("COMMAND TO EXECUTE:"));
+//	ApplianceMemmoryHandler::responses->write32bitByte(
+//			ApplianceMemmoryHandler::commands_handler->command_executing);
+
+	if(ApplianceMemmoryHandler::commands_handler->command_executing == MODULE_COMMMAND_GET_DATA) {
+		no_args = true;
+//		if (!setStatus(MSGPACK_STATE_COMMAND_SET))
+//			return true;
+	}
+
+
+	if (!setStatus(MSGPACK_STATE_COMMAND_SET))
 		return false;
 
 	return true;
 }
 
-
-bool MsgPackHandler::processArray(uint8_t _word, int array_size) {
+bool MsgPackHandler::processArray(uint8_t _word, uint8_t array_size) {
 	//TODO
 //	error_code = ERROR_MSGPACK_NOT_IMPLEMENTED;
-//	response->writeMsgPackUnknownType(_byte);
-	return false; //return false if/but all errors had been took care and reponses has already trasmitted
+//	 ApplianceMemmoryHandler::responses->writeMsgPackUnknownType(_byte);
+	return false;//return false if/but all errors had been took care and reponses has already trasmitted
 }
-
-
 
 /**
  * BUFFER HANDLE's
  */
 uint8_t MsgPackHandler::whatNext() {
-	return LocalBuffers::client_request_buffer[buffer_position+1];
+	return LocalBuffers::client_request_buffer[buffer_position + 1];
 }
-uint8_t MsgPackHandler::next(){
+
+uint8_t MsgPackHandler::actualBufferByte() {
+	return LocalBuffers::client_request_buffer[buffer_position];
+}
+
+uint8_t MsgPackHandler::next() {
 	buffer_bytes_remaining--;
-	buffer_position++;
+	if (buffer_bytes_remaining < 0) {
+		buffer_bytes_remaining = 0;
+//		ApplianceMemmoryHandler::responses->writeRaw(
+//				F("There is no bytes left on buffer to processs."));
+		return '\0';
+	}
+
 	//FIXME: last_byte has no function
 	last_byte = LocalBuffers::client_request_buffer[buffer_position];
+	buffer_position++;
 	return last_byte;
 }
-
-
 
 /**
  * 		UINT8 var1 = 0x01; //0000 0001
@@ -712,11 +1337,11 @@ uint8_t MsgPackHandler::next(){
  *		UINT8 var4 = 0x0F; //0000 1111
  *		UINT32 bigvar = (var1 << 24) + (var2 << 16) + (var3 << 8) + var4;
  */
-bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
+bool MsgPackHandler::assemble_uint32_Byte(uint8_t _byte) {
 	//IF NOT MSGPACK_UINT32 (unsigned long) MessaPack 0xce which is 4Bytes CmdProtocol relies
-	if(_byte != MSGPACK_UINT32) {
+	if (_byte != MSGPACK_UINT32) {
 		error_code = ERROR_32BIT_PROCESSING;
-		response->writeProcess32bitwordERROR();
+		ApplianceMemmoryHandler::responses->writeProcess32bitwordERROR();
 		return false;
 	}
 
@@ -725,7 +1350,7 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 
 	uint8_t actual_status = status;
 	status = MSGPACK_STATE_WORKING_32BIT;
-	while(_32bitword_remaining > 0){
+	while (_32bitword_remaining > 0) {
 		uint8_t _byte = next();
 		switch (_32bitword_remaining) {
 		case 4:
@@ -741,12 +1366,13 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 			_32bitword_remaining--;
 			break;
 		case 1:
-			//The arithmetic should be performed with the 4 bytes at one. Does'nt work storing in the array already shifted
-			_32bitword = (_32bitword_array[0] << 24) +
-				(_32bitword_array[1] << 16) + (_32bitword_array[2] << 8) + _byte;
+			//The arithmetic should be performed with the 4 bytes at once. Does'nt work storing in the array bytes already shifted
+			_32bitword = (_32bitword_array[0] << 24)
+					+ (_32bitword_array[1] << 16) + (_32bitword_array[2] << 8)
+					+ _byte;
 			_32bitword_remaining--;
-			status = actual_status; //return machine status to the previous status
-//			response->write32bitByte(_32bitword); // DEBUG
+			status = actual_status;	//return machine status to the previous status
+//			 ApplianceMemmoryHandler::responses->write32bitByte(_32bitword); // DEBUG
 			break;
 		}
 	}
@@ -756,9 +1382,9 @@ bool MsgPackHandler::assemble32bitByte(uint8_t _byte) {
 
 bool MsgPackHandler::reset_32bit_processing() {
 	//This should never happen, only if your programming made some mistake on the PROGRAM STRUCTURE FLOW
-	if(status == MSGPACK_STATE_WORKING_32BIT){
+	if (status == MSGPACK_STATE_WORKING_32BIT) {
 		error_code = ERROR_32BIT_RESETING;
-		response->writeReseting32bitwordERROR();
+		ApplianceMemmoryHandler::responses->writeReseting32bitwordERROR();
 		return false;
 	}
 
@@ -771,50 +1397,66 @@ bool MsgPackHandler::reset_32bit_processing() {
 	return true;
 }
 
-
-
-
 /**
  * HELPER METHODS
  */
 
-bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, uint8_t array_size){
+bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow,
+		uint8_t array_size) {
 	uint8_t last_process, actual_process;
 	uint8_t position = 0;
 
 	while (array_size > 0) {
 		actual_process = pgm_read_word(&msgPack4BCPProcessFlow[position]);
-//		response->writeRaw(F("LOOPING STATUS:"));
-//		response->writeByte(actual_process);
-//		response->writeRaw(F("PREV STATUS:"));
-//		response->writeByte(prev_status);
+//		 ApplianceMemmoryHandler::responses->writeRaw(F("LOOPING STATUS:"));
+//		 ApplianceMemmoryHandler::responses->writeByte(actual_process);
+//		 ApplianceMemmoryHandler::responses->writeRaw(F("PREV STATUS:"));
+//		 ApplianceMemmoryHandler::responses->writeByte(prev_status);
 
-		if(status == actual_process) {
-
+		if (status == actual_process) {
+			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position] + 1); //next position
 			//DEBUG
-//			response->writeRaw(F("IDENTIFIED STATUS:"));
-//			response->writeByte(actual_process);
-//			response->writeRaw(F("PREV STATUS:"));
-//			response->writeByte(prev_status);
-//			next_status = pgm_read_word(&msgPack4BCPProcessFlow[position]+1);
-//			response->writeRaw(F("NEXT STATUS:"));
-//			response->writeByte(next_status); //DEBUG
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("IDENTIFIED STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(actual_process);
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("PREV STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(prev_status);
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("NEXT STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(next_status); //DEBUG
 
-			//LOOP for setting argument and wating arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
-			if(status == MSGPACK_STATE_COMMAND_SETTING_ARGS && prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE &&
-				next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
+			//LOOP for setting argument and waiting arg value. goes from 30 to 31 then 30 again to 31 then again until no more args is left
+//			if (status == MSGPACK_STATE_COMMAND_SET
+//					&& prev_status == MSGPACK_STATE_COMMAND_SET)
+//				return true;
+
+			if (status == MSGPACK_STATE_COMMAND_ARGS_READY
+					&& prev_status == MSGPACK_STATE_COMMAND_SET)
 				return true;
 
-			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
-				next_status = MSGPACK_STATE_COMMAND_EXECUTING;
+			if (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
+					&& prev_status == MSGPACK_STATE_COMMAND_SET)
+				return true;
 
-			if(last_process != NULL && last_process != prev_status){
+			if (status == MSGPACK_STATE_COMMAND_SETTING_ARGS
+					&& prev_status == MSGPACK_STATE_COMMAND_SETTING_ARGS)
+				return true;
+
+			if (status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
+					&& prev_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE
+					&& next_status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE)
+				return true;
+
+//			if(status == MSGPACK_STATE_COMMAND_WATING_ARG_VALUE && prev_status ==  MSGPACK_STATE_COMMAND_SETTING_ARGS)
+//				next_status = MSGPACK_STATE_COMMAND_ARGS_READY;
+
+//			 ApplianceMemmoryHandler::responses->writeRaw(F("NEXT STATUS:"));
+//			 ApplianceMemmoryHandler::responses->writeByte(next_status); //DEBUG
+
+			if ((last_process != '\0') && last_process != prev_status) {
 				error_code = ERROR_MSGPACK_4BCP_PROCESSING_FLOW;
-				response->writeMsgPackProcessingFlowError(status, next_status, prev_status);
+				ApplianceMemmoryHandler::responses->writeMsgPackProcessingFlowError(
+						status, next_status, prev_status);
 				return false;
 			}
-
-
 			break;
 		}
 
@@ -823,61 +1465,108 @@ bool MsgPackHandler::check4BCPProcesFlow(const uint8_t *msgPack4BCPProcessFlow, 
 		position++;
 	}
 
-
 	return true;
 }
 
-bool MsgPackHandler::checkFlow(){
-	if(check4BCPProcesFlow(MSGPACK4BCPProcessFlow, MSGPACK4BCPProcessFlow_SIZE))
+bool MsgPackHandler::checkFlow() {
+	if (check4BCPProcesFlow(MSGPACK4BCPProcessFlow,
+	MSGPACK4BCPProcessFlow_SIZE))
 		return true;
 
-	if(check4BCPProcesFlow(MSGPACK4BCPProcessFlow2, MSGPACK4BCPProcessFlow2_SIZE))
+	if (check4BCPProcesFlow(MSGPACK4BCPProcessFlow2,
+	MSGPACK4BCPProcessFlow2_SIZE))
 		return true;
 
 	return false;
 }
 
-
-unsigned int MsgPackHandler::isArray(uint8_t _byte){
-	if(_byte > MSGPACK_ARRAY_INITIAL && _byte <= MSGPACK_ARRAY_FINAL){
-		return _byte - MSGPACK_ARRAY_INITIAL ;
+unsigned int MsgPackHandler::isArray(uint8_t _byte) {
+	if (_byte > MSGPACK_ARRAY_INITIAL && _byte <= MSGPACK_ARRAY_FINAL) {
+		return _byte - MSGPACK_ARRAY_INITIAL;
 	}
 
 	return 0;
 }
 
-unsigned int MsgPackHandler::isMap(uint8_t _byte){
-	if(_byte > MSGPACK_MAP_INITIAL && _byte <= MSGPACK_MAP_FINAL){
-		return _byte - MSGPACK_MAP_INITIAL ;
+unsigned int MsgPackHandler::isMap(uint8_t _byte) {
+	if (_byte > MSGPACK_MAP_INITIAL && _byte <= MSGPACK_MAP_FINAL) {
+		return _byte - MSGPACK_MAP_INITIAL;
 	}
 
 	return 0;
 }
 
-unsigned long MsgPackHandler::isMapped(){
-	//TODO:
+unsigned long MsgPackHandler::isMapped() {
+	//TODO: map all defines into PROGMEM array or use #ifdef but by value
 //	error_code = ERROR_MSGPACK_4BC_WORD_NOT_MAPPED;
-//	response->write32bitByte(_32bitword);
-//	response->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
-//	response->writeMsgPackError(_32bitword);
-	return _32bitword; //DEBUG t needs to return the type of 4BCP
+//	 ApplianceMemmoryHandler::responses->write32bitByte(_32bitword);
+//	 ApplianceMemmoryHandler::responses->writeRaw(F("processByte()->process4BytesCmdProtocol() false"));
+//	 ApplianceMemmoryHandler::responses->writeMsgPackError(_32bitword);
+	return _32bitword;			//DEBUG t needs to return the type of 4BCP
 }
 
-bool MsgPackHandler::setStatus(uint8_t _status){
+bool MsgPackHandler::setStatus(uint8_t _status) {
 	prev_status = status;
 	status = _status;
 
-	if(_status == MSGPACK_STATE_IDLE)
+	if (_status == MSGPACK_STATE_IDLE)
 		return true;
 
-	if(!checkFlow())
+	if (!checkFlow())
 		return false;
 
 	return true;
 }
 
+void MsgPackHandler::reset() {
+	status = MSGPACK_STATE_IDLE;
+	no_args = false;
+	prev_status = '\0';
+	next_status = '\0';
+
+	error_code = '\0';
+
+	//TCP request buffer
+	buffer_lenght = 0;
+	buffer_position = 0;
+	buffer_bytes_remaining = 0;
+	;
+	buffer_processsing_byte = '\0';
+
+	last_byte = '\0'; // may be we'll use to know if we are inseide array, but i think other controll should be done for that
+
+	//32bit word of the 4Bytes Command Protocol
+	_32bitword = '\0';
+	; // this buffer is utilized directly from inside methods, beaware to don't overwrite it
+	_32bitword_remaining = 4; // 4 8 bit bytes to achieve 32bits unsignedLong
+	_32bitword_array[4]; //4th index is the NULL terminator
+
+	response_headers_code = '\0';
+	response_headers_already_sent = false;
+
+	//Acording to definition MAX_MSGPACK_NESTED_ELEMENTS
+//	for(uint8_t i = 0; i < total_element4BCP;i++){
+//		if(_4BCPContainer::map4BCP.elements[i]->total_nested_elements > 0){
+//			for(uint8_t j = 0; j < _4BCPContainer::map4BCP.elements[i]->total_nested_elements;j++){
+//				free(_4BCPContainer::map4BCP.elements[i]->nested_elements[j]);
+//			}
+//		}
+//		free(_4BCPContainer::map4BCP.elements[i]);
+//	}
+
+	_4BCPContainer::map4BCP.size = 0;
+
+	element4BCP_number = 0;
+	nested_element4BCP = 0;
+	total_element4BCP = 0;
+	total_elementValue4BCP = 0;
+	elements_remaining = MAX_MSGPACK_4BCP_ELEMENTS;
+
+
+}
+
 /**
- * we wont use (at least minimal) pointer to another pointer just for standards [&](){ cout << F(x)} ...
+ * we wont use (at least try to) pointer to another pointer just for standards [&](){ cout << F(x)} ...
  */
 //unsigned long MsgPackHandler::get32bitByte(){
 //	return _32bitword;
