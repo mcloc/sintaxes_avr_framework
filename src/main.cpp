@@ -47,9 +47,9 @@ static DHT dht2 = DHT(DHT2PIN, DHTTYPE, 15);
 
 //TODO: assemble another 2 leds for the 3 actuators
 static DN20 dn20_1 = DN20(MODULE_ACTUATOR_DN20_1_1, RED_LED);
-static DN20 dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, RED_LED);
-static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, RED_LED);
-static DN20 dn20_4 = DN20(MODULE_ACTUATOR_DN20_1_4, RED_LED);
+static DN20 dn20_2 = DN20(MODULE_ACTUATOR_DN20_1_2, BLUE_LED);
+static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, GREEN_LED);
+//static DN20 dn20_4 = DN20(MODULE_ACTUATOR_DN20_1_4, RED_LED);
 
 //Just to initializate, we will use the pointer only no the object
 //static ApplianceMemmoryHandler memory_handler = ApplianceMemmoryHandler();
@@ -89,6 +89,8 @@ void setup() {
 
 
 	pinMode(RED_LED, OUTPUT);
+	pinMode(BLUE_LED, OUTPUT);
+	pinMode(GREEN_LED, OUTPUT);
 	pinMode(LED_BUILTIN, OUTPUT);
 	pinMode(BUZZPIN, OUTPUT);
 //	memory_handler.sintaxes_lib->setLed(RED_LED, LOW);
@@ -96,6 +98,8 @@ void setup() {
 //	memory_handler.sintaxes_lib->_BUZZPIN= BUZZPIN;
 //	memory_handler.sintaxes_lib->buzz(800, 500);
 	sintaxes_lib.setLed(RED_LED, LOW);
+	sintaxes_lib.setLed(BLUE_LED, LOW);
+	sintaxes_lib.setLed(GREEN_LED, LOW);
 	sintaxes_lib.setLed(LED_BUILTIN, LOW);
 	sintaxes_lib._BUZZPIN= BUZZPIN;
 	sintaxes_lib.buzz(800, 500);
@@ -109,7 +113,9 @@ void setup() {
 	machine_state.addActuator(&ApplianceMemmoryHandler::dn20_3);
 
 
-	sintaxes_lib.blink(RED_LED, 200, 3);
+	sintaxes_lib.blink(RED_LED, 200, 1);
+	sintaxes_lib.blink(BLUE_LED, 200, 1);
+	sintaxes_lib.blink(GREEN_LED, 200, 1);
 	// DHCP, will buzz for ever trying
 //	while (Ethernet.begin(mac) == 0) {
 //		sintaxes_lib.buzz( 8000, 400, 2);
@@ -159,7 +165,7 @@ void loop() {
 
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpack_handler.processStream()){
-				ApplianceMemmoryHandler::responses->writeTotalRequests(total_requests, (millis() - start), (millis()/1000/60));
+//				ApplianceMemmoryHandler::responses->writeTotalRequests(total_requests, (millis() - start), (millis()/1000/60));
 //				ApplianceMemmoryHandler::responses->closeJsonResponse();
 //				sintaxes_lib.buzz( 3000, 200, 1);
 				//TODO:save the new state on SD Card and log executions, and a break;

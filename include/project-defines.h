@@ -2,6 +2,8 @@
 #define STX 0x02
 #define ETX 0x03
 #define RED_LED 22
+#define BLUE_LED 23
+#define GREEN_LED 24
 #define BOARD_LED 13
 #define DHT1PIN 40
 #define DHT2PIN 41

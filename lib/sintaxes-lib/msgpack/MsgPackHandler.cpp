@@ -107,7 +107,7 @@ bool MsgPackHandler::init(Stream *_stream, int size) {
 //	machine_state = ApplianceMemmoryHandler::machine_state;
 
 //IF BUFFER LEN == 0 ERROR NO MSG must post with no readers messagePack with the devices ptrocol
-//	ApplianceMemmoryHandler::responses->writeModule200DataHeaders();
+	ApplianceMemmoryHandler::responses->writeModule200DataHeaders();
 //	ApplianceMemmoryHandler::responses->initJsonResponse();
 	response_headers_already_sent = true;
 	response_headers_code = 200;
