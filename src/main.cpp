@@ -165,7 +165,7 @@ void loop() {
 
 			//TODO: save previous state on SD Card, and LOG the request
 			if(msgpack_handler.processStream()){
-//				ApplianceMemmoryHandler::responses->writeTotalRequests(total_requests, (millis() - start), (millis()/1000/60));
+				ApplianceMemmoryHandler::responses->writeTotalRequests(total_requests, (millis() - start), (millis()/1000/60));
 //				ApplianceMemmoryHandler::responses->closeJsonResponse();
 //				sintaxes_lib.buzz( 3000, 200, 1);
 				//TODO:save the new state on SD Card and log executions, and a break;
