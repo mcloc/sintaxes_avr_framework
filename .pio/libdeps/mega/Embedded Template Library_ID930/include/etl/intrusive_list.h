@@ -45,6 +45,7 @@ SOFTWARE.
 #include "intrusive_links.h"
 #include "static_assert.h"
 #include "algorithm.h"
+#include "iterator.h"
 
 #include "stl/algorithm.h"
 #include "stl/iterator.h"
@@ -132,7 +133,7 @@ namespace etl
     void assign(TIterator first, TIterator last)
     {
 #if defined(ETL_DEBUG)
-      intmax_t d = std::distance(first, last);
+      intmax_t d = ETL_STD::distance(first, last);
       ETL_ASSERT(d >= 0, ETL_ERROR(intrusive_list_iterator_exception));
 #endif
 
@@ -382,7 +383,7 @@ namespace etl
     //*************************************************************************
     /// iterator.
     //*************************************************************************
-    class iterator : public std::iterator<std::bidirectional_iterator_tag, value_type>
+    class iterator : public etl::iterator<ETL_BIDIRECTIONAL_ITERATOR_TAG, value_type>
     {
     public:
 
@@ -487,7 +488,7 @@ namespace etl
     //*************************************************************************
     /// const_iterator
     //*************************************************************************
-    class const_iterator : public std::iterator<std::bidirectional_iterator_tag, const value_type>
+    class const_iterator : public etl::iterator<ETL_BIDIRECTIONAL_ITERATOR_TAG, const value_type>
     {
     public:
 
@@ -579,7 +580,7 @@ namespace etl
       const value_type* p_value;
     };
 
-    typedef typename ETLSTD::iterator_traits<iterator>::difference_type difference_type;
+    typedef typename ETL_STD::iterator_traits<iterator>::difference_type difference_type;
 
     //*************************************************************************
     /// Constructor.
@@ -733,7 +734,7 @@ namespace etl
       // Join the ends.
       etl::link<link_type>(p_first->etl_previous, p_last);
 
-      this->current_size -= std::distance(first, last);
+      this->current_size -= ETL_STD::distance(first, last);
 
       if (p_last == &this->terminal_link)
       {
@@ -780,13 +781,33 @@ namespace etl
     //*************************************************************************
     void sort()
     {
-      sort(std::less<value_type>());
+      sort(ETL_STD::less<value_type>());
     }
 
     //*************************************************************************
-    /// Sort using in-place merge sort algorithm.
-    /// Uses a supplied predicate function or functor.
-    /// This is not my algorithm. I got it off the web somewhere.
+    /// Stable sort using in-place merge sort algorithm.
+    /// Copyright 2001 Simon Tatham.
+    ///
+    /// Permission is hereby granted, free of charge, to any person
+    /// obtaining a copy of this software and associated documentation
+    /// files (the "Software"), to deal in the Software without
+    /// restriction, including without limitation the rights to use,
+    /// copy, modify, merge, publish, distribute, sublicense, and/or
+    /// sell copies of the Software, and to permit persons to whom the
+    /// Software is furnished to do so, subject to the following
+    /// conditions:
+    ///
+    /// The above copyright notice and this permission notice shall be
+    /// included in all copies or substantial portions of the Software.
+    ///
+    /// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    /// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+    /// OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    /// NONINFRINGEMENT.  IN NO EVENT SHALL SIMON TATHAM BE LIABLE FOR
+    /// ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+    /// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    /// CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    /// SOFTWARE.
     //*************************************************************************
     template <typename TCompare>
     void sort(TCompare compare)
@@ -992,7 +1013,7 @@ namespace etl
       {
         if (&other != this)
         {
-          size_t n = std::distance(begin_, end_);
+          size_t n = ETL_STD::distance(begin_, end_);
           this->current_size += n;
           other.current_size -= n;
         }
@@ -1015,7 +1036,7 @@ namespace etl
     //*************************************************************************
     void merge(list_type& other)
     {
-      merge(other, std::less<value_type>());
+      merge(other, ETL_STD::less<value_type>());
     }
 
     //*************************************************************************

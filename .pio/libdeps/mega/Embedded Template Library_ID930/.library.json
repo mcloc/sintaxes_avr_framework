@@ -6,6 +6,7 @@
     }, 
     "platforms": [
         "atmelavr", 
+        "atmelmegaavr", 
         "atmelsam", 
         "espressif32", 
         "espressif8266", 
@@ -48,6 +49,6 @@
     "frameworks": [
         "arduino"
     ], 
-    "version": "14.35.1", 
+    "version": "15.1.0", 
     "homepage": "https://www.etlcpp.com/"
 }

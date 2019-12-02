@@ -115,7 +115,7 @@ namespace etl
     /// Constructor, from null terminated text.
     ///\param text The initial text of the wstring.
     //*************************************************************************
-    wstring(const value_type* text)
+    ETL_EXPLICIT_STRING_FROM_CHAR wstring(const value_type* text)
       : iwstring(reinterpret_cast<value_type*>(&buffer), MAX_SIZE)
     {
       this->assign(text, text + etl::char_traits<value_type>::length(text));
@@ -181,7 +181,7 @@ namespace etl
       {
         ETL_ASSERT(position < size(), ETL_ERROR(string_out_of_bounds));
 
-        length_ = ETLSTD::min(length_, size() - position);
+        length_ = ETL_STD::min(length_, size() - position);
 
         new_string.assign(buffer + position, buffer + position + length_);
       }

@@ -114,7 +114,7 @@ namespace etl
     /// Constructor, from null terminated text.
     ///\param text The initial text of the string.
     //*************************************************************************
-    string(const value_type* text)
+    ETL_EXPLICIT_STRING_FROM_CHAR string(const value_type* text)
       : istring(reinterpret_cast<value_type*>(&buffer), MAX_SIZE)
     {
       this->assign(text, text + etl::char_traits<value_type>::length(text));
@@ -180,7 +180,7 @@ namespace etl
       {
         ETL_ASSERT(position < this->size(), ETL_ERROR(string_out_of_bounds));
 
-        length_ = ETLSTD::min(length_, this->size() - position);
+        length_ = ETL_STD::min(length_, this->size() - position);
 
         new_string.assign(buffer + position, buffer + position + length_);
       }

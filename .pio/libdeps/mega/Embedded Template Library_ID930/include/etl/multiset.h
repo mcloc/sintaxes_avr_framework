@@ -276,6 +276,11 @@ namespace etl
       // otherwise we might lose the other child of the swap node
       replacement = swap->children[1 - swap->dir];
 
+      if (replacement != nullptr)
+      {
+        replacement->parent = swap->parent;
+      }
+
       // Point swap node to detached node's parent, children and weight
       swap->parent = detached->parent;
       swap->children[kLeft] = detached->children[kLeft];
@@ -618,7 +623,7 @@ namespace etl
   /// A templated base for all etl::multiset types.
   ///\ingroup set
   //***************************************************************************
-  template <typename T, typename TCompare = std::less<T> >
+  template <typename T, typename TCompare = ETL_STD::less<T> >
   class imultiset : public etl::multiset_base
   {
   public:
@@ -708,7 +713,7 @@ namespace etl
     //*************************************************************************
     /// iterator.
     //*************************************************************************
-    class iterator : public std::iterator<std::bidirectional_iterator_tag, value_type>
+    class iterator : public etl::iterator<ETL_BIDIRECTIONAL_ITERATOR_TAG, value_type>
     {
     public:
 
@@ -813,7 +818,7 @@ namespace etl
     //*************************************************************************
     /// const_iterator
     //*************************************************************************
-    class const_iterator : public std::iterator<std::bidirectional_iterator_tag, const value_type>
+    class const_iterator : public etl::iterator<ETL_BIDIRECTIONAL_ITERATOR_TAG, const value_type>
     {
     public:
 
@@ -920,10 +925,10 @@ namespace etl
     };
     friend class const_iterator;
 
-    typedef typename ETLSTD::iterator_traits<iterator>::difference_type difference_type;
+    typedef typename ETL_STD::iterator_traits<iterator>::difference_type difference_type;
 
-    typedef ETLSTD::reverse_iterator<iterator>       reverse_iterator;
-    typedef ETLSTD::reverse_iterator<const_iterator> const_reverse_iterator;
+    typedef ETL_STD::reverse_iterator<iterator>       reverse_iterator;
+    typedef ETL_STD::reverse_iterator<const_iterator> const_reverse_iterator;
 
     //*************************************************************************
     /// Gets the beginning of the multiset.
@@ -1057,9 +1062,9 @@ namespace etl
     /// Returns two iterators with bounding (lower bound, upper bound) the key
     /// provided
     //*************************************************************************
-    std::pair<iterator, iterator> equal_range(const value_type& key)
+    ETL_PAIR<iterator, iterator> equal_range(const value_type& key)
     {
-      return std::make_pair<iterator, iterator>(
+      return ETL_MAKE_PAIR<iterator, iterator>(
         iterator(*this, find_lower_node(root_node, key)),
         iterator(*this, find_upper_node(root_node, key)));
     }
@@ -1068,9 +1073,9 @@ namespace etl
     /// Returns two const iterators with bounding (lower bound, upper bound)
     /// the key provided.
     //*************************************************************************
-    std::pair<const_iterator, const_iterator> equal_range(const value_type& key) const
+    ETL_PAIR<const_iterator, const_iterator> equal_range(const value_type& key) const
     {
-      return std::make_pair<const_iterator, const_iterator>(
+      return ETL_MAKE_PAIR<const_iterator, const_iterator>(
         const_iterator(*this, find_lower_node(root_node, key)),
         const_iterator(*this, find_upper_node(root_node, key)));
     }
@@ -1890,7 +1895,7 @@ namespace etl
   //*************************************************************************
   /// A templated multiset implementation that uses a fixed size buffer.
   //*************************************************************************
-  template <typename T, const size_t MAX_SIZE_, typename TCompare = std::less<T> >
+  template <typename T, const size_t MAX_SIZE_, typename TCompare = ETL_STD::less<T> >
   class multiset : public etl::imultiset<T, TCompare>
   {
   public:
@@ -1977,7 +1982,7 @@ namespace etl
   template <typename T, typename TCompare>
   bool operator ==(const etl::imultiset<T, TCompare>& lhs, const etl::imultiset<T, TCompare>& rhs)
   {
-    return (lhs.size() == rhs.size()) && std::equal(lhs.begin(), lhs.end(), rhs.begin());
+    return (lhs.size() == rhs.size()) && ETL_STD::equal(lhs.begin(), lhs.end(), rhs.begin());
   }
 
   //***************************************************************************
@@ -2003,7 +2008,7 @@ namespace etl
   template <typename T, typename TCompare>
   bool operator <(const etl::imultiset<T, TCompare>& lhs, const etl::imultiset<T, TCompare>& rhs)
   {
-    return std::lexicographical_compare(lhs.begin(),
+    return ETL_STD::lexicographical_compare(lhs.begin(),
       lhs.end(),
       rhs.begin(),
       rhs.end());

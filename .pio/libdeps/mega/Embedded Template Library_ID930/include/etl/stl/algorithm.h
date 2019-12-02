@@ -32,7 +32,10 @@ SOFTWARE.
 #define ETL_STL_ALGORITHM_INCLUDED
 
 #include "../platform.h"
-#include "choose_namespace.h"
+
+#include "../private/choose_namespace.h"
+#include "../private/choose_tag_types.h"
+#include "../private/choose_pair_types.h"
 
 #if defined(ETL_NO_STL)
   #include "alternate/algorithm.h"

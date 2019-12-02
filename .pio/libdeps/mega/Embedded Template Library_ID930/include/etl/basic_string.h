@@ -71,15 +71,6 @@ SOFTWARE.
 namespace etl
 {
   //***************************************************************************
-  /// Alternative strlen for all character types.
-  //***************************************************************************
-  template <typename T>
-  size_t strlen(const T* t)
-  {
-    return etl::char_traits<T>::length(t);
-  }
-
-  //***************************************************************************
   ///\ingroup string
   /// Exception base for strings
   //***************************************************************************
@@ -291,11 +282,11 @@ namespace etl
     typedef const T*                              const_pointer;
     typedef T*                                    iterator;
     typedef const T*                              const_iterator;
-    typedef ETLSTD::reverse_iterator<iterator>       reverse_iterator;
-    typedef ETLSTD::reverse_iterator<const_iterator> const_reverse_iterator;
+    typedef ETL_STD::reverse_iterator<iterator>       reverse_iterator;
+    typedef ETL_STD::reverse_iterator<const_iterator> const_reverse_iterator;
     typedef size_t                                size_type;
 
-    typedef typename ETLSTD::iterator_traits<iterator>::difference_type difference_type;
+    typedef typename ETL_STD::iterator_traits<iterator>::difference_type difference_type;
 
     //*********************************************************************
     /// Returns an iterator to the beginning of the string.
@@ -427,12 +418,12 @@ namespace etl
         is_truncated = true;
       }
 
-      new_size = ETLSTD::min(new_size, CAPACITY);
+      new_size = ETL_STD::min(new_size, CAPACITY);
 
       // Size up?
       if (new_size > current_size)
       {
-        ETLSTD::fill(p_buffer + current_size, p_buffer + new_size, value);
+        ETL_STD::fill(p_buffer + current_size, p_buffer + new_size, value);
       }
 
       current_size = new_size;
@@ -605,7 +596,7 @@ namespace etl
 
       is_truncated = (length_ > CAPACITY);
 
-      length_ = ETLSTD::min(length_, CAPACITY);
+      length_ = ETL_STD::min(length_, CAPACITY);
 
       etl::copy_n(other, length_, begin());
 
@@ -624,7 +615,7 @@ namespace etl
     void assign(TIterator first, TIterator last)
     {
 #if defined(ETL_DEBUG)
-      difference_type d = ETLSTD::distance(first, last);
+      difference_type d = ETL_STD::distance(first, last);
       ETL_ASSERT(d >= 0, ETL_ERROR(string_iterator));
 #endif
 
@@ -652,9 +643,9 @@ namespace etl
 
       is_truncated = (n > CAPACITY);
 
-      n = ETLSTD::min(n, CAPACITY);
+      n = ETL_STD::min(n, CAPACITY);
 
-      ETLSTD::fill_n(begin(), n, value);
+      ETL_STD::fill_n(begin(), n, value);
       current_size = n;
       p_buffer[current_size] = 0;
     }
@@ -789,7 +780,7 @@ namespace etl
         {
           // Insert in the middle.
           ++current_size;
-          ETLSTD::copy_backward(insert_position, end() - 1, end());
+          ETL_STD::copy_backward(insert_position, end() - 1, end());
           *insert_position = value;
         }
         else
@@ -805,7 +796,7 @@ namespace etl
         if (position != end())
         {
           // Insert in the middle.
-          ETLSTD::copy_backward(insert_position, end() - 1, end());
+          ETL_STD::copy_backward(insert_position, end() - 1, end());
           *insert_position = value;
         }
 
@@ -832,7 +823,7 @@ namespace etl
 
       // Quick hack, as iterators are pointers.
       iterator insert_position = const_cast<iterator>(position);
-      const size_t start = ETLSTD::distance(cbegin(), position);
+      const size_t start = ETL_STD::distance(cbegin(), position);
 
       // No effect.
       if (start >= CAPACITY)
@@ -850,7 +841,7 @@ namespace etl
         }
 
         current_size = CAPACITY;
-        ETLSTD::fill(insert_position, end(), value);
+        ETL_STD::fill(insert_position, end(), value);
       }
       else
       {
@@ -859,7 +850,7 @@ namespace etl
         const size_t to_position = start + shift_amount;
         const size_t remaining_characters = current_size - start;
         const size_t max_shift_characters = CAPACITY - start - shift_amount;
-        const size_t characters_to_shift = ETLSTD::min(max_shift_characters, remaining_characters);
+        const size_t characters_to_shift = ETL_STD::min(max_shift_characters, remaining_characters);
 
         // Will the string truncate?
         if ((start + shift_amount + remaining_characters) > CAPACITY)
@@ -872,8 +863,8 @@ namespace etl
           current_size += shift_amount;
         }
 
-        ETLSTD::copy_backward(insert_position, insert_position + characters_to_shift, begin() + to_position + characters_to_shift);
-        ETLSTD::fill(insert_position, insert_position + shift_amount, value);
+        ETL_STD::copy_backward(insert_position, insert_position + characters_to_shift, begin() + to_position + characters_to_shift);
+        ETL_STD::fill(insert_position, insert_position + shift_amount, value);
       }
 
       p_buffer[current_size] = 0;
@@ -894,8 +885,8 @@ namespace etl
         return;
       }
 
-      const size_t start = ETLSTD::distance(begin(), position);
-      const size_t n = ETLSTD::distance(first, last);
+      const size_t start = ETL_STD::distance(begin(), position);
+      const size_t n = ETL_STD::distance(first, last);
 
       // No effect.
       if (start >= CAPACITY)
@@ -926,7 +917,7 @@ namespace etl
         const size_t to_position = start + shift_amount;
         const size_t remaining_characters = current_size - start;
         const size_t max_shift_characters = CAPACITY - start - shift_amount;
-        const size_t characters_to_shift = ETLSTD::min(max_shift_characters, remaining_characters);
+        const size_t characters_to_shift = ETL_STD::min(max_shift_characters, remaining_characters);
 
         // Will the string truncate?
         if ((start + shift_amount + remaining_characters) > CAPACITY)
@@ -939,7 +930,7 @@ namespace etl
           current_size += shift_amount;
         }
 
-        ETLSTD::copy_backward(position, position + characters_to_shift, begin() + to_position + characters_to_shift);
+        ETL_STD::copy_backward(position, position + characters_to_shift, begin() + to_position + characters_to_shift);
 
         while (first != last)
         {
@@ -1005,7 +996,7 @@ namespace etl
     {
       ETL_ASSERT(position <= size(), ETL_ERROR(string_out_of_bounds));
 
-      insert(begin() + position, s, s + strlen(s));
+      insert(begin() + position, s, s + etl::strlen(s));
       return *this;
     }
 
@@ -1046,7 +1037,7 @@ namespace etl
     etl::ibasic_string<T>& erase(size_t position, size_t length_ = npos)
     {
       // Limit the length.
-      length_ = ETLSTD::min(length_, size() - position);
+      length_ = ETL_STD::min(length_, size() - position);
 
       erase(begin() + position, begin() + position + length_);
 
@@ -1060,7 +1051,7 @@ namespace etl
     //*********************************************************************
     iterator erase(iterator i_element)
     {
-      ETLSTD::copy(i_element + 1, end(), i_element);
+      ETL_STD::copy(i_element + 1, end(), i_element);
       p_buffer[--current_size] = 0;
 
       return i_element;
@@ -1076,8 +1067,8 @@ namespace etl
     //*********************************************************************
     iterator erase(iterator first, iterator last)
     {
-      ETLSTD::copy(last, end(), first);
-      size_t n_delete = ETLSTD::distance(first, last);
+      ETL_STD::copy(last, end(), first);
+      size_t n_delete = ETL_STD::distance(first, last);
 
       current_size -= n_delete;
       p_buffer[current_size] = 0;
@@ -1107,7 +1098,7 @@ namespace etl
         is_truncated = true;
       }
 
-      size_t endpos = ETLSTD::min(pos + len, size());
+      size_t endpos = ETL_STD::min(pos + len, size());
 
       for (size_t i = pos; i < endpos; ++i)
       {
@@ -1129,7 +1120,7 @@ namespace etl
         return npos;
       }
 
-      const_iterator iposition = ETLSTD::search(begin() + pos, end(), str.begin(), str.end());
+      const_iterator iposition = ETL_STD::search(begin() + pos, end(), str.begin(), str.end());
 
       if (iposition == end())
       {
@@ -1137,7 +1128,7 @@ namespace etl
       }
       else
       {
-        return ETLSTD::distance(begin(), iposition);
+        return ETL_STD::distance(begin(), iposition);
       }
     }
 
@@ -1155,7 +1146,7 @@ namespace etl
       }
 #endif
 
-      const_iterator iposition = ETLSTD::search(begin() + pos, end(), s, s + etl::strlen(s));
+      const_iterator iposition = ETL_STD::search(begin() + pos, end(), s, s + etl::strlen(s));
 
       if (iposition == end())
       {
@@ -1163,7 +1154,7 @@ namespace etl
       }
       else
       {
-        return ETLSTD::distance(begin(), iposition);
+        return ETL_STD::distance(begin(), iposition);
       }
     }
 
@@ -1182,7 +1173,7 @@ namespace etl
       }
 #endif
 
-      const_iterator iposition = ETLSTD::search(begin() + pos, end(), s, s + n);
+      const_iterator iposition = ETL_STD::search(begin() + pos, end(), s, s + n);
 
       if (iposition == end())
       {
@@ -1190,7 +1181,7 @@ namespace etl
       }
       else
       {
-        return ETLSTD::distance(begin(), iposition);
+        return ETL_STD::distance(begin(), iposition);
       }
     }
 
@@ -1201,11 +1192,11 @@ namespace etl
     //*********************************************************************
     size_t find(T c, size_t position = 0) const
     {
-      const_iterator i = ETLSTD::find(begin() + position, end(), c);
+      const_iterator i = ETL_STD::find(begin() + position, end(), c);
 
       if (i != end())
       {
-        return ETLSTD::distance(begin(), i);
+        return ETL_STD::distance(begin(), i);
       }
       else
       {
@@ -1232,7 +1223,7 @@ namespace etl
 
       position = size() - position;
 
-      const_reverse_iterator iposition = ETLSTD::search(rbegin() + position, rend(), str.rbegin(), str.rend());
+      const_reverse_iterator iposition = ETL_STD::search(rbegin() + position, rend(), str.rbegin(), str.rend());
 
       if (iposition == rend())
       {
@@ -1240,7 +1231,7 @@ namespace etl
       }
       else
       {
-        return size() - str.size() - ETLSTD::distance(rbegin(), iposition);
+        return size() - str.size() - ETL_STD::distance(rbegin(), iposition);
       }
     }
 
@@ -1268,7 +1259,7 @@ namespace etl
       const_reverse_iterator srbegin(s + len);
       const_reverse_iterator srend(s);
 
-      const_reverse_iterator iposition = ETLSTD::search(rbegin() + position, rend(), srbegin, srend);
+      const_reverse_iterator iposition = ETL_STD::search(rbegin() + position, rend(), srbegin, srend);
 
       if (iposition == rend())
       {
@@ -1276,7 +1267,7 @@ namespace etl
       }
       else
       {
-        return size() - len - ETLSTD::distance(rbegin(), iposition);
+        return size() - len - ETL_STD::distance(rbegin(), iposition);
       }
     }
 
@@ -1302,7 +1293,7 @@ namespace etl
       const_reverse_iterator srbegin(s + length_);
       const_reverse_iterator srend(s);
 
-      const_reverse_iterator iposition = ETLSTD::search(rbegin() + position, rend(), srbegin, srend);
+      const_reverse_iterator iposition = ETL_STD::search(rbegin() + position, rend(), srbegin, srend);
 
       if (iposition == rend())
       {
@@ -1310,7 +1301,7 @@ namespace etl
       }
       else
       {
-        return size() - length_ - ETLSTD::distance(rbegin(), iposition);
+        return size() - length_ - ETL_STD::distance(rbegin(), iposition);
       }
     }
 
@@ -1328,11 +1319,11 @@ namespace etl
 
       position = size() - position;
 
-      const_reverse_iterator i = ETLSTD::find(rbegin() + position, rend(), c);
+      const_reverse_iterator i = ETL_STD::find(rbegin() + position, rend(), c);
 
       if (i != rend())
       {
-        return size() - ETLSTD::distance(rbegin(), i) - 1;
+        return size() - ETL_STD::distance(rbegin(), i) - 1;
       }
       else
       {
@@ -1351,7 +1342,7 @@ namespace etl
       ETL_ASSERT(position <= size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the length.
-      length_ = ETLSTD::min(length_, size() - position);
+      length_ = ETL_STD::min(length_, size() - position);
 
       // Erase the bit we want to replace.
       erase(position, length_);
@@ -1397,8 +1388,8 @@ namespace etl
       ETL_ASSERT(subposition <= str.size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the lengths.
-      length_ = ETLSTD::min(length_, size() - position);
-      sublength = ETLSTD::min(sublength, str.size() - subposition);
+      length_ = ETL_STD::min(length_, size() - position);
+      sublength = ETL_STD::min(sublength, str.size() - subposition);
 
       // Erase the bit we want to replace.
       erase(position, length_);
@@ -1422,7 +1413,7 @@ namespace etl
       ETL_ASSERT(position <= size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the length.
-      length_ = ETLSTD::min(length_, size() - position);
+      length_ = ETL_STD::min(length_, size() - position);
 
       // Erase the bit we want to replace.
       erase(position, length_);
@@ -1459,7 +1450,7 @@ namespace etl
       ETL_ASSERT(position <= size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the length.
-      length_ = ETLSTD::min(length_, size() - position);
+      length_ = ETL_STD::min(length_, size() - position);
 
       // Erase the bit we want to replace.
       erase(position, length_);
@@ -1496,7 +1487,7 @@ namespace etl
       ETL_ASSERT(position <= size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the length.
-      length_ = ETLSTD::min(length_, size() - position);
+      length_ = ETL_STD::min(length_, size() - position);
 
       // Erase the bit we want to replace.
       erase(position, length_);
@@ -1563,7 +1554,7 @@ namespace etl
       ETL_ASSERT(position <= size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the length.
-      length_ = ETLSTD::min(length_, size() - position);
+      length_ = ETL_STD::min(length_, size() - position);
 
       return compare(p_buffer + position,
                      p_buffer + position + length_,
@@ -1580,8 +1571,8 @@ namespace etl
       ETL_ASSERT(subposition <= str.size(), ETL_ERROR(string_out_of_bounds));
 
       // Limit the lengths.
-      length_ = ETLSTD::min(length_, size() - position);
-      sublength = ETLSTD::min(sublength, str.size() - subposition);
+      length_ = ETL_STD::min(length_, size() - position);
+      sublength = ETL_STD::min(sublength, str.size() - subposition);
 
       return compare(p_buffer + position,
                      p_buffer + position + length_,
@@ -1721,7 +1712,7 @@ namespace etl
         return npos;
       }
 
-      position = ETLSTD::min(position, size() - 1);
+      position = ETL_STD::min(position, size() - 1);
 
       const_reverse_iterator it = rbegin() + size() - position - 1;
 
@@ -1754,7 +1745,7 @@ namespace etl
         return npos;
       }
 
-      position = ETLSTD::min(position, size() - 1);
+      position = ETL_STD::min(position, size() - 1);
 
       const_reverse_iterator it = rbegin() + size() - position - 1;
 
@@ -1878,7 +1869,7 @@ namespace etl
         return npos;
       }
 
-      position = ETLSTD::min(position, size() - 1);
+      position = ETL_STD::min(position, size() - 1);
 
       const_reverse_iterator it = rbegin() + size() - position - 1;
 
@@ -1916,7 +1907,7 @@ namespace etl
         return npos;
       }
 
-      position = ETLSTD::min(position, size() - 1);
+      position = ETL_STD::min(position, size() - 1);
 
       const_reverse_iterator it = rbegin() + size() - position - 1;
 
@@ -2115,7 +2106,7 @@ namespace etl
   template <typename T>
   bool operator ==(const etl::ibasic_string<T>& lhs, const etl::ibasic_string<T>& rhs)
   {
-    return (lhs.size() == rhs.size()) && ETLSTD::equal(lhs.begin(), lhs.end(), rhs.begin());
+    return (lhs.size() == rhs.size()) && ETL_STD::equal(lhs.begin(), lhs.end(), rhs.begin());
   }
 
   //***************************************************************************
@@ -2128,7 +2119,7 @@ namespace etl
   template <typename T>
   bool operator ==(const etl::ibasic_string<T>& lhs, const T* rhs)
   {
-    return (lhs.size() == etl::strlen(rhs)) && ETLSTD::equal(lhs.begin(), lhs.end(), rhs);
+    return (lhs.size() == etl::strlen(rhs)) && ETL_STD::equal(lhs.begin(), lhs.end(), rhs);
   }
 
   //***************************************************************************
@@ -2141,7 +2132,7 @@ namespace etl
   template <typename T>
   bool operator ==(const T* lhs, const etl::ibasic_string<T>& rhs)
   {
-    return (rhs.size() == etl::strlen(lhs)) && ETLSTD::equal(rhs.begin(), rhs.end(), lhs);
+    return (rhs.size() == etl::strlen(lhs)) && ETL_STD::equal(rhs.begin(), rhs.end(), lhs);
   }
 
 
@@ -2195,7 +2186,7 @@ namespace etl
   template <typename T>
   bool operator <(const etl::ibasic_string<T>& lhs, const etl::ibasic_string<T>& rhs)
   {
-    return ETLSTD::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+    return ETL_STD::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
   }
 
   //***************************************************************************
@@ -2208,7 +2199,7 @@ namespace etl
   template <typename T>
   bool operator <(const etl::ibasic_string<T>& lhs, const T* rhs)
   {
-    return ETLSTD::lexicographical_compare(lhs.begin(), lhs.end(), rhs, rhs + etl::strlen(rhs));
+    return ETL_STD::lexicographical_compare(lhs.begin(), lhs.end(), rhs, rhs + etl::strlen(rhs));
   }
 
   //***************************************************************************
@@ -2221,7 +2212,7 @@ namespace etl
   template <typename T>
   bool operator <(const T* lhs, const etl::ibasic_string<T>& rhs)
   {
-    return ETLSTD::lexicographical_compare(lhs, lhs + etl::strlen(lhs), rhs.begin(), rhs.end());
+    return ETL_STD::lexicographical_compare(lhs, lhs + etl::strlen(lhs), rhs.begin(), rhs.end());
   }
 
 

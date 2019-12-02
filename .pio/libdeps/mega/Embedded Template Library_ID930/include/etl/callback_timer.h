@@ -39,22 +39,36 @@ SOFTWARE.
 #include "static_assert.h"
 #include "timer.h"
 #include "atomic.h"
+#include "error_handler.h"
+
+#if ETL_CPP11_SUPPORTED
+  #include "delegate.h"
+#endif
 
 #undef ETL_FILE
 #define ETL_FILE "43"
 
-#if !defined(ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK) && !defined(ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK)
-  #error ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK or ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK not defined
-#endif
+#if defined(ETL_IN_UNIT_TEST) && defined(ETL_NO_STL)
+  #define ETL_DISABLE_TIMER_UPDATES
+  #define ETL_ENABLE_TIMER_UPDATES
+  #define ETL_TIMER_UPDATES_ENABLED true
 
-#if defined(ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK) && defined(ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK)
-  #error Only define one of ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK or ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK
-#endif
+  #undef ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK
+  #undef ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK
+#else
+  #if !defined(ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK) && !defined(ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK)
+    #error ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK or ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK not defined
+  #endif
 
-#if defined(ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK)
-  #define ETL_DISABLE_TIMER_UPDATES (++process_semaphore)
-  #define ETL_ENABLE_TIMER_UPDATES  (--process_semaphore)
-  #define ETL_TIMER_UPDATES_ENABLED (process_semaphore.load() == 0)
+  #if defined(ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK) && defined(ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK)
+    #error Only define one of ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK or ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK
+  #endif
+
+  #if defined(ETL_CALLBACK_TIMER_USE_ATOMIC_LOCK)
+    #define ETL_DISABLE_TIMER_UPDATES (++process_semaphore)
+    #define ETL_ENABLE_TIMER_UPDATES  (--process_semaphore)
+    #define ETL_TIMER_UPDATES_ENABLED (process_semaphore.load() == 0)
+  #endif
 #endif
 
 #if defined(ETL_CALLBACK_TIMER_USE_INTERRUPT_LOCK)
@@ -73,6 +87,12 @@ namespace etl
   /// The configuration of a timer.
   struct callback_timer_data
   {
+    enum callback_type
+    {
+      C_CALLBACK,
+      IFUNCTION,
+      DELEGATE
+    };
     //*******************************************
     callback_timer_data()
       : p_callback(nullptr),
@@ -82,7 +102,7 @@ namespace etl
         previous(etl::timer::id::NO_TIMER),
         next(etl::timer::id::NO_TIMER),
         repeating(true),
-        has_c_callback(true)
+        cbk_type(IFUNCTION)
     {
     }
 
@@ -100,7 +120,7 @@ namespace etl
         previous(etl::timer::id::NO_TIMER),
         next(etl::timer::id::NO_TIMER),
         repeating(repeating_),
-        has_c_callback(true)
+        cbk_type(C_CALLBACK)
     {
     }
 
@@ -118,9 +138,29 @@ namespace etl
         previous(etl::timer::id::NO_TIMER),
         next(etl::timer::id::NO_TIMER),
         repeating(repeating_),
-        has_c_callback(false)
+        cbk_type(IFUNCTION)
     {
     }
+
+#if ETL_CPP11_SUPPORTED
+    //*******************************************
+    /// ETL delegate callback
+    //*******************************************
+    callback_timer_data(etl::timer::id::type  id_,
+                        etl::delegate<void()>& callback_,
+                        uint32_t              period_,
+                        bool                  repeating_)
+            : p_callback(reinterpret_cast<void*>(&callback_)),
+              period(period_),
+              delta(etl::timer::state::INACTIVE),
+              id(id_),
+              previous(etl::timer::id::NO_TIMER),
+              next(etl::timer::id::NO_TIMER),
+              repeating(repeating_),
+              cbk_type(DELEGATE)
+    {
+    }
+#endif
 
     //*******************************************
     /// Returns true if the timer is active.
@@ -145,7 +185,7 @@ namespace etl
     uint_least8_t         previous;
     uint_least8_t         next;
     bool                  repeating;
-    bool                  has_c_callback;
+    callback_type         cbk_type;
 
   private:
 
@@ -407,6 +447,40 @@ namespace etl
     }
 
     //*******************************************
+    /// Register a timer.
+    //*******************************************
+#if ETL_CPP11_SUPPORTED
+    etl::timer::id::type register_timer(etl::delegate<void()>& callback_,
+                                        uint32_t               period_,
+                                        bool                   repeating_)
+    {
+        etl::timer::id::type id = etl::timer::id::NO_TIMER;
+
+        bool is_space = (registered_timers < MAX_TIMERS);
+
+        if (is_space)
+        {
+            // Search for the free space.
+            for (uint_least8_t i = 0; i < MAX_TIMERS; ++i)
+            {
+                etl::callback_timer_data& timer = timer_array[i];
+
+                if (timer.id == etl::timer::id::NO_TIMER)
+                {
+                    // Create in-place.
+                    new (&timer) callback_timer_data(i, callback_, period_, repeating_);
+                    ++registered_timers;
+                    id = i;
+                    break;
+                }
+            }
+        }
+
+        return id;
+    }
+#endif
+
+    //*******************************************
     /// Unregister a timer.
     //*******************************************
     bool unregister_timer(etl::timer::id::type id_)
@@ -504,15 +578,26 @@ namespace etl
 
               if (timer.p_callback != nullptr)
               {
-                if (timer.has_c_callback)
+                if (timer.cbk_type == callback_timer_data::C_CALLBACK)
                 {
                   // Call the C callback.
                   reinterpret_cast<void(*)()>(timer.p_callback)();
                 }
-                else
+                else if(timer.cbk_type == callback_timer_data::IFUNCTION)
                 {
                   // Call the function wrapper callback.
                   (*reinterpret_cast<etl::ifunction<void>*>(timer.p_callback))();
+                }
+#if ETL_CPP11_SUPPORTED
+                else if(timer.cbk_type == callback_timer_data::DELEGATE)
+                {
+                    // Call the function wrapper callback.
+                    (*reinterpret_cast<etl::delegate<void()>*>(timer.p_callback))();
+                }
+#endif
+                else
+                {
+                    ETL_ALWAYS_ASSERT("Callback timer has incorrect callback type stored");
                 }
               }
 
@@ -547,7 +632,7 @@ namespace etl
 
         // Registered timer?
         if (timer.id != etl::timer::id::NO_TIMER)
-        {         
+        {
           // Has a valid period.
           if (timer.period != etl::timer::state::INACTIVE)
           {
@@ -562,7 +647,7 @@ namespace etl
             ETL_ENABLE_TIMER_UPDATES;
 
             result = true;
-          }                
+          }
         }
       }
 

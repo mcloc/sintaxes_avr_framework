@@ -141,7 +141,7 @@ namespace etl
     {
       if (p != 0)
       {
-        ETLSTD::fill_n(p, n, c);
+        ETL_STD::fill_n(p, n, c);
       }
 
       return p;
@@ -156,9 +156,9 @@ namespace etl
       }
       else
       {
-        etl::copy_n(ETLSTD::reverse_iterator<char_type*>(src + count),
+        etl::copy_n(ETL_STD::reverse_iterator<char_type*>(src + count),
                     count,
-                    ETLSTD::reverse_iterator<char_type*>(dest + count));
+                    ETL_STD::reverse_iterator<char_type*>(dest + count));
       }
 
       return dest;
@@ -239,6 +239,16 @@ namespace etl
       return (e == eof()) ? eof() - 1 : e;
     }
   };
+
+
+  //***************************************************************************
+  /// Alternative strlen for all character types.
+  //***************************************************************************
+  template <typename T>
+  size_t strlen(const T* t)
+  {
+    return etl::char_traits<T>::length(t);
+  }
 }
 
 #endif

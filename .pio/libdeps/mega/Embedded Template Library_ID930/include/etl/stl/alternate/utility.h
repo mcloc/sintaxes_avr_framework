@@ -34,6 +34,9 @@ SOFTWARE.
 #include "../../platform.h"
 #include "../../type_traits.h"
 
+#include "../../private/choose_tag_types.h"
+#include "../../private/choose_pair_types.h"
+
 namespace etlstd
 {
   //******************************************************************************

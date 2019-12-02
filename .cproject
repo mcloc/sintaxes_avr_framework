@@ -23,123 +23,123 @@
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1409095472" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1624502120" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.239157887" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BME280 Library_ID166"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SPI/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/cores/arduino"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/variants/mega"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BMP280 Library_ID528"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/HID/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.922107295" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40101"/>
 									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
+									<listOptionValue builtIn="false" value="ARDUINO=10808"/>
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.149990277" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.54121539" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1096940598" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BME280 Library_ID166"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SPI/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/cores/arduino"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/variants/mega"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BMP280 Library_ID528"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/HID/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1198905600" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40101"/>
 									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
+									<listOptionValue builtIn="false" value="ARDUINO=10808"/>
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.762536863" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1310559623" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.41298875" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BME280 Library_ID166"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SPI/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/cores/arduino"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/variants/mega"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BMP280 Library_ID528"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/HID/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.884639970" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40101"/>
 									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
+									<listOptionValue builtIn="false" value="ARDUINO=10808"/>
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.549319812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
@@ -172,123 +172,123 @@
 							<tool id="org.eclipse.cdt.build.core.settings.holder.libs.1855678035" name="holder for library settings" superClass="org.eclipse.cdt.build.core.settings.holder.libs"/>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.30528994" name="Assembly" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.794801023" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BME280 Library_ID166"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SPI/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/cores/arduino"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/variants/mega"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BMP280 Library_ID528"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/HID/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.1743427839" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40101"/>
 									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
+									<listOptionValue builtIn="false" value="ARDUINO=10808"/>
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.919136836" languageId="org.eclipse.cdt.core.assembly" languageName="Assembly" sourceContentType="org.eclipse.cdt.core.asmSource" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1146422798" name="GNU C++" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.650084869" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BME280 Library_ID166"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SPI/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/cores/arduino"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/variants/mega"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BMP280 Library_ID528"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/HID/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2055633423" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40101"/>
 									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
+									<listOptionValue builtIn="false" value="ARDUINO=10808"/>
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.445650141" languageId="org.eclipse.cdt.core.g++" languageName="GNU C++" sourceContentType="org.eclipse.cdt.core.cxxSource,org.eclipse.cdt.core.cxxHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
 							</tool>
 							<tool id="org.eclipse.cdt.build.core.settings.holder.1637357529" name="GNU C" superClass="org.eclipse.cdt.build.core.settings.holder">
 								<option id="org.eclipse.cdt.build.core.settings.holder.incpaths.1246337321" name="Include Paths" superClass="org.eclipse.cdt.build.core.settings.holder.incpaths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/cores/arduino"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/variants/mega"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/lib/StandardCplusplus"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
-									<listOptionValue builtIn="false" value="${HOME}/devel/sintaxes/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src"/>
-									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/msgpack/type_value"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/msgpack"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/devices/types"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/defines"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/lib/sintaxes-lib/sintaxes-lib/commands"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BME280 Library_ID166"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/Wire/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/DHT sensor library_ID19"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit Unified Sensor_ID31"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/UIPEthernet_ID1484/utility"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SPI/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/cores/arduino"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/variants/mega"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Adafruit BMP280 Library_ID528"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930/include"/>
+									<listOptionValue builtIn="false" value="${HOME}/devel/vger/workspace-arduino/sintaxes_avr_framework/.pio/libdeps/mega/Embedded Template Library_ID930"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/HID/src"/>
+									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src"/>
 									<listOptionValue builtIn="false" value="${HOME}/.platformio/packages/tool-unity"/>
 								</option>
 								<option id="org.eclipse.cdt.build.core.settings.holder.symbols.2122043341" name="Symbols" superClass="org.eclipse.cdt.build.core.settings.holder.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="PLATFORMIO=40100"/>
+									<listOptionValue builtIn="false" value="PLATFORMIO=40101"/>
 									<listOptionValue builtIn="false" value="ARDUINO_AVR_MEGA2560"/>
 									<listOptionValue builtIn="false" value="F_CPU=16000000L"/>
 									<listOptionValue builtIn="false" value="ARDUINO_ARCH_AVR"/>
-									<listOptionValue builtIn="false" value="ARDUINO=10805"/>
+									<listOptionValue builtIn="false" value="ARDUINO=10808"/>
 									<listOptionValue builtIn="false" value="__AVR_ATmega2560__"/>
 								</option>
 								<inputType id="org.eclipse.cdt.build.core.settings.holder.inType.207004812" languageId="org.eclipse.cdt.core.gcc" languageName="GNU C" sourceContentType="org.eclipse.cdt.core.cSource,org.eclipse.cdt.core.cHeader" superClass="org.eclipse.cdt.build.core.settings.holder.inType"/>
