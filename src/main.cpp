@@ -76,20 +76,22 @@ void setup() {
 	Serial.begin(115200);
 	    Serial.println(F("BME280 test"));
 
-	    if (! BME280.begin()) {
+	    if (! BME280.begin(0x77)) {
 	        Serial.println("Could not find a valid BMP280 sensor, check wiring!");
 	        while (1);
 	    }
 
 	    // humidity sensing
 	        Serial.println("-- Humidity Sensing Scenario --");
-	        Serial.println("forced mode, 1x temperature / 1x humidity / 0x pressure oversampling");
+//	        Serial.println("forced mode, 1x temperature / 1x humidity / 0x pressure oversampling");
+	        Serial.println("normal mode, 16x pressure / 2x temperature / 1x humidity oversampling,");
 	        Serial.println("= pressure off, filter off");
-	        BME280.setSampling(Adafruit_BME280::MODE_FORCED,
-                    Adafruit_BME280::SAMPLING_X1, // temperature
-                    Adafruit_BME280::SAMPLING_X1, // pressure
-                    Adafruit_BME280::SAMPLING_X1, // humidity
-	                        Adafruit_BME280::FILTER_OFF );
+	        BME280.setSampling(Adafruit_BME280::MODE_NORMAL,
+                    Adafruit_BME280::SAMPLING_X16, // temperature
+                    Adafruit_BME280::SAMPLING_X16, // pressure
+                    Adafruit_BME280::SAMPLING_X16, // humidity
+					Adafruit_BME280::FILTER_X16,
+					Adafruit_BME280::STANDBY_MS_0_5);
 
 	        // suggested rate is 1Hz (1s)
 
