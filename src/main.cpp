@@ -23,7 +23,7 @@
 
 
 
-//######  T E S T I N G   T H E   N E W    BMP280 S E N S O R S
+//######  T E S T I N G   T H E   N E W    BME280 S E N S O R S
 #include <Adafruit_BME280.h>
 #include <Wire.h>
 
@@ -62,8 +62,10 @@ static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, GREEN_LED);
 
 ///////////////////////////////D E B U G   T H E   BMP280 ///////////////////////////////////
 
-#define SEALEVELPRESSURE_HPA (1013.25)
-static Adafruit_BME280 BME280; // I2C
+#define SEALEVELPRESSURE_HPA (490)
+static Adafruit_BME280 BME280_1; // I2C
+//static Adafruit_BME280 BME280_2; // I2C
+
 unsigned long delayTime;
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -74,36 +76,49 @@ static uint32_t total_requests = 0;
 void setup() {
 	///////////////////////////////D E B U G   T H E   BMP280 ///////////////////////////////////
 	Serial.begin(115200);
-	    Serial.println(F("BME280 test"));
+//	    Serial.println(F("BME280 test"));
 
-	    if (! BME280.begin(0x77)) {
-	        Serial.println("Could not find a valid BMP280 sensor, check wiring!");
+	    if (! BME280_1.begin()) {
+	        Serial.println("Could not find a valid BMP280 sensor 1, check wiring!");
 	        while (1);
 	    }
 
+//	    if (! BME280_2.begin()) {
+//	        Serial.println("Could not find a valid BMP280 sensor 2, check wiring!");
+//	        while (1);
+//	    }
+
 	    // humidity sensing
-	        Serial.println("-- Humidity Sensing Scenario --");
+//	        Serial.println("-- Humidity Sensing Scenario --");
 //	        Serial.println("forced mode, 1x temperature / 1x humidity / 0x pressure oversampling");
-	        Serial.println("normal mode, 16x pressure / 2x temperature / 1x humidity oversampling,");
-	        Serial.println("= pressure off, filter off");
-	        BME280.setSampling(Adafruit_BME280::MODE_NORMAL,
+//	        Serial.println("normal mode, 16x pressure / 2x temperature / 1x humidity oversampling,");
+//	        Serial.println("= pressure off, filter off");
+	        BME280_1.setSampling(Adafruit_BME280::MODE_NORMAL,
                     Adafruit_BME280::SAMPLING_X16, // temperature
                     Adafruit_BME280::SAMPLING_X16, // pressure
                     Adafruit_BME280::SAMPLING_X16, // humidity
 					Adafruit_BME280::FILTER_X16,
 					Adafruit_BME280::STANDBY_MS_0_5);
+//	        BME280_2.setSampling(Adafruit_BME280::MODE_NORMAL,
+//                    Adafruit_BME280::SAMPLING_X16, // temperature
+//                    Adafruit_BME280::SAMPLING_X16, // pressure
+//                    Adafruit_BME280::SAMPLING_X16, // humidity
+//					Adafruit_BME280::FILTER_X16,
+//					Adafruit_BME280::STANDBY_MS_0_5);
 
 	        // suggested rate is 1Hz (1s)
-
-	           Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
-	           Serial.print("SensorID was: 0x");
-	           Serial.println(BME280.sensorID(),16);
-	           Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
-	           Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
-	           Serial.print("        ID of 0x60 represents a BME 280.\n");
-	           Serial.print("        ID of 0x61 represents a BME 680.\n");
-
-	       Serial.println("-- Default Test --");
+//
+//	           Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
+//	           Serial.print("SensorID 1 was: 0x");
+//	           Serial.println(BME280_1.sensorID(),16);
+//	           Serial.print("SensorID 2was: 0x");
+//	           Serial.println(BME280_2.sensorID(),16);
+//	           Serial.print("        ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
+//	           Serial.print("   ID of 0x56-0x58 represents a BMP 280,\n");
+//	           Serial.print("        ID of 0x60 represents a BME 280.\n");
+//	           Serial.print("        ID of 0x61 represents a BME 680.\n");
+//
+//	       Serial.println("-- Default Test --");
 
 	    //BMP280
 //	    Serial.println("-- Default Test --");
@@ -196,24 +211,41 @@ void setup() {
 }
 
 void loop() {
-	 Serial.print("Temperature = ");
-	    Serial.print(BME280.readTemperature());
-	    Serial.println(" *C");
+//	Serial.print("Temperature 1 = ");
+	Serial.print("|");
+	Serial.print(BME280_1.readTemperature());
+//	Serial.print(" *C");
+	Serial.print("|");
+//	Serial.flush();
+//	Serial.print("Temperature 2 = ");
+//	Serial.print(BME280_2.readTemperature());
+//	Serial.print(" *C");
 
-	    Serial.print("Pressure = ");
+//	Serial.print("Humidity 1 = ");
+	Serial.print(BME280_1.readHumidity());
+//	Serial.print(" %");
+	Serial.print("|");
+//	Serial.flush();
 
-	    Serial.print(BME280.readPressure() / 100.0F);
-	    Serial.println(" hPa");
 
+//	Serial.print("Pressure 1 = ");
+	Serial.print(BME280_1.readPressure() / 100.0F);
+//	Serial.print(" hPa");
+	Serial.print("|");
+	Serial.println();
+	Serial.flush();
+//	Serial.print("Pressure 2 = ");
+//	Serial.print(BME280_2.readPressure() / 100.0F);
+//	Serial.print(" hPa");
 //	    Serial.print("Approx. Altitude = ");
 //	    Serial.print(BME280.readAltitude(SEALEVELPRESSURE_HPA));
 //	    Serial.println(" m");
 
-	    Serial.print("Humidity = ");
-	    Serial.print(BME280.readHumidity());
-	    Serial.println(" %");
+//	Serial.print("Humidity 2 = ");
+//	Serial.print(BME280_2.readHumidity());
+//	Serial.print(" %");
 
-	    Serial.println();
+//	Serial.println();
     // For more details on the following scenarious, see chapter
       // 3.5 "Recommended modes of operation" in the datasheet
 
@@ -289,8 +321,9 @@ void loop() {
       delayTime = 12;
   */
 
-	Serial.println();
-	delay(1000);
+//	Serial.println();
+//	Serial.flush();
+	delay(200);
 
 	return;
 
