@@ -62,9 +62,9 @@ static DN20 dn20_3 = DN20(MODULE_ACTUATOR_DN20_1_3, GREEN_LED);
 
 ///////////////////////////////D E B U G   T H E   BMP280 ///////////////////////////////////
 
-#define SEALEVELPRESSURE_HPA (490)
+#define SEALEVELPRESSURE_HPA (1012) // google: pressão atmosférica tempo real santos hPa
 static Adafruit_BME280 BME280_1; // I2C
-//static Adafruit_BME280 BME280_2; // I2C
+static Adafruit_BME280 BME280_2; // I2C
 
 unsigned long delayTime;
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,15 +78,15 @@ void setup() {
 	Serial.begin(115200);
 //	    Serial.println(F("BME280 test"));
 
-	    if (! BME280_1.begin()) {
+	    if (! BME280_1.begin(0x76)) {
 	        Serial.println("Could not find a valid BMP280 sensor 1, check wiring!");
 	        while (1);
 	    }
 
-//	    if (! BME280_2.begin()) {
-//	        Serial.println("Could not find a valid BMP280 sensor 2, check wiring!");
-//	        while (1);
-//	    }
+	    if (! BME280_2.begin(0x77)) {
+	        Serial.println("Could not find a valid BMP280 sensor 2, check wiring!");
+	        while (1);
+	    }
 
 	    // humidity sensing
 //	        Serial.println("-- Humidity Sensing Scenario --");
@@ -99,12 +99,12 @@ void setup() {
                     Adafruit_BME280::SAMPLING_X16, // humidity
 					Adafruit_BME280::FILTER_X16,
 					Adafruit_BME280::STANDBY_MS_0_5);
-//	        BME280_2.setSampling(Adafruit_BME280::MODE_NORMAL,
-//                    Adafruit_BME280::SAMPLING_X16, // temperature
-//                    Adafruit_BME280::SAMPLING_X16, // pressure
-//                    Adafruit_BME280::SAMPLING_X16, // humidity
-//					Adafruit_BME280::FILTER_X16,
-//					Adafruit_BME280::STANDBY_MS_0_5);
+	        BME280_2.setSampling(Adafruit_BME280::MODE_NORMAL,
+                    Adafruit_BME280::SAMPLING_X16, // temperature
+                    Adafruit_BME280::SAMPLING_X16, // pressure
+                    Adafruit_BME280::SAMPLING_X16, // humidity
+					Adafruit_BME280::FILTER_X16,
+					Adafruit_BME280::STANDBY_MS_0_5);
 
 	        // suggested rate is 1Hz (1s)
 //
@@ -201,37 +201,54 @@ void setup() {
 //		sintaxes_lib.buzz( 8000, 400, 2);
 //		delay(500);
 //	}
-
-	Ethernet.begin(mac,ip);
+	//DEBUG UNCOMENT THIS LINE
+	//Ethernet.begin(mac,ip);
 
 //
-	server.begin();
+	//DEBUG UNCOMENT THIS LINE
+//	server.begin();
 	sintaxes_lib.buzz( 5000, 300, 4);
 //	sintaxes_lib.blink(BOARD_LED, 200, 4);
 }
 
 void loop() {
-//	Serial.print("Temperature 1 = ");
-	Serial.print("|");
-	Serial.print(BME280_1.readTemperature());
-//	Serial.print(" *C");
-	Serial.print("|");
-//	Serial.flush();
-//	Serial.print("Temperature 2 = ");
-//	Serial.print(BME280_2.readTemperature());
-//	Serial.print(" *C");
-
-//	Serial.print("Humidity 1 = ");
-	Serial.print(BME280_1.readHumidity());
-//	Serial.print(" %");
-	Serial.print("|");
-//	Serial.flush();
 
 
-//	Serial.print("Pressure 1 = ");
-	Serial.print(BME280_1.readPressure() / 100.0F);
-//	Serial.print(" hPa");
+	Serial.print("|"); // pipe element [0]
+	Serial.print(BME280_1.readTemperature()); // pipe element [1]
 	Serial.print("|");
+	Serial.print(BME280_1.readHumidity()); // pipe element [2]
+	Serial.print("|");
+	Serial.print(BME280_1.readPressure() / 100.0F); // pipe element [3]
+	Serial.print("|");
+	Serial.print(BME280_1.readAltitude(1011)); // pipe element [4]
+	Serial.print("|");
+	Serial.print(BME280_1.seaLevelForAltitude(490, 953)); // pipe element [5]
+	Serial.print("|");
+
+	Serial.print(BME280_2.readTemperature()); // pipe element [6]
+	Serial.print("|");
+	Serial.print(BME280_2.readHumidity()); // pipe element [7]
+	Serial.print("|");
+	Serial.print(BME280_2.readPressure() / 100.0F); // pipe element [8]
+	Serial.print("|");
+	Serial.print(BME280_2.readAltitude(1011)); // pipe element [9]
+	Serial.print("|");
+	Serial.print(BME280_2.seaLevelForAltitude(490, 953)); // pipe element [10]
+	Serial.print("|");
+
+
+
+	Serial.print(dht1.readTemperature()); // pipe element [11]
+	Serial.print("|");
+	Serial.print(dht1.readHumidity()); // pipe element [12]
+	Serial.print("|");
+	Serial.print(dht2.readTemperature()); // pipe element [13]
+	Serial.print("|");
+	Serial.print(dht2.readHumidity()); // pipe element [14]
+	Serial.print("|");
+
+
 	Serial.println();
 	Serial.flush();
 //	Serial.print("Pressure 2 = ");
@@ -323,7 +340,7 @@ void loop() {
 
 //	Serial.println();
 //	Serial.flush();
-	delay(200);
+	delay(500);
 
 	return;
 
