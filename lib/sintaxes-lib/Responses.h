@@ -17,7 +17,7 @@ class Responses{
         void writeModule500DataHeaders();
         void writeTotalRequests(uint32_t total, uint32_t time_processing, uint32_t uptime);
 
-        void sendFullStatusData(char *sensor1_data, char *sensor2_data);
+        void sendFullStatusData(char *sensor1_data, char *sensor2_data, char *sensor3_data, char *sensor4_data);
         void initJsonResponse();
         void closeJsonResponse();
 

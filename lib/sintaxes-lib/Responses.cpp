@@ -27,14 +27,14 @@ void Responses::setClient(EthernetClient *_client){
 //}
 
 
-void Responses::writeTotalRequests(uint32_t total, uint32_t time_processing, uint32_t uptime){
-	if(response_json_initiated)
-		client->print(FSH(json_module_comma_separator));
-	else
-		response_json_initiated = true;
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_total_requests), total, time_processing, uptime);
-	client->print(LocalBuffers::string_cpy_buffer);
-}
+//void Responses::writeTotalRequests(uint32_t total, uint32_t time_processing, uint32_t uptime){
+//	if(response_json_initiated)
+//		client->print(FSH(json_module_comma_separator));
+//	else
+//		response_json_initiated = true;
+//	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_requests_detail), total, time_processing, uptime);
+//	client->print(LocalBuffers::string_cpy_buffer);
+//}
 
 void Responses::writeProcess32bitwordERROR(){
 	if(response_json_initiated)
@@ -368,8 +368,8 @@ void Responses::initJsonResponse(){
 	//Message Header
 	client->print(FSH(json_module_name));
 	client->print(FSH(json_module_comma_separator));
-	client->print(FSH(json_module_uptime));
-	client->print(FSH(json_module_comma_separator));
+//	client->print(FSH(json_module_uptime));
+//	client->print(FSH(json_module_comma_separ"\"actuators\":";ator));
 	//Data Object
 	client->print(FSH(json_module_reponse_key));
 	client->print(FSH(json_module_brackets_open));
@@ -393,14 +393,14 @@ void Responses::closeJsonResponse(){
 	client->println();
 }
 
-void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
+void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data, char *sensor3_data, char *sensor4_data){
 	//begin the construction of Json
 	client->print(FSH(json_module_braces_open));
 	//Message Header
 	client->print(FSH(json_module_name));
 	client->print(FSH(json_module_comma_separator));
-	client->print(FSH(json_module_uptime));
-	client->print(FSH(json_module_comma_separator));
+//	client->print(FSH(json_module_uptime));
+//	client->print(FSH(json_module_comma_separator));
 
 	//Data Object
 	client->print(FSH(json_module_data_key));
@@ -411,13 +411,30 @@ void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
 	client->print(FSH(json_module_sensors_key));
 	client->print(FSH(json_module_brackets_open));
 
+
+//	ApplianceMemmoryHandler::sintaxes_lib->buzz(1000, 200, 15);
+
+
 	// DTH21#1 ouput
 	client->print(sensor1_data); //json object of the Sensor 1
+//
+	client->print(FSH(json_module_comma_separator));
+//
+//	// DTH21#2 ouput
+	client->print(sensor2_data); //json object of the Sensor 2
+
+//	ApplianceMemmoryHandler::sintaxes_lib->buzz(1000, 200, 15);
 
 	client->print(FSH(json_module_comma_separator));
 
-	// DTH21#2 ouput
-	client->print(sensor2_data); //json object of the Sensor 2
+	// BME280#1 ouput
+	client->print(sensor3_data); //json object of the Sensor 3
+
+	client->print(FSH(json_module_comma_separator));
+
+	// BME280#2 ouput
+	client->print(sensor4_data); //json object of the Sensor 4
+
 
 	// close Sensors array
 	client->print(FSH(json_module_brackets_close));
@@ -432,14 +449,20 @@ void Responses::sendFullStatusData(char *sensor1_data, char *sensor2_data){
 
 	//Close data Object
 	client->print(FSH(json_module_braces_close));
-	client->print(FSH(json_module_comma_separator));
-	client->print(FSH(json_module_status));
-	client->print(FSH(json_module_comma_separator));
+//	client->print(FSH(json_module_comma_separator));
+//	client->print(FSH(json_module_status));
+//	client->print(FSH(json_module_comma_separator));
+
+//	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_requests_detail), ApplianceMemmoryHandler::total_requests, ((millis() - ApplianceMemmoryHandler::loop_time)*1000), ApplianceMemmoryHandler::uptime);
+//	client->print(LocalBuffers::string_cpy_buffer);
+//	client->print(FSH(json_module_comma_separator));
 
 //	Errors data
-	client->print(FSH(json_module_error_key));
-	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_NONE,  ERROR_NONE_STR);
-	client->print(LocalBuffers::string_cpy_buffer);
+//	client->print(FSH(json_module_error_key));
+//	snprintf_P(LocalBuffers::string_cpy_buffer, sizeof(LocalBuffers::string_cpy_buffer), (PGM_P)&(json_module_error), ERROR_NONE,  ERROR_NONE_STR);
+//	client->print(LocalBuffers::string_cpy_buffer);
+//
+//	ApplianceMemmoryHandler::sintaxes_lib->buzz(5000, 2000);
 
 //	end the construction of Json
 	client->print(FSH(json_module_braces_close));

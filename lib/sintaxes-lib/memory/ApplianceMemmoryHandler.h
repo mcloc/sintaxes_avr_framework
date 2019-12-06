@@ -16,6 +16,7 @@
 #include <msgpack/MsgPackHandler.h>
 #include <4BCProtocol/4BCPContainer.h>
 #include <DHT.h>
+#include <Adafruit_BME280.h>
 #include <commands/SetActuatorCommand.h>
 
 
@@ -33,10 +34,16 @@ public:
 	//Appliance specific allocations
 	static  DHT *dht1;
 	static  DHT *dht2;
+	static  Adafruit_BME280 *BME280_1;
+	static  Adafruit_BME280 *BME280_2;
 
 	static ActuatorBase *dn20_1;
 	static ActuatorBase *dn20_2;
 	static ActuatorBase *dn20_3;
+
+//	static uint32_t total_requests;
+//	static long unsigned int loop_time;
+//	static long unsigned int uptime;
 
 //	static SetActuatorCommand *command_set_actuator;
 

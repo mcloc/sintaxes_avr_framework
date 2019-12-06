@@ -9,6 +9,7 @@
  * 
  */
 
+// 	 const char json_total_requests[] PROGMEM = "{\"requests\":%lu, \"processing time\":%lu, \"uptime\":%lu}";
 
     const char header_response_200[] PROGMEM = "HTTP/1.1 200 OK";
     const char header_response_500[] PROGMEM = "HTTP/1.1 500 Internal Server Error";
@@ -16,7 +17,6 @@
     const char header_server[] PROGMEM = "Server: AVR-Sintaxes-module-1";
     const char header_connection[] PROGMEM = "Connection: close";
 
-    const char json_total_requests[] PROGMEM = "{\"requests\":%lu, \"processing time\":%lu, \"uptime\":%lu}";
     const char json_module_braces_open[] PROGMEM = "{";
     const char json_module_braces_close[] PROGMEM = "}";
     const char json_module_brackets_open[] PROGMEM = "[";
@@ -27,6 +27,13 @@
     const char json_module_name[] PROGMEM = "\"module_name\":\"climatization_board#1\"";
     const char json_module_status[] PROGMEM = "\"status\":\"OK\"";
     const char json_module_uptime[] PROGMEM = "\"uptime\":132";
+
+//    const char json_module_uptime[] PROGMEM = "\"uptime\":%d";
+//    const char json_module_total_requests[] PROGMEM = "\"total_requests\":%d";
+//    const char json_module_loop_time[] PROGMEM = "\"looptime\":%d";
+//    const char json_requests_detail[] PROGMEM = "\"requests\":%lu, \"processing time\":\"%d ms\", \"uptime\":%lu";
+
+
     const char json_module_error[] PROGMEM  = "{\"error_code\":%d,\"error_msg\":\"%S\"}";
     const char json_module_error_msg_pack_flow[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"4BCP process flow error. Check for process_flow in the MsgPackHandler. Actual previous status: %02X  -- status:%02X -- next status:%02X\"}";
     const char json_module_error_msgpack_unimplemented[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"msgpack type not implemented: %02X\"}";
@@ -39,9 +46,14 @@
     const char json_module_reponse_key[] PROGMEM = "\"response\":";
     const char json_module_sensors_key[] PROGMEM  = "\"sensors\":";
     const char json_module_actuators_key[] PROGMEM  = "\"actuators\":";
+//    const char json_module_uptime[] PROGMEM = "\"uptime\":%s";
     const char json_module_sensor1[] PROGMEM  = "{\"uuid\":\"DHT21#1\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"heat_index\":\"xxxxx\"}]}";
     const char json_module_sensor2[] PROGMEM  = "{\"uuid\":\"DHT21#2\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"heat_index\":\"xxxxx\"}]}";
-    const char json_module_actuator1[] PROGMEM  = "{\"uuid\":\"solenoid#1\",\"value\":{\"active\":103,\"activated_time\":111}}";
+    const char json_module_sensor3[] PROGMEM  = "{\"uuid\":\"BME280#1\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"pressure\":\"xxxxx\"}]}";
+    const char json_module_sensor4[] PROGMEM  = "{\"uuid\":\"BME280#2\",\"value\":[{\"humidity\":%s},{\"temperature\":%s},{\"pressure\":\"xxxxx\"}]}";
+    const char json_module_actuator1[] PROGMEM  = "{\"uuid\":\"DN20#1\",\"value\":{\"active\":103,\"activated_time\":111}}";
+    const char json_module_actuator2[] PROGMEM  = "{\"uuid\":\"DN20#2\",\"value\":{\"active\":103,\"activated_time\":111}}";
+    const char json_module_actuator3[] PROGMEM  = "{\"uuid\":\"DN20#3\",\"value\":{\"active\":103,\"activated_time\":111}}";
 
     const char json_module_4BCP_unknown_error[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"msgpack 4BCP unknown error...  Actual previous status: %02X  -- status:%02X -- next status:%02X \"}";;
     const char json_module_4BCP_malformed_request_error[] PROGMEM = "{\"error_code\":%d,\"error_msg\":\"malformed 4byteCommandProtocol must begin with a msgpack fixmap, received type:%02X - status:%02X\"}";

@@ -40,6 +40,8 @@ _4BCPContainer *ApplianceMemmoryHandler::container_4BCP =
 //*Appliance specific allocations
 DHT *ApplianceMemmoryHandler::dht1 = (DHT*) malloc(sizeof(DHT));
 DHT *ApplianceMemmoryHandler::dht2 = (DHT*) malloc(sizeof(DHT));
+Adafruit_BME280 *ApplianceMemmoryHandler::BME280_1 = (Adafruit_BME280*) malloc(sizeof(Adafruit_BME280));
+Adafruit_BME280 *ApplianceMemmoryHandler::BME280_2 = (Adafruit_BME280*) malloc(sizeof(Adafruit_BME280));
 
 ActuatorBase *ApplianceMemmoryHandler::dn20_1 = (ActuatorBase*) malloc(
 		sizeof(ActuatorBase*));
@@ -56,8 +58,12 @@ ActuatorBase *ApplianceMemmoryHandler::dn20_3 = (ActuatorBase*) malloc(
 
 
 bool ApplianceMemmoryHandler::lock;
-
-
+//uint32_t* ApplianceMemmoryHandler::total_requests = (uint32_t*) malloc(sizeof(uint32_t*));
+//long unsigned int* ApplianceMemmoryHandler::loop_time = (long unsigned int*) malloc(sizeof(long unsigned int*));
+//uint32_t* ApplianceMemmoryHandler::uptime = (uint32_t*) malloc(sizeof(uint32_t*));
+//uint32_t ApplianceMemmoryHandler::total_requests = 0;
+//long unsigned int ApplianceMemmoryHandler::loop_time = 0;
+//long unsigned int ApplianceMemmoryHandler::uptime = 0;
 
 //static void ApplianceMemmoryHandler::allocSetActuatorCommand(uint8_t device_key) {
 //	ApplianceMemmoryHandler::command_set_actuator = new SetActuatorCommand(device_key);
@@ -76,12 +82,13 @@ ApplianceMemmoryHandler::ApplianceMemmoryHandler() {
 //	msgpack_handler = &MsgPackHandler();
 }
 
-static void ApplianceMemmoryHandler::newLoop() {
+void ApplianceMemmoryHandler::newLoop() {
 	ApplianceMemmoryHandler::localBuffers->float2char_buffer1[0] = '\0';
 	ApplianceMemmoryHandler::localBuffers->float2char_buffer2[0] = '\0';
 	ApplianceMemmoryHandler::localBuffers->string_cpy_buffer[0] = '\0';
 	ApplianceMemmoryHandler::commands_handler->reset();
 	ApplianceMemmoryHandler::msgpack_handler->reset();
+//	ApplianceMemmoryHandler::uptime = millis() /1000 /60;
 
 //	ApplianceMemmoryHandler::machine_state->clean();
 	lock = false;

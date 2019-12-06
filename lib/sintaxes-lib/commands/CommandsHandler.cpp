@@ -60,7 +60,11 @@ bool CommandsHandler::assembleCommand() {
 bool CommandsHandler::get_data() {
 	char sensor1_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
 	char sensor2_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
+	char sensor3_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
+	char sensor4_data[MAX_SIZE_ALLOWED_PROGMEM_STRING];
 	char *buffer;
+
+//	ApplianceMemmoryHandler::sintaxes_lib->buzz(1500, 50, 4);
 
 //	// DTH21#1 ouput
 	buffer = getSensor1();
@@ -70,8 +74,16 @@ bool CommandsHandler::get_data() {
 //	// DTH21#2 ouput
 	memmove(sensor2_data, buffer, MAX_SIZE_ALLOWED_PROGMEM_STRING);
 
-	ApplianceMemmoryHandler::responses->sendFullStatusData(sensor1_data, sensor2_data);
+	//BME280#1 ouput
+	buffer = getSensor3();
+	memmove(sensor3_data, buffer, MAX_SIZE_ALLOWED_PROGMEM_STRING);
+//	//BME280#2 ouput
+	buffer = getSensor4();
+	memmove(sensor4_data, buffer, MAX_SIZE_ALLOWED_PROGMEM_STRING);
 
+
+	ApplianceMemmoryHandler::responses->sendFullStatusData(sensor1_data, sensor2_data, sensor3_data, sensor4_data);
+//	ApplianceMemmoryHandler::sintaxes_lib->buzz(250, 100,10);
 //	free(buffer);
 	return true;
 
@@ -117,6 +129,32 @@ char* CommandsHandler::getSensor2() {
 			LocalBuffers::float2char_buffer2);
 	return LocalBuffers::string_cpy_buffer;
 }
+
+char* CommandsHandler::getSensor3() {
+	float readed_value = ApplianceMemmoryHandler::BME280_1->readHumidity();
+	dtostrf(readed_value, 2, 2, LocalBuffers::float2char_buffer1);
+	readed_value = ApplianceMemmoryHandler::BME280_1->readTemperature();
+	dtostrf(readed_value, 2, 2, LocalBuffers::float2char_buffer2);
+	snprintf_P(LocalBuffers::string_cpy_buffer,
+			sizeof(LocalBuffers::string_cpy_buffer),
+			(PGM_P) &(json_module_sensor3), LocalBuffers::float2char_buffer1,
+			LocalBuffers::float2char_buffer2);
+	return LocalBuffers::string_cpy_buffer;
+}
+
+char* CommandsHandler::getSensor4() {
+	float readed_value = ApplianceMemmoryHandler::BME280_2->readHumidity();
+	dtostrf(readed_value, 2, 2, LocalBuffers::float2char_buffer1);
+	readed_value = ApplianceMemmoryHandler::BME280_2->readTemperature();
+	dtostrf(readed_value, 2, 2, LocalBuffers::float2char_buffer2);
+	snprintf_P(LocalBuffers::string_cpy_buffer,
+			sizeof(LocalBuffers::string_cpy_buffer),
+			(PGM_P) &(json_module_sensor4), LocalBuffers::float2char_buffer1,
+			LocalBuffers::float2char_buffer2);
+	return LocalBuffers::string_cpy_buffer;
+}
+
+
 
 bool CommandsHandler::set_actuator() {
 

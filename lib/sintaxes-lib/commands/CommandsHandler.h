@@ -54,6 +54,8 @@ public:
 
 	char* getSensor1();
 	char* getSensor2();
+	char* getSensor3();
+	char* getSensor4();
 	bool execute();
 	void reset();
 
