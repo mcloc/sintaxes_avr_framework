@@ -25,7 +25,7 @@
 #include <Adafruit_BME280.h>
 #include <Wire.h>
 
-//#define __DEBUG__SINTAXES__ 1
+#define __DEBUG__SINTAXES__ 1
 
 
 //static uint32_t total_requests = 0;
@@ -227,7 +227,7 @@ void loop() {
 #ifdef __DEBUG__SINTAXES__
 	print_debug_sensors();
 	delay(200);
-	return;
+	//return;
 #endif
 //	ApplianceMemmoryHandler::loop_time = millis();
 	size_t size;
