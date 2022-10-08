@@ -40,7 +40,7 @@ static EthernetClient *etherClient = (EthernetClient*) malloc(
 const uint8_t mac[6] = { MACADDRESS };
 
 //DEBUG DHCPH is commented for debug proposes uncomment it for production
-IPAddress ip(192, 168, 1, 16);
+IPAddress ip(192, 168, 11, 16);
 
 static _4BCPContainer container_4BCP = _4BCPContainer();
 static LocalBuffers localBuffers = LocalBuffers();

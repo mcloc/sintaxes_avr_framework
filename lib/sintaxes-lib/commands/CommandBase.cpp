@@ -13,9 +13,7 @@
 #include <Responses.h>
 
 
-CommandBase::CommandBase(){
-
-}
+CommandBase::CommandBase() = default;
 
 CommandBase::CommandBase(uint32_t _command, uint32_t _device_key) {
 	// TODO Auto-generated constructor stub

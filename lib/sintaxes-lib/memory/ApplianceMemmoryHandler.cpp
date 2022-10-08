@@ -82,7 +82,7 @@ ApplianceMemmoryHandler::ApplianceMemmoryHandler() {
 //	msgpack_handler = &MsgPackHandler();
 }
 
-void ApplianceMemmoryHandler::newLoop() {
+void  ApplianceMemmoryHandler::newLoop() {
 	ApplianceMemmoryHandler::localBuffers->float2char_buffer1[0] = '\0';
 	ApplianceMemmoryHandler::localBuffers->float2char_buffer2[0] = '\0';
 	ApplianceMemmoryHandler::localBuffers->string_cpy_buffer[0] = '\0';

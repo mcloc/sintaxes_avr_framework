@@ -1,5 +1,6 @@
 #ifndef __MAIN_MODULE_H_
 #define __MAIN_MODULE_H_
+#define __DEBUG__SINTAXES__
 #include "project-defines.h"
 #include <sintaxes-lib.h>
 

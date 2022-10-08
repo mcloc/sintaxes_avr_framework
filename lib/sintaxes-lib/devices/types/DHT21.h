@@ -17,8 +17,8 @@ public:
 	const __FlashStringHelper * getModel();
 
 private:
-	const char name[] PROGMEM = "Humidity and Temperature Sensor DHT21";
-	const char model[] PROGMEM = "DHT21";
+	const char name[35] PROGMEM = "Humidity and Temperature Sensor DHT21";
+	const char model[5] PROGMEM = "DHT21";
 };
 
 #endif /* LIB_SINTAXES_LIB_DEVICES_TYPES_DHT21_H_ */

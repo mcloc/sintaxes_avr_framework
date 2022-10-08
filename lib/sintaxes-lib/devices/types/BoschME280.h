@@ -17,8 +17,8 @@ public:
 	const __FlashStringHelper * getModel();
 
 private:
-	const char name[] PROGMEM = "Humidity,Temperature and Pressor Sensor BME280";
-	const char model[] PROGMEM = "BME280";
+	const char name[47] PROGMEM = "Humidity,Temperature and Pressor Sensor BME280";
+	const char model[6] PROGMEM = "BME280";
 };
 
 
